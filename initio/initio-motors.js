@@ -23,9 +23,16 @@ module.exports = function(pins) {
     motors.right.brake();
   };
 
+  var left = function() {
+    console.log("Braking...");
+    motors.left.forward(255);
+    motors.right.reverse(255);
+  };
+
   return {
     init: init,
     forward: forward,
-    brake: brake
+    brake: brake,
+    left: left
   };
 };

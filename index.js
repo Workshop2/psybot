@@ -27,7 +27,11 @@ board.on("ready", function() {
       },
       function(callback) {
         motors.brake();
-        callback();
+        setTimeout(callback, 200);
+      },
+      function(callback) {
+        motors.left();
+        setTimeout(callback, 5000);
       }
     ], function (err, result) {
       console.log("All done!")
