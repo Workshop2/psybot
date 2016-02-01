@@ -2,7 +2,7 @@ var five = require("johnny-five");
 var async = require("async");
 var board = new five.Board();
 
-var initio = require("./initio/initio.js");
+var initio = require("./psybot-lib/psybot.js");
 
 board.on("ready", function() {
     var motors = new initio.motors({

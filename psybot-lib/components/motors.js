@@ -1,8 +1,16 @@
 var five = require("johnny-five");
 
+// speed is always passed in as a decimal between 0.0 - 1.0
 module.exports = function(pins) {
   var motors = {};
-  console.log(pins);
+  var consts = {
+    maxSpeed: 180,
+    minSpeed: 0
+  };
+
+  var state = {
+    speed: 0.0
+  };
 
   var init = function() {
     console.log("Initialising motors...");
@@ -11,28 +19,35 @@ module.exports = function(pins) {
     console.log("Done!");
   }
 
-  var forward = function() {
+  var forward = function(speed) {
     console.log("Moving forward");
     motors.left.forward(255);
     motors.right.forward(255);
   };
 
-  var brake = function() {
+  var brake = function(speed) {
     console.log("Braking...");
     motors.left.brake();
     motors.right.brake();
   };
 
-  var left = function() {
-    console.log("Braking...");
+  var left = function(speed) {
+    console.log("Turning left...");
     motors.left.forward(255);
     motors.right.reverse(255);
+  };
+
+  var right = function(speed) {
+    console.log("Turning right...");
+    motors.left.reverse(255);
+    motors.right.forward(255);
   };
 
   return {
     init: init,
     forward: forward,
     brake: brake,
-    left: left
+    left: left,
+    right: right
   };
 };
