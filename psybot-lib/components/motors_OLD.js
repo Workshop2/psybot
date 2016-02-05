@@ -1,8 +1,8 @@
 var five = require("johnny-five");
 
 // speed is always passed in as a decimal between 0.0 - 1.0
-module.exports = function(pins, motors) {
-  var motors = motors || {};
+module.exports = function(pins) {
+  var motors = {};
   var consts = {
     maxSpeed: 180,
     minSpeed: 0
@@ -42,11 +42,6 @@ module.exports = function(pins, motors) {
     motors.left.reverse(255);
     motors.right.forward(255);
   };
-
-  var getSpeed = function(speed) {
-    state.speed = speed || state.speed;
-
-  }
 
   return {
     init: init,

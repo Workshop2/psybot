@@ -1,0 +1,40 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "isolatedModules": false,
+        "jsx": "react",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "declaration": false,
+        "noImplicitAny": false,
+        "removeComments": true,
+        "noLib": false,
+        "preserveConstEnums": true,
+        "suppressImplicitAnyIndexErrors": true
+    },
+    "filesGlob": [
+        "**/*.ts",
+        "**/*.tsx",
+        "!node_modules/**"
+    ],
+    "compileOnSave": true,
+    "buildOnSave": false,
+    "files": [
+        "psybot-lib/components/motors.ts",
+        "psybot-lib/components/pins.ts",
+        "tests/psybot-lib/components/motorsTests.ts",
+        "typings/browser.d.ts",
+        "typings/browser/ambient/johnny-five/johnny-five.d.ts",
+        "typings/browser/ambient/mocha-node/mocha-node.d.ts",
+        "typings/browser/ambient/node/node.d.ts",
+        "typings/main.d.ts",
+        "typings/main/ambient/johnny-five/johnny-five.d.ts",
+        "typings/main/ambient/mocha-node/mocha-node.d.ts",
+        "typings/main/ambient/node/node.d.ts"
+    ],
+    "atom": {
+        "rewriteTsconfig": true
+    }
+}
