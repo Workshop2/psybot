@@ -1,6 +1,6 @@
 var five = require("johnny-five");
 var async = require("async");
-var board = new five.Board();
+var board = new five.Board({port: "/dev/ttyAMA0"});
 
 var initio = require("./psybot-lib/psybot.js");
 
