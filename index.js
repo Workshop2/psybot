@@ -34,6 +34,7 @@ board.on("ready", function() {
         setTimeout(callback, 5000);
       }
     ], function (err, result) {
+      motors.brake();
       console.log("All done!")
     })
 
