@@ -1,6 +1,6 @@
 /// <reference path="../../typings/main.d.ts"/>
 
-module psybot.components {
+export module components { 
   interface IMotors {
       forward(speed:number) : void;
       reverse(speed:number) : void;
