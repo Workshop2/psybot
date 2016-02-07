@@ -13,7 +13,7 @@ var Motors = (function () {
             return this._speed;
         },
         set: function (newSpeed) {
-            var minSpeed = 150;
+            var minSpeed = 180;
             var maxSpeed = 255;
             if (newSpeed) {
                 if (newSpeed < minSpeed) {
