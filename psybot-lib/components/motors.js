@@ -1,53 +1,57 @@
-var five = require("johnny-five");
-
-// speed is always passed in as a decimal between 0.0 - 1.0
-module.exports = function(pins) {
-  var motors = {};
-  var consts = {
-    maxSpeed: 180,
-    minSpeed: 0
-  };
-
-  var state = {
-    speed: 0.0
-  };
-
-  var init = function() {
-    console.log("Initialising motors...");
-    motors.left = new five.Motor({pins: pins.left});
-    motors.right = new five.Motor({pins: pins.right});
-    console.log("Done!");
-  }
-
-  var forward = function(speed) {
-    console.log("Moving forward");
-    motors.left.forward(255);
-    motors.right.forward(255);
-  };
-
-  var brake = function(speed) {
-    console.log("Braking...");
-    motors.left.brake();
-    motors.right.brake();
-  };
-
-  var left = function(speed) {
-    console.log("Turning left...");
-    motors.left.forward(255);
-    motors.right.reverse(255);
-  };
-
-  var right = function(speed) {
-    console.log("Turning right...");
-    motors.left.reverse(255);
-    motors.right.forward(255);
-  };
-
-  return {
-    init: init,
-    forward: forward,
-    brake: brake,
-    left: left,
-    right: right
-  };
-};
+"use strict";
+var j5 = require("johnny-five");
+var Motors = (function () {
+    function Motors(leftPins, rightPins) {
+        this.leftPins = leftPins;
+        this.rightPins = rightPins;
+        console.log("Initialising motors...");
+        console.log("Left");
+        console.log(new MotorOptions(leftPins));
+        this.leftMotor = new j5.Motor(new MotorOptions(leftPins));
+        console.log("right");
+        this.rightMotor = new j5.Motor(new MotorOptions(rightPins));
+        console.log("Done!");
+    }
+    Motors.prototype.forward = function (speed) {
+        console.log("Moving forward");
+        this.leftMotor.forward(255);
+        this.rightMotor.forward(255);
+    };
+    Motors.prototype.reverse = function (speed) {
+        console.log("Moving backwards");
+        this.leftMotor.reverse(255);
+        this.rightMotor.reverse(255);
+    };
+    Motors.prototype.brake = function () {
+        console.log("Braking");
+        this.leftMotor.brake();
+        this.rightMotor.brake();
+    };
+    Motors.prototype.left = function (speed) {
+        console.log("Moving left");
+        this.leftMotor.reverse(255);
+        this.rightMotor.forward(255);
+    };
+    Motors.prototype.right = function (speed) {
+        console.log("Moving right");
+        this.leftMotor.forward(255);
+        this.rightMotor.reverse(255);
+    };
+    return Motors;
+}());
+exports.Motors = Motors;
+var MotorPins = (function () {
+    function MotorPins(pwm, dir, cdir) {
+        this.pwm = pwm;
+        this.dir = dir;
+        this.cdir = cdir;
+    }
+    return MotorPins;
+}());
+exports.MotorPins = MotorPins;
+var MotorOptions = (function () {
+    function MotorOptions(pins) {
+        this.pins = pins;
+    }
+    return MotorOptions;
+}());
