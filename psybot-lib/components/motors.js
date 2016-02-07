@@ -2,6 +2,8 @@
 var j5 = require("johnny-five");
 var Motors = (function () {
     function Motors(leftPins, rightPins) {
+        this.minSpeed = 80;
+        this.maxSpeed = 255;
         console.log("Initialising motors...");
         this.leftMotor = new j5.Motor(new MotorOptions(leftPins));
         this.rightMotor = new j5.Motor(new MotorOptions(rightPins));
@@ -13,14 +15,12 @@ var Motors = (function () {
             return this._speed;
         },
         set: function (newSpeed) {
-            var minSpeed = 180;
-            var maxSpeed = 255;
             if (newSpeed) {
-                if (newSpeed < minSpeed) {
-                    newSpeed = minSpeed;
+                if (newSpeed < this.minSpeed) {
+                    newSpeed = this.minSpeed;
                 }
-                if (newSpeed > maxSpeed) {
-                    newSpeed = maxSpeed;
+                if (newSpeed > this.maxSpeed) {
+                    newSpeed = this.maxSpeed;
                 }
                 if (newSpeed != this._speed) {
                     console.log("Speed changed to " + newSpeed);
@@ -63,23 +63,21 @@ var Motors = (function () {
         };
         this.lastOperation();
     };
-    Motors.prototype.left = function (speed) {
+    Motors.prototype.left = function () {
         var _this = this;
-        this.speed = speed;
         this.lastOperation = function () {
             console.log("Turning left");
-            _this.leftMotor.reverse(_this._speed);
-            _this.rightMotor.forward(_this._speed);
+            _this.leftMotor.reverse(_this.maxSpeed);
+            _this.rightMotor.forward(_this.maxSpeed);
         };
         this.lastOperation();
     };
-    Motors.prototype.right = function (speed) {
+    Motors.prototype.right = function () {
         var _this = this;
-        this.speed = speed;
         this.lastOperation = function () {
             console.log("Turning right");
-            _this.leftMotor.forward(_this._speed);
-            _this.rightMotor.reverse(_this._speed);
+            _this.leftMotor.forward(_this.maxSpeed);
+            _this.rightMotor.reverse(_this.maxSpeed);
         };
         this.lastOperation();
     };

@@ -5,6 +5,9 @@ export class Motors {
     private leftMotor : j5.Motor;
     private rightMotor : j5.Motor;
     private lastOperation : () => void;
+    private minSpeed : number = 80;
+    private maxSpeed : number = 255;
+
 
     constructor (leftPins: MotorPins, rightPins: MotorPins) {
       console.log("Initialising motors...");
@@ -20,15 +23,12 @@ export class Motors {
       return this._speed;
     }
     set speed(newSpeed : number) {
-      var minSpeed : number = 180;
-      var maxSpeed : number = 255;
-
       if(newSpeed) {
-        if(newSpeed < minSpeed) {
-          newSpeed = minSpeed;
+        if(newSpeed < this.minSpeed) {
+          newSpeed = this.minSpeed;
         }
-        if(newSpeed > maxSpeed) {
-          newSpeed = maxSpeed;
+        if(newSpeed > this.maxSpeed) {
+          newSpeed = this.maxSpeed;
         }
 
         if(newSpeed != this._speed) {
@@ -74,23 +74,21 @@ export class Motors {
       this.lastOperation();
     }
 
-    left(speed?:number) : void {
-      this.speed = speed;
+    left() : void {
       this.lastOperation = () => {
         console.log("Turning left");
-        this.leftMotor.reverse(this._speed);
-        this.rightMotor.forward(this._speed);
+        this.leftMotor.reverse(this.maxSpeed);
+        this.rightMotor.forward(this.maxSpeed);
       };
 
       this.lastOperation();
     }
 
-    right(speed?:number) : void {
-      this.speed = speed;
+    right() : void {
       this.lastOperation = () => {
         console.log("Turning right");
-        this.leftMotor.forward(this._speed);
-        this.rightMotor.reverse(this._speed);
+        this.leftMotor.forward(this.maxSpeed);
+        this.rightMotor.reverse(this.maxSpeed);
       };
 
       this.lastOperation();
