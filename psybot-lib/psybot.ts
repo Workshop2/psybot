@@ -4,16 +4,21 @@ import psybotMotors = require("./components/motors");
 
 export class Psybot {
   board : j5.Board;
-  motors : psybotMotors.Motors;
+  private _motors : psybotMotors.Motors;
 
   constructor() {
-      // connected over serial
-      var boardOptions = new BoardOptions("/dev/ttyAMA0")
-      this.board = new j5.Board();
+      var boardOptions = new BoardOptions("/dev/ttyAMA0") // connect over serial
+      this.board = new j5.Board(boardOptions);
+  }
 
+  get motors() : psybotMotors.Motors {
+    if(!this._motors) {
       var leftPins = new psybotMotors.MotorPins(9, 2, 3);
       var rightPins = new psybotMotors.MotorPins(10, 4, 5);
-      this.motors = new psybotMotors.Motors(leftPins, rightPins);
+      this._motors = new psybotMotors.Motors(leftPins, rightPins);
+    }
+
+    return this._motors;
   }
 }
 

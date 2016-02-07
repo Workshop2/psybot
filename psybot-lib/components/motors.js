@@ -5,7 +5,10 @@ var Motors = (function () {
         this.leftPins = leftPins;
         this.rightPins = rightPins;
         console.log("Initialising motors...");
+        console.log("Left");
+        console.log(new MotorOptions(leftPins));
         this.leftMotor = new j5.Motor(new MotorOptions(leftPins));
+        console.log("right");
         this.rightMotor = new j5.Motor(new MotorOptions(rightPins));
         console.log("Done!");
     }
