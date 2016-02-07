@@ -5,9 +5,8 @@ export class Motors {
     private leftMotor : j5.Motor;
     private rightMotor : j5.Motor;
     private lastOperation : () => void;
-    private minSpeed : number = 80;
+    private minSpeed : number = 100;
     private maxSpeed : number = 255;
-
 
     constructor (leftPins: MotorPins, rightPins: MotorPins) {
       console.log("Initialising motors...");
@@ -15,7 +14,49 @@ export class Motors {
       this.rightMotor = new j5.Motor(new MotorOptions(rightPins));
       console.log("Done!");
 
-      this.speed = 255;
+      this.speed = this.maxSpeed;
+    }
+
+    forward(speed?:number) : void {
+      this.speed = speed;
+      this.runOperation(() => {
+        console.log("Moving forward");
+        this.leftMotor.forward(this.speed);
+        this.rightMotor.forward(this.speed);
+      });
+    }
+
+    reverse(speed?:number) : void {
+      this.speed = speed;
+      this.runOperation(() => {
+        console.log("Moving backwards");
+        this.leftMotor.reverse(this.speed);
+        this.rightMotor.reverse(this.speed);
+      });
+    }
+
+    brake() : void {
+      this.runOperation(() => {
+        console.log("Braking");
+        this.leftMotor.brake();
+        this.rightMotor.brake();
+      });
+    }
+
+    left() : void {
+      this.runOperation(() => {
+        console.log("Turning left");
+        this.leftMotor.reverse(this.maxSpeed);
+        this.rightMotor.forward(this.maxSpeed);
+      });
+    }
+
+    right() : void {
+      this.runOperation(() => {
+        console.log("Turning right");
+        this.leftMotor.forward(this.maxSpeed);
+        this.rightMotor.reverse(this.maxSpeed);
+      });
     }
 
     private _speed : number;
@@ -42,55 +83,8 @@ export class Motors {
       }
     }
 
-    forward(speed?:number) : void {
-      this.speed = speed;
-      this.lastOperation = () => {
-        console.log("Moving forward");
-        this.leftMotor.forward(this._speed);
-        this.rightMotor.forward(this._speed);
-      };
-
-      this.lastOperation();
-    }
-
-    reverse(speed?:number) : void {
-      this.speed = speed;
-      this.lastOperation = () => {
-        console.log("Moving backwards");
-        this.leftMotor.reverse(this._speed);
-        this.rightMotor.reverse(this._speed);
-      };
-
-      this.lastOperation();
-    }
-
-    brake() : void {
-      this.lastOperation = () => {
-        console.log("Braking");
-        this.leftMotor.brake();
-        this.rightMotor.brake();
-      };
-
-      this.lastOperation();
-    }
-
-    left() : void {
-      this.lastOperation = () => {
-        console.log("Turning left");
-        this.leftMotor.reverse(this.maxSpeed);
-        this.rightMotor.forward(this.maxSpeed);
-      };
-
-      this.lastOperation();
-    }
-
-    right() : void {
-      this.lastOperation = () => {
-        console.log("Turning right");
-        this.leftMotor.forward(this.maxSpeed);
-        this.rightMotor.reverse(this.maxSpeed);
-      };
-
+    private runOperation(operation : () => void) {
+      this.lastOperation = operation;
       this.lastOperation();
     }
 }

@@ -2,14 +2,56 @@
 var j5 = require("johnny-five");
 var Motors = (function () {
     function Motors(leftPins, rightPins) {
-        this.minSpeed = 80;
+        this.minSpeed = 100;
         this.maxSpeed = 255;
         console.log("Initialising motors...");
         this.leftMotor = new j5.Motor(new MotorOptions(leftPins));
         this.rightMotor = new j5.Motor(new MotorOptions(rightPins));
         console.log("Done!");
-        this.speed = 255;
+        this.speed = this.maxSpeed;
     }
+    Motors.prototype.forward = function (speed) {
+        var _this = this;
+        this.speed = speed;
+        this.runOperation(function () {
+            console.log("Moving forward");
+            _this.leftMotor.forward(_this.speed);
+            _this.rightMotor.forward(_this.speed);
+        });
+    };
+    Motors.prototype.reverse = function (speed) {
+        var _this = this;
+        this.speed = speed;
+        this.runOperation(function () {
+            console.log("Moving backwards");
+            _this.leftMotor.reverse(_this.speed);
+            _this.rightMotor.reverse(_this.speed);
+        });
+    };
+    Motors.prototype.brake = function () {
+        var _this = this;
+        this.runOperation(function () {
+            console.log("Braking");
+            _this.leftMotor.brake();
+            _this.rightMotor.brake();
+        });
+    };
+    Motors.prototype.left = function () {
+        var _this = this;
+        this.runOperation(function () {
+            console.log("Turning left");
+            _this.leftMotor.reverse(_this.maxSpeed);
+            _this.rightMotor.forward(_this.maxSpeed);
+        });
+    };
+    Motors.prototype.right = function () {
+        var _this = this;
+        this.runOperation(function () {
+            console.log("Turning right");
+            _this.leftMotor.forward(_this.maxSpeed);
+            _this.rightMotor.reverse(_this.maxSpeed);
+        });
+    };
     Object.defineProperty(Motors.prototype, "speed", {
         get: function () {
             return this._speed;
@@ -34,51 +76,8 @@ var Motors = (function () {
         enumerable: true,
         configurable: true
     });
-    Motors.prototype.forward = function (speed) {
-        var _this = this;
-        this.speed = speed;
-        this.lastOperation = function () {
-            console.log("Moving forward");
-            _this.leftMotor.forward(_this._speed);
-            _this.rightMotor.forward(_this._speed);
-        };
-        this.lastOperation();
-    };
-    Motors.prototype.reverse = function (speed) {
-        var _this = this;
-        this.speed = speed;
-        this.lastOperation = function () {
-            console.log("Moving backwards");
-            _this.leftMotor.reverse(_this._speed);
-            _this.rightMotor.reverse(_this._speed);
-        };
-        this.lastOperation();
-    };
-    Motors.prototype.brake = function () {
-        var _this = this;
-        this.lastOperation = function () {
-            console.log("Braking");
-            _this.leftMotor.brake();
-            _this.rightMotor.brake();
-        };
-        this.lastOperation();
-    };
-    Motors.prototype.left = function () {
-        var _this = this;
-        this.lastOperation = function () {
-            console.log("Turning left");
-            _this.leftMotor.reverse(_this.maxSpeed);
-            _this.rightMotor.forward(_this.maxSpeed);
-        };
-        this.lastOperation();
-    };
-    Motors.prototype.right = function () {
-        var _this = this;
-        this.lastOperation = function () {
-            console.log("Turning right");
-            _this.leftMotor.forward(_this.maxSpeed);
-            _this.rightMotor.reverse(_this.maxSpeed);
-        };
+    Motors.prototype.runOperation = function (operation) {
+        this.lastOperation = operation;
         this.lastOperation();
     };
     return Motors;

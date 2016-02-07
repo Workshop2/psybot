@@ -22,9 +22,10 @@
     "compileOnSave": true,
     "buildOnSave": false,
     "files": [
-        "index.ts",
+        "general-movement.ts",
         "psybot-lib/components/motors.ts",
         "psybot-lib/psybot.ts",
+        "slowing-down.ts",
         "tests/psybot-lib/components/motorsTests.ts",
         "typings/browser.d.ts",
         "typings/browser/ambient/assert/assert.d.ts",
