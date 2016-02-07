@@ -1,9 +1,13 @@
 /// <reference path="../../../typings/main.d.ts"/>
 /// <reference path="../../../psybot-lib/components/motors" />
 
-import components = require( "../../../psybot-lib/components/motors");
+import components = require("../../../psybot-lib/components/motors");
+import j5 = require("johnny-five");
 
-Motors motors = new components.components.Motors(1,1,1);
+var leftPins = new components.MotorPins(1,1,1);
+var rightPins = new components.MotorPins(1,1,1);
+var motors = new components.Motors(leftPins, rightPins);
+
  /*
 describe('Dog', function () {
 

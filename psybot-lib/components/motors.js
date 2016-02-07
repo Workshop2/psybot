@@ -1,30 +1,54 @@
 "use strict";
-var components;
-(function (components) {
-    var Motors = (function () {
-        function Motors(pins) {
-            this.pins = pins;
-        }
-        Motors.prototype.forward = function (speed) {
-        };
-        Motors.prototype.reverse = function (speed) {
-        };
-        Motors.prototype.brake = function (speed) {
-        };
-        Motors.prototype.left = function (speed) {
-        };
-        Motors.prototype.right = function (speed) {
-        };
-        return Motors;
-    }());
-    components.Motors = Motors;
-    var MotorPins = (function () {
-        function MotorPins(pwm, dir, cdir) {
-            this.pwm = pwm;
-            this.dir = dir;
-            this.cdir = cdir;
-        }
-        return MotorPins;
-    }());
-    components.MotorPins = MotorPins;
-})(components = exports.components || (exports.components = {}));
+var j5 = require("johnny-five");
+var Motors = (function () {
+    function Motors(leftPins, rightPins) {
+        this.leftPins = leftPins;
+        this.rightPins = rightPins;
+        console.log("Initialising motors...");
+        this.leftMotor = new j5.Motor(new MotorOptions(leftPins));
+        this.rightMotor = new j5.Motor(new MotorOptions(rightPins));
+        console.log("Done!");
+    }
+    Motors.prototype.forward = function (speed) {
+        console.log("Moving forward");
+        this.leftMotor.forward(255);
+        this.rightMotor.forward(255);
+    };
+    Motors.prototype.reverse = function (speed) {
+        console.log("Moving backwards");
+        this.leftMotor.reverse(255);
+        this.rightMotor.reverse(255);
+    };
+    Motors.prototype.brake = function () {
+        console.log("Braking");
+        this.leftMotor.brake();
+        this.rightMotor.brake();
+    };
+    Motors.prototype.left = function (speed) {
+        console.log("Moving left");
+        this.leftMotor.reverse(255);
+        this.rightMotor.forward(255);
+    };
+    Motors.prototype.right = function (speed) {
+        console.log("Moving right");
+        this.leftMotor.forward(255);
+        this.rightMotor.reverse(255);
+    };
+    return Motors;
+}());
+exports.Motors = Motors;
+var MotorPins = (function () {
+    function MotorPins(pwm, dir, cdir) {
+        this.pwm = pwm;
+        this.dir = dir;
+        this.cdir = cdir;
+    }
+    return MotorPins;
+}());
+exports.MotorPins = MotorPins;
+var MotorOptions = (function () {
+    function MotorOptions(pins) {
+        this.pins = pins;
+    }
+    return MotorOptions;
+}());
