@@ -5,7 +5,7 @@ export class Motors {
     private leftMotor : j5.Motor;
     private rightMotor : j5.Motor;
     private lastOperation : () => void;
-    private minSpeed : number = 100;
+    private minSpeed : number = 140;
     private maxSpeed : number = 255;
     private operationCooldown : number = 50;
 
@@ -84,6 +84,7 @@ export class Motors {
     }
 
     private runOperation(operation : () => void) {
+      console.log("    cooling down...");
       this.brake();
       setTimeout(() => {
         operation();

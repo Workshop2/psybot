@@ -2,7 +2,7 @@
 var j5 = require("johnny-five");
 var Motors = (function () {
     function Motors(leftPins, rightPins) {
-        this.minSpeed = 100;
+        this.minSpeed = 140;
         this.maxSpeed = 255;
         this.operationCooldown = 50;
         console.log("Initialising motors...");
@@ -77,6 +77,7 @@ var Motors = (function () {
     });
     Motors.prototype.runOperation = function (operation) {
         var _this = this;
+        console.log("    cooling down...");
         this.brake();
         setTimeout(function () {
             operation();

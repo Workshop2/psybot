@@ -15,8 +15,8 @@ var Psybot = (function () {
     Object.defineProperty(Psybot.prototype, "motors", {
         get: function () {
             if (!this._motors) {
-                var leftPins = new psybotMotors.MotorPins(9, 2, 3);
-                var rightPins = new psybotMotors.MotorPins(10, 4, 5);
+                var leftPins = new psybotMotors.MotorPins(6, 2, 3);
+                var rightPins = new psybotMotors.MotorPins(11, 4, 5);
                 this._motors = new psybotMotors.Motors(leftPins, rightPins);
             }
             return this._motors;

@@ -19,8 +19,10 @@ export class Psybot {
   private _motors : psybotMotors.Motors;
   get motors() : psybotMotors.Motors {
     if(!this._motors) {
-      var leftPins = new psybotMotors.MotorPins(9, 2, 3);
-      var rightPins = new psybotMotors.MotorPins(10, 4, 5);
+      // can't use pins 9 & 10 when using servos
+      // https://github.com/rwaldron/johnny-five/issues/309
+      var leftPins = new psybotMotors.MotorPins(6, 2, 3);
+      var rightPins = new psybotMotors.MotorPins(11, 4, 5);
       this._motors = new psybotMotors.Motors(leftPins, rightPins);
     }
 
