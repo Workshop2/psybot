@@ -4,6 +4,7 @@ import j5 = require("johnny-five");
 export class Motors {
     private leftMotor : j5.Motor;
     private rightMotor : j5.Motor;
+    private lastOperation : () => void;
 
     constructor (leftPins: MotorPins, rightPins: MotorPins) {
       console.log("Initialising motors...");
@@ -20,54 +21,76 @@ export class Motors {
     }
     set speed(newSpeed : number) {
       if(newSpeed) {
-        if(newSpeed < 0) {
-          newSpeed = 0;
+        if(newSpeed < 130) {
+          newSpeed = 130;
         }
         if(newSpeed > 255) {
           newSpeed = 255;
         }
 
-        console.log("Speed changed to " + newSpeed);
-        this._speed = newSpeed; 
+        if(newSpeed != this._speed) {
+          console.log("Speed changed to " + newSpeed);
+          this._speed = newSpeed;
+
+          if(this.lastOperation) {
+            this.lastOperation();
+          }
+        }
       }
     }
 
     forward(speed?:number) : void {
       this.speed = speed;
+      this.lastOperation = () => {
+        console.log("Moving forward");
+        this.leftMotor.forward(this._speed);
+        this.rightMotor.forward(this._speed);
+      };
 
-      console.log("Moving forward");
-      this.leftMotor.forward(this._speed);
-      this.rightMotor.forward(this._speed);
+      this.lastOperation();
     }
 
     reverse(speed?:number) : void {
       this.speed = speed;
+      this.lastOperation = () => {
+        console.log("Moving backwards");
+        this.leftMotor.reverse(this._speed);
+        this.rightMotor.reverse(this._speed);
+      };
 
-      console.log("Moving backwards");
-      this.leftMotor.reverse(this._speed);
-      this.rightMotor.reverse(this._speed);
+      this.lastOperation();
     }
 
     brake() : void {
-      console.log("Braking");
-      this.leftMotor.brake();
-      this.rightMotor.brake();
+      this.lastOperation = () => {
+        console.log("Braking");
+        this.leftMotor.brake();
+        this.rightMotor.brake();
+      };
+
+      this.lastOperation();
     }
 
     left(speed?:number) : void {
       this.speed = speed;
+      this.lastOperation = () => {
+        console.log("Turning left");
+        this.leftMotor.reverse(this._speed);
+        this.rightMotor.forward(this._speed);
+      };
 
-      console.log("Turning left");
-      this.leftMotor.reverse(this._speed);
-      this.rightMotor.forward(this._speed);
+      this.lastOperation();
     }
 
     right(speed?:number) : void {
       this.speed = speed;
+      this.lastOperation = () => {
+        console.log("Turning right");
+        this.leftMotor.forward(this._speed);
+        this.rightMotor.reverse(this._speed);
+      };
 
-      console.log("Turning right");
-      this.leftMotor.forward(this._speed);
-      this.rightMotor.reverse(this._speed);
+      this.lastOperation();
     }
 }
 

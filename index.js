@@ -10,6 +10,10 @@ psybot.board.on("ready", function () {
             setTimeout(callback, 5000);
         },
         function (callback) {
+            psybot.motors.speed = 50;
+            setTimeout(callback, 3000);
+        },
+        function (callback) {
             psybot.motors.brake();
             setTimeout(callback, 200);
         },
@@ -24,6 +28,10 @@ psybot.board.on("ready", function () {
         function (callback) {
             psybot.motors.left();
             setTimeout(callback, 5000);
+        },
+        function (callback) {
+            psybot.motors.speed = 255;
+            setTimeout(callback, 3000);
         },
         function (callback) {
             psybot.motors.brake();

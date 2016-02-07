@@ -14,47 +14,72 @@ var Motors = (function () {
         },
         set: function (newSpeed) {
             if (newSpeed) {
-                if (newSpeed < 0) {
-                    newSpeed = 0;
+                if (newSpeed < 130) {
+                    newSpeed = 130;
                 }
                 if (newSpeed > 255) {
                     newSpeed = 255;
                 }
-                console.log("Speed changed to " + newSpeed);
-                this._speed = newSpeed;
+                if (newSpeed != this._speed) {
+                    console.log("Speed changed to " + newSpeed);
+                    this._speed = newSpeed;
+                    if (this.lastOperation) {
+                        this.lastOperation();
+                    }
+                }
             }
         },
         enumerable: true,
         configurable: true
     });
     Motors.prototype.forward = function (speed) {
+        var _this = this;
         this.speed = speed;
-        console.log("Moving forward");
-        this.leftMotor.forward(this._speed);
-        this.rightMotor.forward(this._speed);
+        this.lastOperation = function () {
+            console.log("Moving forward");
+            _this.leftMotor.forward(_this._speed);
+            _this.rightMotor.forward(_this._speed);
+        };
+        this.lastOperation();
     };
     Motors.prototype.reverse = function (speed) {
+        var _this = this;
         this.speed = speed;
-        console.log("Moving backwards");
-        this.leftMotor.reverse(this._speed);
-        this.rightMotor.reverse(this._speed);
+        this.lastOperation = function () {
+            console.log("Moving backwards");
+            _this.leftMotor.reverse(_this._speed);
+            _this.rightMotor.reverse(_this._speed);
+        };
+        this.lastOperation();
     };
     Motors.prototype.brake = function () {
-        console.log("Braking");
-        this.leftMotor.brake();
-        this.rightMotor.brake();
+        var _this = this;
+        this.lastOperation = function () {
+            console.log("Braking");
+            _this.leftMotor.brake();
+            _this.rightMotor.brake();
+        };
+        this.lastOperation();
     };
     Motors.prototype.left = function (speed) {
+        var _this = this;
         this.speed = speed;
-        console.log("Turning left");
-        this.leftMotor.reverse(this._speed);
-        this.rightMotor.forward(this._speed);
+        this.lastOperation = function () {
+            console.log("Turning left");
+            _this.leftMotor.reverse(_this._speed);
+            _this.rightMotor.forward(_this._speed);
+        };
+        this.lastOperation();
     };
     Motors.prototype.right = function (speed) {
+        var _this = this;
         this.speed = speed;
-        console.log("Turning right");
-        this.leftMotor.forward(this._speed);
-        this.rightMotor.reverse(this._speed);
+        this.lastOperation = function () {
+            console.log("Turning right");
+            _this.leftMotor.forward(_this._speed);
+            _this.rightMotor.reverse(_this._speed);
+        };
+        this.lastOperation();
     };
     return Motors;
 }());
