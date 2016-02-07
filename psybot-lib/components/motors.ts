@@ -7,6 +7,7 @@ export class Motors {
     private lastOperation : () => void;
     private minSpeed : number = 100;
     private maxSpeed : number = 255;
+    private operationCooldown : number = 50;
 
     constructor (leftPins: MotorPins, rightPins: MotorPins) {
       console.log("Initialising motors...");
@@ -36,11 +37,10 @@ export class Motors {
     }
 
     brake() : void {
-      this.runOperation(() => {
-        console.log("Braking");
-        this.leftMotor.brake();
-        this.rightMotor.brake();
-      });
+      console.log("Braking");
+      this.leftMotor.brake();
+      this.rightMotor.brake();
+      this.lastOperation = null;
     }
 
     left() : void {
@@ -84,8 +84,11 @@ export class Motors {
     }
 
     private runOperation(operation : () => void) {
-      this.lastOperation = operation;
-      this.lastOperation();
+      this.brake();
+      setTimeout(() => {
+        operation();
+        this.lastOperation = operation;
+      }, this.operationCooldown);
     }
 }
 

@@ -4,6 +4,7 @@ var Motors = (function () {
     function Motors(leftPins, rightPins) {
         this.minSpeed = 100;
         this.maxSpeed = 255;
+        this.operationCooldown = 50;
         console.log("Initialising motors...");
         this.leftMotor = new j5.Motor(new MotorOptions(leftPins));
         this.rightMotor = new j5.Motor(new MotorOptions(rightPins));
@@ -29,12 +30,10 @@ var Motors = (function () {
         });
     };
     Motors.prototype.brake = function () {
-        var _this = this;
-        this.runOperation(function () {
-            console.log("Braking");
-            _this.leftMotor.brake();
-            _this.rightMotor.brake();
-        });
+        console.log("Braking");
+        this.leftMotor.brake();
+        this.rightMotor.brake();
+        this.lastOperation = null;
     };
     Motors.prototype.left = function () {
         var _this = this;
@@ -77,8 +76,12 @@ var Motors = (function () {
         configurable: true
     });
     Motors.prototype.runOperation = function (operation) {
-        this.lastOperation = operation;
-        this.lastOperation();
+        var _this = this;
+        this.brake();
+        setTimeout(function () {
+            operation();
+            _this.lastOperation = operation;
+        }, this.operationCooldown);
     };
     return Motors;
 }());
