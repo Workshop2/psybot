@@ -11,7 +11,6 @@
   "dependencies": {
     "async": "^1.5.2",
     "chai": "^3.5.0",
-    "johnny-five": "^0.9.19",
-    "serialport": "^2.0.6"
+    "johnny-five": "^0.9.19"
   }
 }
