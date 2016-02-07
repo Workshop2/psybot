@@ -2,9 +2,14 @@
 var j5 = require("johnny-five");
 var psybotMotors = require("./components/motors");
 var Psybot = (function () {
-    function Psybot() {
-        var boardOptions = new BoardOptions("/dev/ttyAMA0");
-        this.board = new j5.Board(boardOptions);
+    function Psybot(usbConnection) {
+        if (usbConnection) {
+            this.board = new j5.Board();
+        }
+        else {
+            var boardOptions = new BoardOptions("/dev/ttyAMA0");
+            this.board = new j5.Board(boardOptions);
+        }
     }
     Object.defineProperty(Psybot.prototype, "motors", {
         get: function () {
