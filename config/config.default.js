@@ -1,5 +1,5 @@
 module.exports = {
-	config: {
+	settings: {
 			usbConnection: false
   }
 }

@@ -1,7 +1,8 @@
 "use strict";
 var async = require("async");
 var psybotLib = require("./psybot-lib/psybot");
-var psybot = new psybotLib.Psybot(true);
+var config = require('./config/config');
+var psybot = new psybotLib.Psybot(config.settings.usbConnection);
 psybot.board.on("ready", function () {
     this.repl.inject(psybot);
     async.waterfall([

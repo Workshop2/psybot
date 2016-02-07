@@ -20,12 +20,15 @@ export class Motors {
       return this._speed;
     }
     set speed(newSpeed : number) {
+      var minSpeed : number = 150;
+      var maxSpeed : number = 255;
+
       if(newSpeed) {
-        if(newSpeed < 130) {
-          newSpeed = 130;
+        if(newSpeed < minSpeed) {
+          newSpeed = minSpeed;
         }
-        if(newSpeed > 255) {
-          newSpeed = 255;
+        if(newSpeed > maxSpeed) {
+          newSpeed = maxSpeed;
         }
 
         if(newSpeed != this._speed) {
