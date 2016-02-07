@@ -31,7 +31,7 @@ psybot.board.on("ready", function() {
       setTimeout(callback, 200);
     },
     function(callback) {
-      psybot.motors.left();
+      psybot.motors.right();
       setTimeout(callback, 5000);
     },
     function(callback) {
@@ -43,7 +43,7 @@ psybot.board.on("ready", function() {
       setTimeout(callback, 200);
     },
     function(callback) {
-      psybot.motors.right();
+      psybot.motors.left();
       setTimeout(callback, 5000);
     },
     function(callback) {
