@@ -28,7 +28,7 @@ export class Motors {
         }
 
         console.log("Speed changed to " + newSpeed);
-        this._speed = newSpeed;
+        this._speed = newSpeed; 
       }
     }
 
