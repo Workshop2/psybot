@@ -16,25 +16,13 @@ psybot.board.on("ready", function() {
         setTimeout(callback, 5000);
     },
     function(callback) {
-      psybot.motors.brake();
-      setTimeout(callback, 200);
-    },
-    function(callback) {
         psybot.motors.reverse();
         setTimeout(callback, 5000);
-    },
-    function(callback) {
-      psybot.motors.brake();
-      setTimeout(callback, 200);
     },
 
     function(callback) {
         psybot.motors.forward();
         setTimeout(callback, 5000);
-    },
-    function(callback) {
-      psybot.motors.brake();
-      setTimeout(callback, 200);
     },
     function(callback) {
         psybot.motors.reverse();
