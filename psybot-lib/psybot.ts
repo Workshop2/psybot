@@ -1,6 +1,7 @@
 /// <reference path="../typings/main.d.ts"/>
 import j5 = require("johnny-five");
 import psybotMotors = require("./components/motors");
+import psybotFrontarm = require("./components/frontarm");
 
 export class Psybot {
   board : j5.Board;
@@ -24,6 +25,15 @@ export class Psybot {
     }
 
     return this._motors;
+  }
+
+  private _frontArm : psybotFrontarm.FrontArm;
+  get frontArm() : psybotFrontarm.FrontArm {
+    if(!this._frontArm) {
+      this._frontArm = new psybotFrontarm.FrontArm(14, 15);
+    }
+
+    return this._frontArm;
   }
 }
 

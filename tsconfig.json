@@ -23,8 +23,10 @@
     "buildOnSave": false,
     "files": [
         "general-movement.ts",
+        "psybot-lib/components/frontarm.ts",
         "psybot-lib/components/motors.ts",
         "psybot-lib/psybot.ts",
+        "servos.ts",
         "slowing-down.ts",
         "tests/psybot-lib/components/motorsTests.ts",
         "typings/browser.d.ts",

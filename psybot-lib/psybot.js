@@ -1,6 +1,7 @@
 "use strict";
 var j5 = require("johnny-five");
 var psybotMotors = require("./components/motors");
+var psybotFrontarm = require("./components/frontarm");
 var Psybot = (function () {
     function Psybot(usbConnection) {
         if (usbConnection) {
@@ -19,6 +20,16 @@ var Psybot = (function () {
                 this._motors = new psybotMotors.Motors(leftPins, rightPins);
             }
             return this._motors;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Psybot.prototype, "frontArm", {
+        get: function () {
+            if (!this._frontArm) {
+                this._frontArm = new psybotFrontarm.FrontArm(14, 15);
+            }
+            return this._frontArm;
         },
         enumerable: true,
         configurable: true
