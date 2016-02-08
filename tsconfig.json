@@ -25,6 +25,7 @@
         "general-movement.ts",
         "psybot-lib/components/frontarm.ts",
         "psybot-lib/components/motors.ts",
+        "psybot-lib/components/sonar.ts",
         "psybot-lib/psybot.ts",
         "servos.ts",
         "slowing-down.ts",

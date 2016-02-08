@@ -1,10 +1,13 @@
 "use strict";
 var j5 = require("johnny-five");
+var psybotSonar = require("./sonar");
 var FrontArm = (function () {
     function FrontArm(bottomServoPin, topServoPin) {
         this.movementSpeed = 1000;
         this.bottomServo = this.createServo(bottomServoPin, this.bottomServoMovementCompleted);
         this.topServo = this.createServo(topServoPin, this.topServoMovementCompleted);
+        var sonarOptions = new psybotSonar.SonarOptions(1, "device");
+        this.sonar = new psybotSonar.Sonar(sonarOptions);
     }
     FrontArm.prototype.createServo = function (pin, callback) {
         var servo = new j5.Servo({

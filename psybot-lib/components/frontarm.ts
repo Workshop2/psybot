@@ -1,5 +1,6 @@
 /// <reference path="../../typings/main.d.ts"/>
 import j5 = require("johnny-five");
+import psybotSonar = require("./sonar");
 
 export class FrontArm {
   private bottomServo : j5.Servo;
@@ -11,7 +12,12 @@ export class FrontArm {
   constructor(bottomServoPin : number, topServoPin : number) {
     this.bottomServo = this.createServo(bottomServoPin, this.bottomServoMovementCompleted);
     this.topServo = this.createServo(topServoPin, this.topServoMovementCompleted);
+
+    var sonarOptions = new psybotSonar.SonarOptions(1, "device");
+    this.sonar = new psybotSonar.Sonar(sonarOptions);
   }
+
+  public sonar : psybotSonar.Sonar;
 
   private createServo(pin : number, callback : () => void) : j5.Servo {
     var servo = new j5.Servo({
