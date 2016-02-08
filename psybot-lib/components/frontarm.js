@@ -2,23 +2,45 @@
 var j5 = require("johnny-five");
 var FrontArm = (function () {
     function FrontArm(bottomServoPin, topServoPin) {
-        this.bottomServo = new j5.Servo({
-            pin: bottomServoPin,
-            range: [45, 135],
-            center: true
-        });
-        this.topServo = new j5.Servo({
-            pin: topServoPin,
-            range: [45, 135],
-            center: true
-        });
+        this.bottomServo = this.createServo(bottomServoPin);
+        this.topServo = this.createServo(topServoPin);
     }
-    FrontArm.prototype.sweepUpDown = function () {
-        this.topServo.sweep();
+    FrontArm.prototype.createServo = function (pin) {
+        return new j5.Servo({
+            pin: pin,
+            range: [45, 135],
+            center: true
+        });
     };
-    FrontArm.prototype.sweepLeftRight = function () {
-        this.bottomServo.sweep();
+    FrontArm.prototype.sweepUpDown = function (sweepOptions) {
+        this.topServo.sweep(sweepOptions);
+    };
+    FrontArm.prototype.sweepLeftRight = function (sweepOptions) {
+        this.bottomServo.sweep(sweepOptions);
+    };
+    FrontArm.prototype.stop = function () {
+        this.bottomServo.stop();
+        this.topServo.stop();
+    };
+    FrontArm.prototype.center = function () {
+        this.bottomServo.center();
+        this.topServo.center();
+    };
+    FrontArm.prototype.faceUp = function () {
+    };
+    FrontArm.prototype.faceDown = function () {
+    };
+    FrontArm.prototype.faceRight = function () {
+    };
+    FrontArm.prototype.faceLeft = function () {
     };
     return FrontArm;
 }());
 exports.FrontArm = FrontArm;
+var ServoSweepOptions = (function () {
+    function ServoSweepOptions(range, interval) {
+        this.range = range;
+    }
+    return ServoSweepOptions;
+}());
+exports.ServoSweepOptions = ServoSweepOptions;
