@@ -3,45 +3,26 @@ import j5 = require("johnny-five");
 import psybotSonar = require("./sonar");
 
 export class FrontArm {
+  public sonar : psybotSonar.Sonar;
   private bottomServo : j5.Servo;
   private topServo : j5.Servo;
   private movementSpeed : number = 1000;
-  private bottomServoCallback : () => void;
-  private topServoCallback : () => void;
 
   constructor(bottomServoPin : number, topServoPin : number) {
-    this.bottomServo = this.createServo(bottomServoPin, this.bottomServoMovementCompleted);
-    this.topServo = this.createServo(topServoPin, this.topServoMovementCompleted);
+    this.bottomServo = new j5.Servo({
+      pin: bottomServoPin,
+      range: [15, 180], //TODO: Work out these values
+      center: true
+    });
+
+    this.topServo = new j5.Servo({
+      pin: topServoPin,
+      range: [20, 150], //TODO: Work out these values
+      center: true
+    });
 
     var sonarOptions = new psybotSonar.SonarOptions(1, "device");
     this.sonar = new psybotSonar.Sonar(sonarOptions);
-  }
-
-  public sonar : psybotSonar.Sonar;
-
-  private createServo(pin : number, callback : () => void) : j5.Servo {
-    var servo = new j5.Servo({
-      pin: pin,
-      range: [45, 135], //TODO: Work out these values
-      center: true
-    });
-    servo.on("move:complete", callback);
-
-    return servo;
-  }
-
-  private bottomServoMovementCompleted() : void {
-    if(this.bottomServoCallback) {
-      this.bottomServoCallback();
-      this.bottomServoCallback = null;
-    }
-  }
-
-  private topServoMovementCompleted() : void {
-    if(this.topServoCallback) {
-      this.topServoCallback();
-      this.topServoCallback = null;
-    }
   }
 
   public sweepUpDown(sweepOptions? : ServoSweepOptions) : void {
@@ -60,61 +41,50 @@ export class FrontArm {
   }
 
   public stopBottom() : void {
-    this.bottomServoCallback = null;
+    console.log("stopBottom");
     this.bottomServo.stop();
   }
 
   public stopTop() : void {
-    this.topServoCallback = null;
+    console.log("stopTop");
     this.topServo.stop();
   }
 
   // based on trust that the callbacks work...
   public center(callback? : () => void) : void {
     this.stop();
-    var bottomCompleted : boolean = false;
-    var topCompleted : boolean = false;
-
-    this.bottomServoCallback = () => {
-      bottomCompleted = true;
-      if(topCompleted === bottomCompleted && callback) {
-        callback();
-      }
-    };
-
-    this.topServoCallback = () => {
-      topCompleted = true;
-      if(bottomCompleted === topCompleted && callback) {
-        callback();
-      }
-    };
 
     this.bottomServo.center();
     this.topServo.center();
+    setTimeout(() => { this.stop(); callback(); }, this.movementSpeed);
   }
 
   public faceUp(callback? : () => void) : void {
     this.stopTop();
-    this.topServoCallback = callback;
-    this.topServo.to(180, this.movementSpeed);
+    console.log("faceUp");
+    this.topServo.min();
+    setTimeout(() => { this.stopTop(); callback(); }, this.movementSpeed);
   }
 
   public faceDown(callback? : () => void) : void {
     this.stopTop();
-    this.topServoCallback = callback;
-    this.topServo.to(0, this.movementSpeed);
+    console.log("faceDown");
+    this.topServo.max();
+    setTimeout(() => { this.stopTop(); callback(); }, this.movementSpeed);
   }
 
   public faceRight(callback? : () => void) : void {
     this.stopBottom();
-    this.bottomServoCallback = callback;
-    this.bottomServo.to(180, this.movementSpeed);
+    console.log("faceRight");
+    this.bottomServo.min();
+    setTimeout(() => { this.stopBottom(); callback(); }, this.movementSpeed);
   }
 
   public faceLeft(callback? : () => void) : void {
     this.stopBottom();
-    this.bottomServoCallback = callback;
-    this.bottomServo.to(0, this.movementSpeed);
+    console.log("faceLeft");
+    this.bottomServo.max();
+    setTimeout(() => { this.stopBottom(); callback(); }, this.movementSpeed);
   }
 }
 

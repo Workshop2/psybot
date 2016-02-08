@@ -9,14 +9,23 @@ var psybot = new psybotLib.Psybot(config.settings.usbConnection);
 psybot.board.on("ready", function() {
   this.repl.inject({psybot: psybot});
 
-  psybot.frontArm.center();
-
-  psybot.frontArm.sweepUpDown();
-  psybot.frontArm.sweepLeftRight();
-
-  /*async.waterfall([
-    function(callback) {
-        setTimeout(callback, 5000);
-    }
-  ]);*/
+  async.forever((foreverCallback : () => void) => {
+    async.waterfall([
+      function(callback) {
+        psybot.frontArm.faceUp(callback);
+      },
+      function(callback) {
+        psybot.frontArm.faceDown(callback);
+      },
+      function(callback) {
+        psybot.frontArm.faceLeft(callback);
+      },
+      function(callback) {
+        psybot.frontArm.faceRight(callback);
+      },
+      function(callback) {
+        psybot.frontArm.center(callback);
+      }
+    ], () => foreverCallback());
+  }, () => {});
 });
