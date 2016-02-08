@@ -47,8 +47,22 @@ var FrontArm = (function () {
         this.topServoCallback = null;
         this.topServo.stop();
     };
-    FrontArm.prototype.center = function () {
+    FrontArm.prototype.center = function (callback) {
         this.stop();
+        var bottomCompleted = false;
+        var topCompleted = false;
+        this.bottomServoCallback = function () {
+            bottomCompleted = true;
+            if (topCompleted === bottomCompleted && callback) {
+                callback();
+            }
+        };
+        this.topServoCallback = function () {
+            topCompleted = true;
+            if (bottomCompleted === topCompleted && callback) {
+                callback();
+            }
+        };
         this.bottomServo.center();
         this.topServo.center();
     };

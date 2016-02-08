@@ -63,9 +63,26 @@ export class FrontArm {
     this.topServo.stop();
   }
 
-  //TODO: Compound event (fire when both have been centered)
-  public center() : void {
+  // based on trust that the callbacks work...
+  public center(callback? : () => void) : void {
     this.stop();
+    var bottomCompleted : boolean = false;
+    var topCompleted : boolean = false;
+
+    this.bottomServoCallback = () => {
+      bottomCompleted = true;
+      if(topCompleted === bottomCompleted && callback) {
+        callback();
+      }
+    };
+
+    this.topServoCallback = () => {
+      topCompleted = true;
+      if(bottomCompleted === topCompleted && callback) {
+        callback();
+      }
+    };
+
     this.bottomServo.center();
     this.topServo.center();
   }
