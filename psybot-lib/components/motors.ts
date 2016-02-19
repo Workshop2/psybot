@@ -18,44 +18,53 @@ export class Motors {
       this.speed = this.maxSpeed;
     }
 
-    forward(speed?:number) : void {
+    forward(speed? : number, callback?: () => void) : void {
       this.speed = speed;
       this.runOperation(() => {
         console.log("Moving forward");
         this.leftMotor.forward(this.speed);
         this.rightMotor.forward(this.speed);
+        if(callback) { callback(); }
       });
     }
 
-    reverse(speed?:number) : void {
+    reverse(speed? : number, callback?: () => void) : void {
       this.speed = speed;
       this.runOperation(() => {
         console.log("Moving backwards");
         this.leftMotor.reverse(this.speed);
         this.rightMotor.reverse(this.speed);
+        if(callback) { callback(); }
       });
     }
 
-    brake() : void {
+    brake(callback?: () => void) : void {
       console.log("Braking");
+
       this.leftMotor.brake();
       this.rightMotor.brake();
       this.lastOperation = null;
+
+      if(callback) {
+        setTimeout(callback, this.operationCooldown);
+      }
     }
 
-    left() : void {
+    left(callback?: () => void) : void {
       this.runOperation(() => {
         console.log("Turning left");
         this.leftMotor.reverse(this.maxSpeed);
         this.rightMotor.forward(this.maxSpeed);
+        if(callback) { callback(); }
       });
     }
 
-    right() : void {
+    right(callback?: () => void) : void {
       this.runOperation(() => {
         console.log("Turning right");
         this.leftMotor.forward(this.maxSpeed);
         this.rightMotor.reverse(this.maxSpeed);
+        if(callback) { callback(); }
       });
     }
 
@@ -84,12 +93,10 @@ export class Motors {
     }
 
     private runOperation(operation : () => void) {
-      console.log("    cooling down...");
-      this.brake();
-      setTimeout(() => {
+      this.brake(() => {
         operation();
         this.lastOperation = operation;
-      }, this.operationCooldown);
+      });
     }
 }
 

@@ -9,7 +9,9 @@ psybot.board.on("ready", function () {
     psybot.frontArm.sweepLeftRight();
     async.waterfall([
         function (callback) {
-            psybot.motors.forward();
+            psybot.motors.forward(callback);
+        },
+        function (callback) {
             setTimeout(callback, 5000);
         },
         function (callback) {
@@ -17,15 +19,21 @@ psybot.board.on("ready", function () {
             setTimeout(callback, 3000);
         },
         function (callback) {
-            psybot.motors.reverse();
+            psybot.motors.reverse(callback);
+        },
+        function (callback) {
             setTimeout(callback, 5000);
         },
         function (callback) {
-            psybot.motors.reverse(200);
+            psybot.motors.reverse(200, callback);
+        },
+        function (callback) {
             setTimeout(callback, 5000);
         },
         function (callback) {
-            psybot.motors.right();
+            psybot.motors.right(callback);
+        },
+        function (callback) {
             setTimeout(callback, 5000);
         },
         function (callback) {
@@ -33,12 +41,13 @@ psybot.board.on("ready", function () {
             setTimeout(callback, 1000);
         },
         function (callback) {
-            psybot.motors.left();
+            psybot.motors.left(callback);
+        },
+        function (callback) {
             setTimeout(callback, 5000);
         },
         function (callback) {
-            psybot.motors.brake();
-            callback();
+            psybot.motors.brake(callback);
         }
     ]);
 });
