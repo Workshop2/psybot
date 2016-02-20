@@ -3,8 +3,8 @@ var j5 = require("johnny-five");
 var psybotSonar = require("./sonar");
 var FrontArm = (function () {
     function FrontArm(bottomServoPin, topServoPin) {
-        this.movementSpeed = 1000;
-        this.stopTimeout = 200;
+        this.movementSpeed = 800;
+        this.stopTimeout = 100;
         this.bottomServo = new j5.Servo({
             pin: bottomServoPin,
             range: [15, 180],

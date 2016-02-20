@@ -6,8 +6,8 @@ export class FrontArm {
   public sonar : psybotSonar.Sonar;
   private bottomServo : j5.Servo;
   private topServo : j5.Servo;
-  private movementSpeed : number = 1000;
-  private stopTimeout: number = 200;
+  private movementSpeed : number = 800;
+  private stopTimeout: number = 100;
 
   constructor(bottomServoPin : number, topServoPin : number) {
     this.bottomServo = new j5.Servo({
