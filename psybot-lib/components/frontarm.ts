@@ -7,6 +7,7 @@ export class FrontArm {
   private bottomServo : j5.Servo;
   private topServo : j5.Servo;
   private movementSpeed : number = 1000;
+  private stopTimeout: number = 200;
 
   constructor(bottomServoPin : number, topServoPin : number) {
     this.bottomServo = new j5.Servo({
@@ -35,19 +36,31 @@ export class FrontArm {
     this.bottomServo.sweep(sweepOptions);
   }
 
-  public stop() : void {
+  public stop(callback? : () => void) : void {
     this.stopBottom();
     this.stopTop();
+
+    if(callback) {
+      setTimeout(callback, this.stopTimeout);
+    }
   }
 
-  public stopBottom() : void {
+  public stopBottom(callback? : () => void) : void {
     console.log("stopBottom");
     this.bottomServo.stop();
+
+    if(callback) {
+      setTimeout(callback, this.stopTimeout);
+    }
   }
 
-  public stopTop() : void {
+  public stopTop(callback? : () => void) : void {
     console.log("stopTop");
     this.topServo.stop();
+
+    if(callback) {
+      setTimeout(callback, this.stopTimeout);
+    }
   }
 
   // based on trust that the callbacks work...
@@ -60,31 +73,35 @@ export class FrontArm {
   }
 
   public faceUp(callback? : () => void) : void {
-    this.stopTop();
-    console.log("faceUp");
-    this.topServo.min();
-    setTimeout(() => { this.stopTop(); callback(); }, this.movementSpeed);
+    this.stopTop(() => {
+      console.log("faceUp");
+      this.topServo.min();
+      setTimeout(() => { this.stopTop(callback); }, this.movementSpeed);
+    });
   }
 
   public faceDown(callback? : () => void) : void {
-    this.stopTop();
-    console.log("faceDown");
-    this.topServo.max();
-    setTimeout(() => { this.stopTop(); callback(); }, this.movementSpeed);
+    this.stopTop(() => {
+      console.log("faceDown");
+      this.topServo.max();
+      setTimeout(() => { this.stopTop(callback); }, this.movementSpeed);
+    });
   }
 
   public faceRight(callback? : () => void) : void {
-    this.stopBottom();
-    console.log("faceRight");
-    this.bottomServo.min();
-    setTimeout(() => { this.stopBottom(); callback(); }, this.movementSpeed);
+    this.stopBottom(() => {
+      console.log("faceRight");
+      this.bottomServo.min();
+      setTimeout(() => { this.stopBottom(callback); }, this.movementSpeed);
+    });
   }
 
   public faceLeft(callback? : () => void) : void {
-    this.stopBottom();
-    console.log("faceLeft");
-    this.bottomServo.max();
-    setTimeout(() => { this.stopBottom(); callback(); }, this.movementSpeed);
+    this.stopBottom(() => {
+      console.log("faceLeft");
+      this.bottomServo.max();
+      setTimeout(() => { this.stopBottom(callback); }, this.movementSpeed);
+    });
   }
 }
 
