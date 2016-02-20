@@ -19,12 +19,18 @@ export class Motors {
     }
 
     forward(speed? : number, callback?: () => void) : void {
+      var hasAlreadyCalledBack : boolean = false;
       this.speed = speed;
+
       this.runOperation(() => {
         console.log("Moving forward");
         this.leftMotor.forward(this.speed);
         this.rightMotor.forward(this.speed);
-        if(callback) { callback(); }
+        if(callback && !hasAlreadyCalledBack) {
+          console.log("Forward callback()...")
+          hasAlreadyCalledBack = true;
+          callback();
+        }
       });
     }
 

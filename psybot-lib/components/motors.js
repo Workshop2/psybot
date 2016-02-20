@@ -13,12 +13,15 @@ var Motors = (function () {
     }
     Motors.prototype.forward = function (speed, callback) {
         var _this = this;
+        var hasAlreadyCalledBack = false;
         this.speed = speed;
         this.runOperation(function () {
             console.log("Moving forward");
             _this.leftMotor.forward(_this.speed);
             _this.rightMotor.forward(_this.speed);
-            if (callback) {
+            if (callback && !hasAlreadyCalledBack) {
+                console.log("Forward callback()...");
+                hasAlreadyCalledBack = true;
                 callback();
             }
         });
