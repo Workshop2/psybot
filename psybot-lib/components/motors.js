@@ -11,10 +11,9 @@ var Motors = (function () {
         console.log("Done!");
         this.speed = this.maxSpeed;
     }
-    Motors.prototype.forward = function (speed, callback) {
+    Motors.prototype.forward = function (callback) {
         var _this = this;
         var hasAlreadyCalledBack = false;
-        this.speed = speed;
         this.runOperation(function () {
             console.log("Moving forward");
             _this.leftMotor.forward(_this.speed);
@@ -26,14 +25,16 @@ var Motors = (function () {
             }
         });
     };
-    Motors.prototype.reverse = function (speed, callback) {
+    Motors.prototype.reverse = function (callback) {
         var _this = this;
-        this.speed = speed;
+        var hasAlreadyCalledBack = false;
         this.runOperation(function () {
             console.log("Moving backwards");
             _this.leftMotor.reverse(_this.speed);
             _this.rightMotor.reverse(_this.speed);
-            if (callback) {
+            if (callback && !hasAlreadyCalledBack) {
+                console.log("Reverse callback()...");
+                hasAlreadyCalledBack = true;
                 callback();
             }
         });
@@ -49,22 +50,28 @@ var Motors = (function () {
     };
     Motors.prototype.left = function (callback) {
         var _this = this;
+        var hasAlreadyCalledBack = false;
         this.runOperation(function () {
             console.log("Turning left");
             _this.leftMotor.reverse(_this.maxSpeed);
             _this.rightMotor.forward(_this.maxSpeed);
-            if (callback) {
+            if (callback && !hasAlreadyCalledBack) {
+                console.log("Left callback()...");
+                hasAlreadyCalledBack = true;
                 callback();
             }
         });
     };
     Motors.prototype.right = function (callback) {
         var _this = this;
+        var hasAlreadyCalledBack = false;
         this.runOperation(function () {
             console.log("Turning right");
             _this.leftMotor.forward(_this.maxSpeed);
             _this.rightMotor.reverse(_this.maxSpeed);
-            if (callback) {
+            if (callback && !hasAlreadyCalledBack) {
+                console.log("Right callback()...");
+                hasAlreadyCalledBack = true;
                 callback();
             }
         });

@@ -11,5 +11,44 @@ psybot.board.on("ready", function () {
         function (callback) {
             psybot.motors.forward(callback);
         },
+        function (callback) {
+            setTimeout(callback, 5000);
+        },
+        function (callback) {
+            psybot.motors.speed = 50;
+            setTimeout(callback, 3000);
+        },
+        function (callback) {
+            psybot.motors.reverse(callback);
+        },
+        function (callback) {
+            setTimeout(callback, 5000);
+        },
+        function (callback) {
+            psybot.motors.speed = 200;
+            psybot.motors.reverse(callback);
+        },
+        function (callback) {
+            setTimeout(callback, 5000);
+        },
+        function (callback) {
+            psybot.motors.right(callback);
+        },
+        function (callback) {
+            setTimeout(callback, 5000);
+        },
+        function (callback) {
+            psybot.motors.speed = 255;
+            setTimeout(callback, 1000);
+        },
+        function (callback) {
+            psybot.motors.left(callback);
+        },
+        function (callback) {
+            setTimeout(callback, 5000);
+        },
+        function (callback) {
+            psybot.motors.brake(callback);
+        }
     ]);
 });

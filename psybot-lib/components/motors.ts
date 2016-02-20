@@ -18,14 +18,14 @@ export class Motors {
       this.speed = this.maxSpeed;
     }
 
-    forward(speed? : number, callback?: () => void) : void {
+    forward(callback?: () => void) : void {
       var hasAlreadyCalledBack : boolean = false;
-      this.speed = speed;
 
       this.runOperation(() => {
         console.log("Moving forward");
         this.leftMotor.forward(this.speed);
         this.rightMotor.forward(this.speed);
+
         if(callback && !hasAlreadyCalledBack) {
           console.log("Forward callback()...")
           hasAlreadyCalledBack = true;
@@ -34,13 +34,19 @@ export class Motors {
       });
     }
 
-    reverse(speed? : number, callback?: () => void) : void {
-      this.speed = speed;
+    reverse(callback?: () => void) : void {
+      var hasAlreadyCalledBack : boolean = false;
+
       this.runOperation(() => {
         console.log("Moving backwards");
         this.leftMotor.reverse(this.speed);
         this.rightMotor.reverse(this.speed);
-        if(callback) { callback(); }
+
+        if(callback && !hasAlreadyCalledBack) {
+          console.log("Reverse callback()...")
+          hasAlreadyCalledBack = true;
+          callback();
+        }
       });
     }
 
@@ -57,20 +63,34 @@ export class Motors {
     }
 
     left(callback?: () => void) : void {
+      var hasAlreadyCalledBack : boolean = false;
+
       this.runOperation(() => {
         console.log("Turning left");
         this.leftMotor.reverse(this.maxSpeed);
         this.rightMotor.forward(this.maxSpeed);
-        if(callback) { callback(); }
+
+        if(callback && !hasAlreadyCalledBack) {
+          console.log("Left callback()...")
+          hasAlreadyCalledBack = true;
+          callback();
+        }
       });
     }
 
     right(callback?: () => void) : void {
+      var hasAlreadyCalledBack : boolean = false;
+
       this.runOperation(() => {
         console.log("Turning right");
         this.leftMotor.forward(this.maxSpeed);
         this.rightMotor.reverse(this.maxSpeed);
-        if(callback) { callback(); }
+
+        if(callback && !hasAlreadyCalledBack) {
+          console.log("Right callback()...")
+          hasAlreadyCalledBack = true;
+          callback();
+        }
       });
     }
 

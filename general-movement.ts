@@ -15,7 +15,7 @@ psybot.board.on("ready", function() {
     function(callback) {
         psybot.motors.forward(callback);
     },
-    /*function(callback) {
+    function(callback) {
       setTimeout(callback, 5000);
     },
     function(callback) {
@@ -29,7 +29,8 @@ psybot.board.on("ready", function() {
       setTimeout(callback, 5000);
     },
     function(callback) {
-        psybot.motors.reverse(200, callback);
+        psybot.motors.speed = 200;
+        psybot.motors.reverse(callback);
     },
     function(callback) {
       setTimeout(callback, 5000);
@@ -52,6 +53,6 @@ psybot.board.on("ready", function() {
     },
     function(callback) {
       psybot.motors.brake(callback);
-    }*/
+    }
   ]);
 });
