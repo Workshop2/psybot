@@ -13,5 +13,5 @@ export class SpeedReader {
 }
 
 export class SensorOptions implements j5.SensorOption {
-  constructor(public pin: string) { }
+  constructor(public pin: string, public threshold?: number) { }
 }

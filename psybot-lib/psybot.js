@@ -39,7 +39,7 @@ var Psybot = (function () {
         get: function () {
             if (!this._someSensor) {
                 console.log("Generating sensor...");
-                var pin = new psybotSpeedReader.SensorOptions("A5");
+                var pin = new psybotSpeedReader.SensorOptions("A5", 5);
                 this._someSensor = new psybotSpeedReader.SpeedReader(pin);
             }
             return this._someSensor;

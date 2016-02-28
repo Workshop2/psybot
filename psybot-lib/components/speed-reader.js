@@ -12,8 +12,9 @@ var SpeedReader = (function () {
 }());
 exports.SpeedReader = SpeedReader;
 var SensorOptions = (function () {
-    function SensorOptions(pin) {
+    function SensorOptions(pin, threshold) {
         this.pin = pin;
+        this.threshold = threshold;
     }
     return SensorOptions;
 }());
