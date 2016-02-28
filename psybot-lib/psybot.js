@@ -2,6 +2,7 @@
 var j5 = require("johnny-five");
 var psybotMotors = require("./components/motors");
 var psybotFrontarm = require("./components/frontarm");
+var psybotSpeedReader = require("./components/speed-reader");
 var Psybot = (function () {
     function Psybot(usbConnection) {
         if (usbConnection) {
@@ -30,6 +31,18 @@ var Psybot = (function () {
                 this._frontArm = new psybotFrontarm.FrontArm(14, 15);
             }
             return this._frontArm;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Psybot.prototype, "someSensor", {
+        get: function () {
+            if (!this._someSensor) {
+                console.log("Generating sensor...");
+                var pin = new psybotSpeedReader.SensorOptions("A5");
+                this._someSensor = new psybotSpeedReader.SpeedReader(pin);
+            }
+            return this._someSensor;
         },
         enumerable: true,
         configurable: true
