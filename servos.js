@@ -12,15 +12,6 @@ psybot.board.on("ready", function () {
             },
             function (callback) {
                 psybot.frontArm.faceDown(callback);
-            },
-            function (callback) {
-                psybot.frontArm.faceLeft(callback);
-            },
-            function (callback) {
-                psybot.frontArm.faceRight(callback);
-            },
-            function (callback) {
-                psybot.frontArm.center(callback);
             }
         ], function () { return foreverCallback(); });
     }, function () { });

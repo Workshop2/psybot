@@ -16,7 +16,7 @@ psybot.board.on("ready", function() {
       },
       function(callback) {
         psybot.frontArm.faceDown(callback);
-      },
+      }/*,
       function(callback) {
         psybot.frontArm.faceLeft(callback);
       },
@@ -25,7 +25,7 @@ psybot.board.on("ready", function() {
       },
       function(callback) {
         psybot.frontArm.center(callback);
-      }
+      }*/
     ], () => foreverCallback());
   }, () => {});
 });
