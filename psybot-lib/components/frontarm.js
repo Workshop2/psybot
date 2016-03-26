@@ -42,7 +42,6 @@ var FrontArm = (function () {
     };
     FrontArm.prototype.stopTop = function (callback) {
         console.log("stopTop");
-        this.topServo.stop();
         if (callback) {
             setTimeout(callback, this.stopTimeout);
         }
