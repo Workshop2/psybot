@@ -73,19 +73,21 @@ export class FrontArm {
   }
 
   public faceUp(callback? : () => void) : void {
-    this.stopTop(() => {
+    //this.stopTop(() => {
       console.log("faceUp");
       this.topServo.min();
-      setTimeout(() => { this.stopTop(callback); }, this.movementSpeed);
-    });
+      //setTimeout(() => { this.stopTop(callback); }, this.movementSpeed);
+      setTimeout(callback, this.movementSpeed);
+    //});
   }
 
   public faceDown(callback? : () => void) : void {
-    this.stopTop(() => {
+    //this.stopTop(() => {
       console.log("faceDown");
       this.topServo.max();
-      setTimeout(() => { this.stopTop(callback); }, this.movementSpeed);
-    });
+      //setTimeout(() => { this.stopTop(callback); }, this.movementSpeed);
+      setTimeout(callback, this.movementSpeed);
+    //});
   }
 
   public faceRight(callback? : () => void) : void {

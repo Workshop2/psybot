@@ -12,10 +12,10 @@ psybot.board.on("ready", function() {
   async.forever((foreverCallback : () => void) => {
     async.waterfall([
       function(callback) {
-        psybot.frontArm.faceUp(callback);
+        psybot.frontArm.faceUp(() => {setTimeout(callback, 3000);});
       },
       function(callback) {
-        psybot.frontArm.faceDown(callback);
+        psybot.frontArm.faceDown(() => {setTimeout(callback, 3000);});
       }/*,
       function(callback) {
         psybot.frontArm.faceLeft(callback);
