@@ -12,6 +12,7 @@ export class Psybot {
         this.board = new j5.Board();
       }
       else {
+        console.log("Connecting to serial port: " + settings.serialPort);
         var boardOptions = new BoardOptions(settings.serialPort); // connect over serial
         this.board = new j5.Board(boardOptions);
       }
