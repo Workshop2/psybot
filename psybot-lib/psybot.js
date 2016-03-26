@@ -4,12 +4,12 @@ var psybotMotors = require("./components/motors");
 var psybotFrontarm = require("./components/frontarm");
 var psybotSpeedReader = require("./components/speed-reader");
 var Psybot = (function () {
-    function Psybot(usbConnection) {
-        if (usbConnection) {
+    function Psybot(settings) {
+        if (settings.usbConnection) {
             this.board = new j5.Board();
         }
         else {
-            var boardOptions = new BoardOptions("/dev/ttyAMA0");
+            var boardOptions = new BoardOptions(settings.serialPort);
             this.board = new j5.Board(boardOptions);
         }
     }

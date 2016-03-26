@@ -7,12 +7,12 @@ import psybotSpeedReader = require("./components/speed-reader");
 export class Psybot {
   board : j5.Board;
 
-  constructor(usbConnection : boolean) {
-      if(usbConnection) {
+  constructor(settings : any) {
+      if(settings.usbConnection) {
         this.board = new j5.Board();
       }
       else {
-        var boardOptions = new BoardOptions("/dev/ttyAMA0"); // connect over serial
+        var boardOptions = new BoardOptions(settings.serialPort); // connect over serial
         this.board = new j5.Board(boardOptions);
       }
   }
