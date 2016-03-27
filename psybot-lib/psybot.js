@@ -9,7 +9,6 @@ var Psybot = (function () {
             this.board = new j5.Board();
         }
         else {
-            console.log("Connecting to serial port: " + settings.serialPort);
             var boardOptions = new BoardOptions(settings.serialPort);
             this.board = new j5.Board(boardOptions);
         }
