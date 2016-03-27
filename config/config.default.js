@@ -1,6 +1,6 @@
 module.exports = {
 	settings: {
 			usbConnection: false,
-			serialPort: "/dev/ttyS0"
+			serialPort: "/dev/ttyAMA0"
   }
 }
