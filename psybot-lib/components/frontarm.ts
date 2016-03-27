@@ -56,7 +56,7 @@ export class FrontArm {
 
   public stopTop(callback? : () => void) : void {
     console.log("stopTop");
-    //this.topServo.stop();
+    this.topServo.stop();
 
     if(callback) {
       setTimeout(callback, this.stopTimeout);
