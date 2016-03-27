@@ -8,10 +8,10 @@ psybot.board.on("ready", function () {
     async.forever(function (foreverCallback) {
         async.waterfall([
             function (callback) {
-                psybot.frontArm.faceUp(function () { setTimeout(callback, 3000); });
+                psybot.frontArm.faceUp(callback);
             },
             function (callback) {
-                psybot.frontArm.faceDown(function () { setTimeout(callback, 3000); });
+                psybot.frontArm.faceDown(callback);
             }
         ], function () { return foreverCallback(); });
     }, function () { });

@@ -54,14 +54,20 @@ var FrontArm = (function () {
         setTimeout(function () { _this.stop(); callback(); }, this.movementSpeed);
     };
     FrontArm.prototype.faceUp = function (callback) {
-        console.log("faceUp");
-        this.topServo.min();
-        setTimeout(callback, this.movementSpeed);
+        var _this = this;
+        this.stopTop(function () {
+            console.log("faceUp");
+            _this.topServo.min();
+            setTimeout(function () { _this.stopTop(callback); }, _this.movementSpeed);
+        });
     };
     FrontArm.prototype.faceDown = function (callback) {
-        console.log("faceDown");
-        this.topServo.max();
-        setTimeout(callback, this.movementSpeed);
+        var _this = this;
+        this.stopTop(function () {
+            console.log("faceDown");
+            _this.topServo.max();
+            setTimeout(function () { _this.stopTop(callback); }, _this.movementSpeed);
+        });
     };
     FrontArm.prototype.faceRight = function (callback) {
         var _this = this;
