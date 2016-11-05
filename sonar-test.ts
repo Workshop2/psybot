@@ -10,21 +10,13 @@ psybot.board.on("ready", function() {
   this.repl.inject({psybot: psybot});
   //var dummy = psybot.someSensor;
 
-  this.pinMode(12, j5.Pin.INPUT);
-  this.digitalRead(12, function(value) {
-    console.log("SC: " + value);
+  var proximity = new j5.Proximity({
+    controller: "HCSR04",
+    pin: 12
   });
 
-  async.waterfall([
-    function(callback) {
-      setTimeout(callback, 2000);
-    },
-      function(callback) {
-        psybot.motors.forward();
-        setTimeout(callback, 2000);
-      },
-    function(callback) {
-      psybot.motors.brake(callback);
-    }
-  ]);
+  proximity.on("data", function() {
+    console.log("inches: ", this.inches);
+    console.log("cm: ", this.cm);
+  });
 });

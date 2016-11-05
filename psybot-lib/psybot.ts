@@ -43,7 +43,7 @@ export class Psybot {
   get someSensor() : psybotSpeedReader.SpeedReader {
     if(!this._someSensor) {
       console.log("Generating sensor...")
-      var pin = new psybotSpeedReader.SensorOptions("A5", 5);
+      var pin = new psybotSpeedReader.SensorOptions(12, "digital", 1);
       this._someSensor = new psybotSpeedReader.SpeedReader(pin);
     }
 

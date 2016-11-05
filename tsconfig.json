@@ -31,6 +31,7 @@
         "sensor-test.ts",
         "servos.ts",
         "slowing-down.ts",
+        "sonar-test.ts",
         "tests/psybot-lib/components/motorsTests.ts",
         "typings/browser.d.ts",
         "typings/browser/ambient/assert/assert.d.ts",
