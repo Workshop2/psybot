@@ -9,7 +9,7 @@ var Psybot = (function () {
             this.board = new j5.Board();
         }
         else {
-            var boardOptions = new BoardOptions("/dev/serial0");
+            var boardOptions = new BoardOptions("/dev/ttyAMA0");
             this.board = new j5.Board(boardOptions);
         }
     }
