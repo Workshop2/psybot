@@ -22,6 +22,7 @@
     "compileOnSave": true,
     "buildOnSave": false,
     "files": [
+        "typings/index.d.ts",
         "general-movement.ts",
         "psybot-lib/components/frontarm.ts",
         "psybot-lib/components/motors.ts",
@@ -32,7 +33,7 @@
         "servos.ts",
         "slowing-down.ts",
         "tests/psybot-lib/components/motorsTests.ts",
-        "typings/index.d.ts"
+        "test-board.ts"
     ],
     "atom": {
         "rewriteTsconfig": true
