@@ -11,8 +11,8 @@ export class Psybot {
       if(usbConnection) {
         this.board = new j5.Board();
       }
-      else {
-        var boardOptions = new BoardOptions("/dev/ttyAMA0"); // connect over serial
+      else { 
+        var boardOptions = new BoardOptions("/dev/serial0"); // connect over serial
         this.board = new j5.Board(boardOptions);
       }
   }
