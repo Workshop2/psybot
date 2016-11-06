@@ -12,6 +12,10 @@ with open('/boot/config.txt', 'r') as file:
   filedata = file.read()
   
 filedata += "\ndtoverlay=pi3-disable-bt"
+filedata += "\nhdmi_force_hotplug=1"
+filedata += "\nhdmi_ignore_edid=0xa5000080" 	 
+filedata += "\nhdmi_group=2"
+filedata += "\nhdmi_mode=35"
 print(filedata)
 
 # Write the file out again
