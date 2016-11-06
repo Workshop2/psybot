@@ -1,4 +1,4 @@
-/// <reference path="../typings/main.d.ts"/>
+/// <reference path="../typings/index.d.ts"/>
 import j5 = require("johnny-five");
 import psybotMotors = require("./components/motors");
 import psybotFrontarm = require("./components/frontarm");
@@ -11,7 +11,7 @@ export class Psybot {
       if(usbConnection) {
         this.board = new j5.Board();
       }
-      else {
+      else { 
         var boardOptions = new BoardOptions("/dev/ttyAMA0"); // connect over serial
         this.board = new j5.Board(boardOptions);
       }
