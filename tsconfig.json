@@ -32,20 +32,7 @@
         "servos.ts",
         "slowing-down.ts",
         "tests/psybot-lib/components/motorsTests.ts",
-        "typings/browser.d.ts",
-        "typings/browser/ambient/assert/assert.d.ts",
-        "typings/browser/ambient/async/async.d.ts",
-        "typings/browser/ambient/chai/chai.d.ts",
-        "typings/browser/ambient/johnny-five/johnny-five.d.ts",
-        "typings/browser/ambient/mocha-node/mocha-node.d.ts",
-        "typings/browser/ambient/node/node.d.ts",
-        "typings/main.d.ts",
-        "typings/main/ambient/assert/assert.d.ts",
-        "typings/main/ambient/async/async.d.ts",
-        "typings/main/ambient/chai/chai.d.ts",
-        "typings/main/ambient/johnny-five/johnny-five.d.ts",
-        "typings/main/ambient/mocha-node/mocha-node.d.ts",
-        "typings/main/ambient/node/node.d.ts"
+        "typings/index.d.ts"
     ],
     "atom": {
         "rewriteTsconfig": true
