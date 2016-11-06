@@ -1,5 +1,5 @@
 from subprocess import STDOUT, check_call
-import os, sys
+import os, sys, re
 
 if not 'SUDO_UID' in os.environ.keys():
   print "this program requires super user priv."
