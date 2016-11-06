@@ -22,5 +22,19 @@ print(filedata)
 with open('/boot/config.txt', 'w') as file:
   file.write(filedata)
 
+# Remove Serial code stuff from boot
+filedata = None
+with open('/boot/cmdline.txt', 'r') as file:
+  filedata = file.read()
+
+regex = r"console=.*? "
+filedata = re.sub(regex, '', filedata)
+
+with open('/boot/cmdline.txt', 'w') as file:
+  file.write(filedata)
+
 # DISABLE MOAR BLUETOOTH
 check_call(['sudo', 'systemctl', 'disable', 'hciuart'], stderr=STDOUT) 
+
+# Install typscript
+check_call(['sudo', 'npm', 'install', 'typescript', '-g'], stderr=STDOUT) 
