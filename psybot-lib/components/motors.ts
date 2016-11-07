@@ -130,6 +130,6 @@ export class MotorPins {
   constructor (public pwm : number, public dir : number, public cdir : number) { }
 }
 
-class MotorOptions implements j5.MotorOption {
+export class MotorOptions implements j5.MotorOption {
   constructor (public pins : MotorPins) {}
 }
