@@ -1,22 +1,17 @@
 /// <reference path="./typings/index.d.ts"/>
 import j5 = require("johnny-five");
-import async = require("async");
-import psybotLib = require("./psybot-lib/psybot");
-var config = require('./config/config');
 
-var psybot = new psybotLib.Psybot(config.settings.usbConnection);
+var board = new j5.Board({port: "/dev/ttyAMA0"});
 
-psybot.board.on("ready", function() {
-  this.repl.inject({psybot: psybot});
-  var dummy = psybot.someSensor;
+board.on("ready", function() {  
+    var proximity = new j5.Proximity({
+      controller: "GP2Y0A21YK",
+      pin: "A0"
+    });
 
-  async.waterfall([
-    function(callback) {
-      psybot.motors.forward();
-      setTimeout(callback, 5000);
-    },
-    function(callback) {
-      psybot.motors.brake(callback);
-    }
-  ]);
+    proximity.on("data", function() {
+      console.log("inches: ", this.inches);
+      console.log("cm: ", this.cm);
+    });
+    
 });
