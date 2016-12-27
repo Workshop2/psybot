@@ -20,11 +20,7 @@ export class Psybot {
   private _motors : psybotMotors.Motors;
   get motors() : psybotMotors.Motors {
     if(!this._motors) {
-      // can't use pins 9 & 10 when using servos for PMW
-      // https://github.com/rwaldron/johnny-five/issues/309
-      var leftPins = j5.Motor.SHIELD_CONFIGS.ADAFRUIT_V2.M1;
-      var rightPins = j5.Motor.SHIELD_CONFIGS.ADAFRUIT_V2.M2;
-      this._motors = new psybotMotors.Motors(leftPins, rightPins);
+      this._motors = new psybotMotors.Motors();
     }
 
     return this._motors;

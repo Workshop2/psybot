@@ -2,6 +2,9 @@
 import j5 = require("johnny-five");
 
 export class Motors {
+    public static leftMotorPin : any = j5.Motor.SHIELD_CONFIGS.ADAFRUIT_V2.M1;
+    public static rightMotorPin : any = j5.Motor.SHIELD_CONFIGS.ADAFRUIT_V2.M2;
+    
     private leftMotor : j5.Motor;
     private rightMotor : j5.Motor;
     private lastOperation : () => void;
@@ -9,10 +12,10 @@ export class Motors {
     private maxSpeed : number = 255;
     private operationCooldown : number = 50;
 
-    constructor (leftPins: any, rightPins: any) {
+    constructor () {
       console.log("Initialising motors...");
-      this.leftMotor = new j5.Motor(leftPins);
-      this.rightMotor = new j5.Motor(rightPins);
+      this.leftMotor = new j5.Motor(Motors.leftMotorPin);
+      this.rightMotor = new j5.Motor(Motors.rightMotorPin);
       console.log("Done!");
 
       this.speed = this.maxSpeed;
@@ -124,12 +127,4 @@ export class Motors {
         this.lastOperation = operation;
       });
     }
-}
-
-export class MotorPins {
-  constructor (public pwm : number, public dir : number, public cdir : number) { }
-}
-
-export class MotorOptions implements j5.MotorOption {
-  constructor (public pins : MotorPins) {}
 }
