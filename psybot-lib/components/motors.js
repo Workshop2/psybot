@@ -1,13 +1,13 @@
 "use strict";
 var j5 = require("johnny-five");
 var Motors = (function () {
-    function Motors(leftPins, rightPins) {
+    function Motors() {
         this.minSpeed = 140;
         this.maxSpeed = 255;
         this.operationCooldown = 50;
         console.log("Initialising motors...");
-        this.leftMotor = new j5.Motor(leftPins);
-        this.rightMotor = new j5.Motor(rightPins);
+        this.leftMotor = new j5.Motor(Motors.leftMotorPin);
+        this.rightMotor = new j5.Motor(Motors.rightMotorPin);
         console.log("Done!");
         this.speed = this.maxSpeed;
     }
@@ -107,22 +107,8 @@ var Motors = (function () {
             _this.lastOperation = operation;
         });
     };
+    Motors.leftMotorPin = j5.Motor.SHIELD_CONFIGS.ADAFRUIT_V2.M1;
+    Motors.rightMotorPin = j5.Motor.SHIELD_CONFIGS.ADAFRUIT_V2.M2;
     return Motors;
 }());
 exports.Motors = Motors;
-var MotorPins = (function () {
-    function MotorPins(pwm, dir, cdir) {
-        this.pwm = pwm;
-        this.dir = dir;
-        this.cdir = cdir;
-    }
-    return MotorPins;
-}());
-exports.MotorPins = MotorPins;
-var MotorOptions = (function () {
-    function MotorOptions(pins) {
-        this.pins = pins;
-    }
-    return MotorOptions;
-}());
-exports.MotorOptions = MotorOptions;

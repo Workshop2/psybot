@@ -20,21 +20,10 @@
         "!node_modules/**"
     ],
     "compileOnSave": true,
-    "buildOnSave": false,
-    "files": [
-        "typings/index.d.ts",
-        "general-movement.ts",
-        "psybot-lib/components/frontarm.ts",
-        "psybot-lib/components/motors.ts",
-        "psybot-lib/components/sonar.ts",
-        "psybot-lib/components/speed-reader.ts",
-        "psybot-lib/psybot.ts",
-        "sensor-test.ts",
-        "servos.ts",
-        "slowing-down.ts",
-        "tests/psybot-lib/components/motorsTests.ts",
-        "test-board.ts",
-        "adafruit-test.ts"
+    "buildOnSave": true,
+    "exclude": [
+        "node_modules",
+        "**/*.spec.ts"
     ],
     "atom": {
         "rewriteTsconfig": true

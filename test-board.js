@@ -14,10 +14,8 @@ board.on("ready", function () {
         range: [20, 150],
         center: true
     });
-    var leftPins = new psybotMotors.MotorPins(6, 2, 3);
-    var leftMotor = new j5.Motor(new psybotMotors.MotorOptions(leftPins));
-    var rightPins = new psybotMotors.MotorPins(11, 4, 5);
-    var rightMotor = new j5.Motor(new psybotMotors.MotorOptions(rightPins));
+    var leftMotor = new j5.Motor(psybotMotors.Motors.leftMotorPin);
+    var rightMotor = new j5.Motor(psybotMotors.Motors.rightMotorPin);
     async.forever(function (foreverCallback) {
         async.waterfall([
             function (callback) {
