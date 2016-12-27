@@ -3,5 +3,8 @@
     "async": "registry:dt/async#2.0.1+20160804113311",
     "johnny-five": "registry:dt/johnny-five#0.0.0+20160316155526",
     "node": "registry:dt/node#6.0.0+20161019125345"
+  },
+  "dependencies": {
+    "johnny-five": "registry:dt/johnny-five#0.0.0+20161226025359"
   }
 }
