@@ -125,3 +125,4 @@ var MotorOptions = (function () {
     }
     return MotorOptions;
 }());
+exports.MotorOptions = MotorOptions;

@@ -1,6 +1,5 @@
 "use strict";
 var j5 = require("johnny-five");
-var psybotSonar = require("./sonar");
 var FrontArm = (function () {
     function FrontArm(bottomServoPin, topServoPin) {
         this.movementSpeed = 800;
@@ -15,8 +14,6 @@ var FrontArm = (function () {
             range: [20, 150],
             center: true
         });
-        var sonarOptions = new psybotSonar.SonarOptions(1, "device");
-        this.sonar = new psybotSonar.Sonar(sonarOptions);
     }
     FrontArm.prototype.sweepUpDown = function (sweepOptions) {
         this.stopTop();
