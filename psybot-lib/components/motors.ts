@@ -9,10 +9,10 @@ export class Motors {
     private maxSpeed : number = 255;
     private operationCooldown : number = 50;
 
-    constructor (leftPins: MotorPins, rightPins: MotorPins) {
+    constructor (leftPins: any, rightPins: any) {
       console.log("Initialising motors...");
-      this.leftMotor = new j5.Motor(new MotorOptions(leftPins));
-      this.rightMotor = new j5.Motor(new MotorOptions(rightPins));
+      this.leftMotor = new j5.Motor(leftPins);
+      this.rightMotor = new j5.Motor(rightPins);
       console.log("Done!");
 
       this.speed = this.maxSpeed;
