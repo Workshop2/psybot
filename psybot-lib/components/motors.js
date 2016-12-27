@@ -6,8 +6,8 @@ var Motors = (function () {
         this.maxSpeed = 255;
         this.operationCooldown = 50;
         console.log("Initialising motors...");
-        this.leftMotor = new j5.Motor(new MotorOptions(leftPins));
-        this.rightMotor = new j5.Motor(new MotorOptions(rightPins));
+        this.leftMotor = new j5.Motor(leftPins);
+        this.rightMotor = new j5.Motor(rightPins);
         console.log("Done!");
         this.speed = this.maxSpeed;
     }

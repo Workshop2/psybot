@@ -33,7 +33,8 @@
         "servos.ts",
         "slowing-down.ts",
         "tests/psybot-lib/components/motorsTests.ts",
-        "test-board.ts"
+        "test-board.ts",
+        "adafruit-test.ts"
     ],
     "atom": {
         "rewriteTsconfig": true
