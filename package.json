@@ -9,8 +9,7 @@
   "author": "S Colmer",
   "license": "ISC",
   "dependencies": {
-    "async": "^1.5.2",
-    "chai": "^3.5.0",
-    "johnny-five": "^0.9.19"
+    "async": "^2.1.4",
+    "johnny-five": "^0.10.6"
   }
 }
