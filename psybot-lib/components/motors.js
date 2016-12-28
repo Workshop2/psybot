@@ -2,7 +2,7 @@
 var j5 = require("johnny-five");
 var Motors = (function () {
     function Motors() {
-        this.minSpeed = 140;
+        this.minSpeed = 50;
         this.maxSpeed = 255;
         this.operationCooldown = 50;
         console.log("Initialising motors...");
@@ -16,8 +16,8 @@ var Motors = (function () {
         var hasAlreadyCalledBack = false;
         this.runOperation(function () {
             console.log("Moving forward");
-            _this.leftMotor.forward(_this.speed);
-            _this.rightMotor.forward(_this.speed);
+            _this.leftMotor.forward(_this.leftSpeed);
+            _this.rightMotor.forward(_this.rightSpeed);
             if (callback && !hasAlreadyCalledBack) {
                 console.log("Forward callback()...");
                 hasAlreadyCalledBack = true;
@@ -30,8 +30,8 @@ var Motors = (function () {
         var hasAlreadyCalledBack = false;
         this.runOperation(function () {
             console.log("Moving backwards");
-            _this.leftMotor.reverse(_this.speed);
-            _this.rightMotor.reverse(_this.speed);
+            _this.leftMotor.reverse(_this.leftSpeed);
+            _this.rightMotor.reverse(_this.rightSpeed);
             if (callback && !hasAlreadyCalledBack) {
                 console.log("Reverse callback()...");
                 hasAlreadyCalledBack = true;
@@ -96,6 +96,20 @@ var Motors = (function () {
                     }
                 }
             }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Motors.prototype, "leftSpeed", {
+        get: function () {
+            return this.speed;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Motors.prototype, "rightSpeed", {
+        get: function () {
+            return this.speed * 0.985;
         },
         enumerable: true,
         configurable: true

@@ -8,7 +8,7 @@ export class Motors {
     private leftMotor : j5.Motor;
     private rightMotor : j5.Motor;
     private lastOperation : () => void;
-    private minSpeed : number = 140;
+    private minSpeed : number = 50;
     private maxSpeed : number = 255;
     private operationCooldown : number = 50;
 
@@ -26,8 +26,8 @@ export class Motors {
 
       this.runOperation(() => {
         console.log("Moving forward");
-        this.leftMotor.forward(this.speed);
-        this.rightMotor.forward(this.speed);
+        this.leftMotor.forward(this.leftSpeed);
+        this.rightMotor.forward(this.rightSpeed);
 
         if(callback && !hasAlreadyCalledBack) {
           console.log("Forward callback()...")
@@ -42,8 +42,8 @@ export class Motors {
 
       this.runOperation(() => {
         console.log("Moving backwards");
-        this.leftMotor.reverse(this.speed);
-        this.rightMotor.reverse(this.speed);
+        this.leftMotor.reverse(this.leftSpeed);
+        this.rightMotor.reverse(this.rightSpeed);
 
         if(callback && !hasAlreadyCalledBack) {
           console.log("Reverse callback()...")
@@ -119,6 +119,14 @@ export class Motors {
           }
         }
       }
+    }
+
+    get leftSpeed(): number {
+      return this.speed;
+    }
+
+    get rightSpeed(): number {
+      return this.speed * 0.985;
     }
 
     private runOperation(operation : () => void) {
