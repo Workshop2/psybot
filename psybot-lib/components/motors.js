@@ -16,7 +16,7 @@ var Motors = (function () {
         var hasAlreadyCalledBack = false;
         this.runOperation(function () {
             console.log("Moving forward");
-            _this.leftMotor.reverse(_this.leftSpeed);
+            _this.leftMotor.forward(_this.leftSpeed);
             _this.rightMotor.forward(_this.rightSpeed);
             if (callback && !hasAlreadyCalledBack) {
                 console.log("Forward callback()...");
@@ -30,7 +30,7 @@ var Motors = (function () {
         var hasAlreadyCalledBack = false;
         this.runOperation(function () {
             console.log("Moving backwards");
-            _this.leftMotor.forward(_this.leftSpeed);
+            _this.leftMotor.reverse(_this.leftSpeed);
             _this.rightMotor.reverse(_this.rightSpeed);
             if (callback && !hasAlreadyCalledBack) {
                 console.log("Reverse callback()...");
@@ -53,7 +53,7 @@ var Motors = (function () {
         var hasAlreadyCalledBack = false;
         this.runOperation(function () {
             console.log("Turning left");
-            _this.leftMotor.forward(_this.maxSpeed);
+            _this.leftMotor.reverse(_this.maxSpeed);
             _this.rightMotor.forward(_this.maxSpeed);
             if (callback && !hasAlreadyCalledBack) {
                 console.log("Left callback()...");
@@ -67,7 +67,7 @@ var Motors = (function () {
         var hasAlreadyCalledBack = false;
         this.runOperation(function () {
             console.log("Turning right");
-            _this.leftMotor.reverse(_this.maxSpeed);
+            _this.leftMotor.forward(_this.maxSpeed);
             _this.rightMotor.reverse(_this.maxSpeed);
             if (callback && !hasAlreadyCalledBack) {
                 console.log("Right callback()...");
