@@ -109,7 +109,7 @@ var Motors = (function () {
     });
     Object.defineProperty(Motors.prototype, "rightSpeed", {
         get: function () {
-            return this.speed * 0.98;
+            return this.speed * 0.985;
         },
         enumerable: true,
         configurable: true
