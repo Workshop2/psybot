@@ -126,7 +126,7 @@ export class Motors {
     }
 
     get rightSpeed(): number {
-      return this.speed * 0.96;
+      return this.speed * 0.98;
     }
 
     private runOperation(operation : () => void) {
