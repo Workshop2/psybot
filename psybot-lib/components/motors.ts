@@ -27,7 +27,7 @@ export class Motors {
       this.runOperation(() => {
         console.log("Moving forward");
         this.leftMotor.forward(this.leftSpeed);
-        this.rightMotor.forward(this.speed);
+        this.rightMotor.forward(this.rightSpeed);
 
         if(callback && !hasAlreadyCalledBack) {
           console.log("Forward callback()...")
@@ -43,7 +43,7 @@ export class Motors {
       this.runOperation(() => {
         console.log("Moving backwards");
         this.leftMotor.reverse(this.leftSpeed);
-        this.rightMotor.reverse(this.speed);
+        this.rightMotor.reverse(this.rightSpeed);
 
         if(callback && !hasAlreadyCalledBack) {
           console.log("Reverse callback()...")
@@ -122,6 +122,10 @@ export class Motors {
     }
 
     get leftSpeed(): number {
+      return this.speed;
+    }
+
+    get rightSpeed(): number {
       return this.speed * 0.9;
     }
 
