@@ -4,7 +4,7 @@ var johnny_five_1 = require("johnny-five");
 var config = require('./config/config');
 var port = config.settings.usbConnection
     ? null
-    : { port: "/dev/ttyAMA0" };
+    : { port: "/dev/ttyS0" };
 if (port === null) {
     console.log("Connecting via USB");
 }
