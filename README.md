@@ -28,3 +28,7 @@ sudo nano /boot/config.txt
 sudo python setup.py
 npm install
 ```
+
+### Windows
+You will probably need to run this to ensure python 2.7 and VS Build tools are installed and working
+`npm install --global --production windows-build-tools`
