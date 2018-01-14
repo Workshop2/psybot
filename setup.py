@@ -35,6 +35,3 @@ with open('/boot/cmdline.txt', 'w') as file:
 
 # DISABLE MOAR BLUETOOTH
 check_call(['sudo', 'systemctl', 'disable', 'hciuart'], stderr=STDOUT) 
-
-# Install typscript
-check_call(['sudo', 'npm', 'install', 'typescript', '-g'], stderr=STDOUT) 
