@@ -1,13 +1,12 @@
-import j5 = require("johnny-five");
 import { Shields } from "../../j5-types/shields";
-import { MotorOption } from "johnny-five";
+import { MotorOption, Motor } from "johnny-five";
 
 export class Motors {
     public static leftMotorPin : MotorOption = Shields.M1;
     public static rightMotorPin : MotorOption = Shields.M2;
     
-    private leftMotor : j5.Motor;
-    private rightMotor : j5.Motor;
+    private leftMotor : Motor;
+    private rightMotor : Motor;
     private lastOperation : () => void;
     private minSpeed : number = 50;
     private maxSpeed : number = 255;
@@ -15,8 +14,8 @@ export class Motors {
 
     constructor () {
       console.log("Initialising motors...");
-      this.leftMotor = new j5.Motor(Motors.leftMotorPin);
-      this.rightMotor = new j5.Motor(Motors.rightMotorPin);
+      this.leftMotor = new Motor(Motors.leftMotorPin);
+      this.rightMotor = new Motor(Motors.rightMotorPin);
       console.log("Done!");
 
       this.speed = this.maxSpeed;

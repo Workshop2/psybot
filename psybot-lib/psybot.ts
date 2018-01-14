@@ -1,18 +1,18 @@
-import j5 = require("johnny-five");
 import psybotMotors = require("./components/motors");
 import psybotFrontarm = require("./components/frontarm");
 import psybotSpeedReader = require("./components/speed-reader");
+import { Board } from "johnny-five";
 
 export class Psybot {
-  board : j5.Board;
+  board : Board;
 
   constructor(usbConnection : boolean) {
       if(usbConnection) {
-        this.board = new j5.Board();
+        this.board = new Board();
       }
       else { 
-        var boardOptions = new BoardOptions("/dev/ttyAMA0"); // connect over serial
-        this.board = new j5.Board(boardOptions);
+        // connect over serial
+        this.board = new Board({ port: "/dev/ttyAMA0" });
       }
   }
 
@@ -44,8 +44,4 @@ export class Psybot {
 
     return this._someSensor;
   }
-}
-
-class BoardOptions implements j5.BoardOption {
-  constructor (public port : string) { }
 }

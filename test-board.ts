@@ -1,8 +1,18 @@
-import async = require("async");
-import j5 = require("johnny-five");
-import psybotMotors = require("./psybot-lib/components/motors");
+import { Board } from "johnny-five";
 
-var board = new j5.Board({port: "/dev/ttyAMA0"});
+var config = require('./config/config');
+let port = (config.settings.usbConnection as boolean)
+            ? null
+            : {port: "/dev/ttyAMA0"};
+
+if(port === null) {
+  console.log("Connecting via USB")
+}
+else {
+  console.log("Connecting to serial: " + port.port)
+}
+
+var board = new Board(port);
 
 board.on("ready", function() {
   this.repl.inject({board: board});
