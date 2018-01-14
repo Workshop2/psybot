@@ -1,15 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var j5 = require("johnny-five");
 var shields_1 = require("../../j5-types/shields");
+var johnny_five_1 = require("johnny-five");
 var Motors = /** @class */ (function () {
     function Motors() {
         this.minSpeed = 50;
         this.maxSpeed = 255;
         this.operationCooldown = 50;
         console.log("Initialising motors...");
-        this.leftMotor = new j5.Motor(Motors.leftMotorPin);
-        this.rightMotor = new j5.Motor(Motors.rightMotorPin);
+        this.leftMotor = new johnny_five_1.Motor(Motors.leftMotorPin);
+        this.rightMotor = new johnny_five_1.Motor(Motors.rightMotorPin);
         console.log("Done!");
         this.speed = this.maxSpeed;
     }

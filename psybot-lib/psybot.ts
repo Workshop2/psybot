@@ -12,7 +12,7 @@ export class Psybot {
       }
       else { 
         // connect over serial
-        this.board = new Board({ port: "/dev/ttyAMA0" });
+        this.board = new Board({ port: "/dev/serial0" });
       }
   }
 

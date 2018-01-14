@@ -5,7 +5,7 @@ An Arduino/RPi robot built on NodeJs &amp; Typescript with Johnny5
 ```bash
 sudo raspi-config
 # expand SD card (under advance)
-# disable serial (under interfaces)
+# disable serial console, enable serial port (under interfaces)
 # increase resolution (under advance)
 # reboot
 
