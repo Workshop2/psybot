@@ -22,6 +22,9 @@ source ~/.bashrc
 nvm install 8 
 nvm use 8 
 
+sudo nano /boot/config.txt
+# set: enable_uart=1
+
 sudo python setup.py
 npm install
 ```
