@@ -1,6 +1,7 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var j5 = require("johnny-five");
-var SpeedReader = (function () {
+var SpeedReader = /** @class */ (function () {
     function SpeedReader(sensorOptions) {
         this.sensorOptions = sensorOptions;
         this.sensor = new j5.Sensor(sensorOptions);
@@ -11,7 +12,7 @@ var SpeedReader = (function () {
     return SpeedReader;
 }());
 exports.SpeedReader = SpeedReader;
-var SensorOptions = (function () {
+var SensorOptions = /** @class */ (function () {
     function SensorOptions(pin, threshold) {
         this.pin = pin;
         this.threshold = threshold;
@@ -19,3 +20,4 @@ var SensorOptions = (function () {
     return SensorOptions;
 }());
 exports.SensorOptions = SensorOptions;
+//# sourceMappingURL=speed-reader.js.map

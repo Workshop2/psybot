@@ -1,9 +1,10 @@
-/// <reference path="../../typings/index.d.ts"/>
 import j5 = require("johnny-five");
+import { Shields } from "../../j5-types/shields";
+import { MotorOption } from "johnny-five";
 
 export class Motors {
-    public static leftMotorPin : any = j5.Motor.SHIELD_CONFIGS.ADAFRUIT_V2.M1;
-    public static rightMotorPin : any = j5.Motor.SHIELD_CONFIGS.ADAFRUIT_V2.M2;
+    public static leftMotorPin : MotorOption = Shields.M1;
+    public static rightMotorPin : MotorOption = Shields.M2;
     
     private leftMotor : j5.Motor;
     private rightMotor : j5.Motor;

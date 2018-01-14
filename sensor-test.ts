@@ -1,4 +1,3 @@
-/// <reference path="./typings/index.d.ts"/>
 import j5 = require("johnny-five");
 
 var board = new j5.Board({port: "/dev/ttyAMA0"});

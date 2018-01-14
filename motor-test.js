@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var async = require("async");
 var psybotLib = require("./psybot-lib/psybot");
 var config = require('./config/config');
@@ -36,3 +37,4 @@ psybot.board.on("ready", function () {
         }
     ]);
 });
+//# sourceMappingURL=motor-test.js.map

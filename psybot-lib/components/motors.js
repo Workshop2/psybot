@@ -1,6 +1,8 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var j5 = require("johnny-five");
-var Motors = (function () {
+var shields_1 = require("../../j5-types/shields");
+var Motors = /** @class */ (function () {
     function Motors() {
         this.minSpeed = 50;
         this.maxSpeed = 255;
@@ -121,8 +123,9 @@ var Motors = (function () {
             _this.lastOperation = operation;
         });
     };
-    Motors.leftMotorPin = j5.Motor.SHIELD_CONFIGS.ADAFRUIT_V2.M1;
-    Motors.rightMotorPin = j5.Motor.SHIELD_CONFIGS.ADAFRUIT_V2.M2;
+    Motors.leftMotorPin = shields_1.Shields.M1;
+    Motors.rightMotorPin = shields_1.Shields.M2;
     return Motors;
 }());
 exports.Motors = Motors;
+//# sourceMappingURL=motors.js.map

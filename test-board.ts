@@ -1,4 +1,3 @@
-/// <reference path="./typings/index.d.ts"/>
 import async = require("async");
 import j5 = require("johnny-five");
 import psybotMotors = require("./psybot-lib/components/motors");

@@ -1,4 +1,3 @@
-/// <reference path="../../typings/index.d.ts"/>
 import j5 = require("johnny-five");
 
 export class SpeedReader {

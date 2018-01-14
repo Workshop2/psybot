@@ -1,4 +1,3 @@
-/// <reference path="../typings/index.d.ts"/>
 import j5 = require("johnny-five");
 import psybotMotors = require("./components/motors");
 import psybotFrontarm = require("./components/frontarm");
@@ -47,6 +46,6 @@ export class Psybot {
   }
 }
 
-class BoardOptions implements j5.BoardOptions {
+class BoardOptions implements j5.BoardOption {
   constructor (public port : string) { }
 }

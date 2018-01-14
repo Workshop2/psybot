@@ -1,6 +1,7 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var j5 = require("johnny-five");
-var FrontArm = (function () {
+var FrontArm = /** @class */ (function () {
     function FrontArm(bottomServoPin, topServoPin) {
         this.movementSpeed = 800;
         this.stopTimeout = 100;
@@ -44,6 +45,7 @@ var FrontArm = (function () {
             setTimeout(callback, this.stopTimeout);
         }
     };
+    // based on trust that the callbacks work...
     FrontArm.prototype.center = function (callback) {
         var _this = this;
         this.stop();
@@ -86,10 +88,11 @@ var FrontArm = (function () {
     return FrontArm;
 }());
 exports.FrontArm = FrontArm;
-var ServoSweepOptions = (function () {
+var ServoSweepOptions = /** @class */ (function () {
     function ServoSweepOptions(range, interval) {
         this.range = range;
     }
     return ServoSweepOptions;
 }());
 exports.ServoSweepOptions = ServoSweepOptions;
+//# sourceMappingURL=frontarm.js.map

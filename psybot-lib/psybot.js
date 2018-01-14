@@ -1,15 +1,16 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var j5 = require("johnny-five");
 var psybotMotors = require("./components/motors");
 var psybotFrontarm = require("./components/frontarm");
 var psybotSpeedReader = require("./components/speed-reader");
-var Psybot = (function () {
+var Psybot = /** @class */ (function () {
     function Psybot(usbConnection) {
         if (usbConnection) {
             this.board = new j5.Board();
         }
         else {
-            var boardOptions = new BoardOptions("/dev/ttyAMA0");
+            var boardOptions = new BoardOptions("/dev/ttyAMA0"); // connect over serial
             this.board = new j5.Board(boardOptions);
         }
     }
@@ -48,9 +49,10 @@ var Psybot = (function () {
     return Psybot;
 }());
 exports.Psybot = Psybot;
-var BoardOptions = (function () {
+var BoardOptions = /** @class */ (function () {
     function BoardOptions(port) {
         this.port = port;
     }
     return BoardOptions;
 }());
+//# sourceMappingURL=psybot.js.map

@@ -9,7 +9,13 @@
   "author": "S Colmer",
   "license": "ISC",
   "dependencies": {
-    "async": "^2.1.4",
-    "johnny-five": "^0.10.6"
+    "async": "^2.6.0",
+    "johnny-five": "^0.10.13"
+  },
+  "devDependencies": {
+    "@types/async": "^2.0.47",
+    "@types/johnny-five": "0.0.32",
+    "@types/node": "^9.3.0",
+    "typescript": "^2.6.2"
   }
 }
