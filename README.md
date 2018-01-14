@@ -3,6 +3,12 @@ An Arduino/RPi robot built on NodeJs &amp; Typescript with Johnny5
 
 ## setup
 ```bash
+sudo raspi-config
+# expand SD card (under advance)
+# disable serial (under interfaces)
+# increase resolution (under advance)
+# reboot
+
 sudo apt-get remove nodered -y
 sudo apt-get remove nodejs nodejs-legacy -y
 sudo apt-get remove npm  -y
