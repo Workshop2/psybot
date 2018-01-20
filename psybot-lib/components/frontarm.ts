@@ -1,31 +1,31 @@
-import j5 = require("johnny-five");
+import { ServoSweepOpts, Servo } from "johnny-five";
 
 export class FrontArm {
-  private bottomServo : j5.Servo;
-  private topServo : j5.Servo;
+  private bottomServo : Servo;
+  private topServo : Servo;
   private movementSpeed : number = 800;
   private stopTimeout: number = 100;
 
   constructor(bottomServoPin : number, topServoPin : number) {
-    this.bottomServo = new j5.Servo({
+    this.bottomServo = new Servo({
       pin: bottomServoPin,
       range: [15, 180], //TODO: Work out these values
       center: true
     });
 
-    this.topServo = new j5.Servo({
+    this.topServo = new Servo({
       pin: topServoPin,
       range: [20, 150], //TODO: Work out these values
       center: true
     });
   }
 
-  public sweepUpDown(sweepOptions? : ServoSweepOptions) : void {
+  public sweepUpDown(sweepOptions? : ServoSweepOpts) : void {
     this.stopTop();
     this.topServo.sweep(sweepOptions);
   }
 
-  public sweepLeftRight(sweepOptions? : ServoSweepOptions) : void {
+  public sweepLeftRight(sweepOptions? : ServoSweepOpts) : void {
     this.stopBottom();
     this.bottomServo.sweep(sweepOptions);
   }
@@ -97,8 +97,4 @@ export class FrontArm {
       setTimeout(() => { this.stopBottom(callback); }, this.movementSpeed);
     });
   }
-}
-
-export class ServoSweepOptions implements j5.ServoSweepOpts {
-  constructor(public range: Array<number>, interval? : number) { }
 }

@@ -28,7 +28,7 @@ export class Psybot {
   private _frontArm : psybotFrontarm.FrontArm;
   get frontArm() : psybotFrontarm.FrontArm {
     if(!this._frontArm) {
-      this._frontArm = new psybotFrontarm.FrontArm(14, 15);
+      this._frontArm = new psybotFrontarm.FrontArm(9, 10);
     }
 
     return this._frontArm;

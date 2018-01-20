@@ -1,16 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var j5 = require("johnny-five");
+var johnny_five_1 = require("johnny-five");
 var FrontArm = /** @class */ (function () {
     function FrontArm(bottomServoPin, topServoPin) {
         this.movementSpeed = 800;
         this.stopTimeout = 100;
-        this.bottomServo = new j5.Servo({
+        this.bottomServo = new johnny_five_1.Servo({
             pin: bottomServoPin,
             range: [15, 180],
             center: true
         });
-        this.topServo = new j5.Servo({
+        this.topServo = new johnny_five_1.Servo({
             pin: topServoPin,
             range: [20, 150],
             center: true
@@ -88,11 +88,4 @@ var FrontArm = /** @class */ (function () {
     return FrontArm;
 }());
 exports.FrontArm = FrontArm;
-var ServoSweepOptions = /** @class */ (function () {
-    function ServoSweepOptions(range, interval) {
-        this.range = range;
-    }
-    return ServoSweepOptions;
-}());
-exports.ServoSweepOptions = ServoSweepOptions;
 //# sourceMappingURL=frontarm.js.map
