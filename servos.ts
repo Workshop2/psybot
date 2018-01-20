@@ -10,23 +10,23 @@ psybot.board.on("ready", function() {
 
   psybot.frontArm.center();
 
-  // async.forever((foreverCallback : () => void) => {
-  //   async.waterfall([
-  //     function(callback) {
-  //       psybot.frontArm.faceUp(callback);
-  //     },
-  //     function(callback) {
-  //       psybot.frontArm.faceDown(callback);
-  //     },
-  //     function(callback) {
-  //       psybot.frontArm.faceLeft(callback);
-  //     },
-  //     function(callback) {
-  //       psybot.frontArm.faceRight(callback);
-  //     },
-  //     function(callback) {
-  //       psybot.frontArm.center(callback);
-  //     }
-  //   ], () => foreverCallback());
-  // }, () => {});
+  async.forever((foreverCallback : () => void) => {
+    async.waterfall([
+      function(callback) {
+        psybot.frontArm.faceUp(callback);
+      },
+      function(callback) {
+        psybot.frontArm.faceDown(callback);
+      },
+      function(callback) {
+        psybot.frontArm.faceLeft(callback);
+      },
+      function(callback) {
+        psybot.frontArm.faceRight(callback);
+      },
+      function(callback) {
+        psybot.frontArm.center(callback);
+      }
+    ], () => foreverCallback());
+  }, () => {});
 });
