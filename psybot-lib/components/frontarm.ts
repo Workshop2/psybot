@@ -9,7 +9,7 @@ export class FrontArm {
   constructor(bottomServoPin : number, topServoPin : number) {
     this.bottomServo = new Servo({
       pin: bottomServoPin,
-      range: [15, 180], //TODO: Work out these values
+      //range: [15, 180], //TODO: Work out these values
       center: true
     });
 
