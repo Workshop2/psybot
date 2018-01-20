@@ -10,12 +10,17 @@ var psybot = new psybotLib.Psybot(config.settings.usbConnection);
 psybot.board.on("ready", function() {
   this.repl.inject({psybot: psybot});
 
-  const min = argv.min | 0;
-  const max = argv.max | 180;
-  
-  new Servo({
+  const min = argv.min || 0;
+  const max = argv.max || 180;
+
+  console.log("Min = " + min);
+  console.log("Max = " + max);
+
+  var servo = new Servo({
     pin: 9,
     range: [min, max],
     center: true
   });
+
+  servo.min();
 });
