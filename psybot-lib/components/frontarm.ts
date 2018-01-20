@@ -9,13 +9,13 @@ export class FrontArm {
   constructor(bottomServoPin : number, topServoPin : number) {
     this.bottomServo = new Servo({
       pin: bottomServoPin,
-      range: [90, 180], //TODO: Work out these values
+      range: [40, 180],
       center: true
     });
 
     this.topServo = new Servo({
       pin: topServoPin,
-      range: [20, 150], //TODO: Work out these values
+      range: [40, 140],
       center: true
     });
   }
@@ -63,7 +63,12 @@ export class FrontArm {
 
     this.bottomServo.center();
     this.topServo.center();
-    setTimeout(() => { this.stop(); callback(); }, this.movementSpeed);
+    setTimeout(() => { 
+      this.stop(); 
+      if(callback) {
+        callback(); 
+      }
+    }, this.movementSpeed);
   }
 
   public faceUp(callback? : () => void) : void {

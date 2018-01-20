@@ -7,12 +7,12 @@ var FrontArm = /** @class */ (function () {
         this.stopTimeout = 100;
         this.bottomServo = new johnny_five_1.Servo({
             pin: bottomServoPin,
-            range: [90, 180],
+            range: [40, 180],
             center: true
         });
         this.topServo = new johnny_five_1.Servo({
             pin: topServoPin,
-            range: [20, 150],
+            range: [40, 140],
             center: true
         });
     }
@@ -51,7 +51,12 @@ var FrontArm = /** @class */ (function () {
         this.stop();
         this.bottomServo.center();
         this.topServo.center();
-        setTimeout(function () { _this.stop(); callback(); }, this.movementSpeed);
+        setTimeout(function () {
+            _this.stop();
+            if (callback) {
+                callback();
+            }
+        }, this.movementSpeed);
     };
     FrontArm.prototype.faceUp = function (callback) {
         var _this = this;
