@@ -3,16 +3,27 @@ import psybotFrontarm = require("./components/frontarm");
 import psybotSpeedReader = require("./components/speed-reader");
 import { Board } from "johnny-five";
 import { MotorsAsync } from "./components/motors-async";
+import { Promise } from "q";
+import * as Q from "q";
 
 export class Psybot {
   board : Board;
+
+  public static Create(usbConnection : boolean) : Promise<Psybot> {
+    var deferred = Q.defer<Psybot>();
+    var psybot = new Psybot(usbConnection);
+    
+    psybot.board.on("ready", () => deferred.resolve(psybot));
+    psybot.board.on("fail", () => deferred.reject());
+
+    return deferred.promise;
+  }
 
   constructor(usbConnection : boolean) {
       if(usbConnection) {
         this.board = new Board();
       }
       else { 
-        // connect over serial
         this.board = new Board({ port: "/dev/serial0" });
       }
   }

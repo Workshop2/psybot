@@ -2,9 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var psybotLib = require("./psybot-lib/psybot");
 var config = require('./config/config');
-var psybot = new psybotLib.Psybot(config.settings.usbConnection);
-psybot.board.on("ready", function () {
-    this.repl.inject({ psybot: psybot });
+psybotLib.Psybot.Create(config.settings.usbConnection)
+    .then(function (psybot) {
+    //this.repl.inject({psybot: psybot});
     psybot.frontArm.center();
     psybot.motorsAsync.setSpeed(200)
         .then(function () { return psybot.motorsAsync.forward(); })
@@ -30,4 +30,7 @@ psybot.board.on("ready", function () {
         .then(function () { return psybot.motorsAsync.brake(); })
         .done();
 });
+// var psybot = new psybotLib.Psybot(config.settings.usbConnection);
+// psybot.board.on("ready", function() {
+// });
 //# sourceMappingURL=motor-test-async.js.map

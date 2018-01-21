@@ -5,6 +5,7 @@ var psybotFrontarm = require("./components/frontarm");
 var psybotSpeedReader = require("./components/speed-reader");
 var johnny_five_1 = require("johnny-five");
 var motors_async_1 = require("./components/motors-async");
+var Q = require("q");
 var Psybot = /** @class */ (function () {
     function Psybot(usbConnection) {
         if (usbConnection) {
@@ -15,6 +16,13 @@ var Psybot = /** @class */ (function () {
             this.board = new johnny_five_1.Board({ port: "/dev/serial0" });
         }
     }
+    Psybot.Create = function (usbConnection) {
+        var deferred = Q.defer();
+        var psybot = new Psybot(usbConnection);
+        psybot.board.on("ready", function () { return deferred.resolve(psybot); });
+        psybot.board.on("fail", function () { return deferred.reject(); });
+        return deferred.promise;
+    };
     Object.defineProperty(Psybot.prototype, "motors", {
         get: function () {
             if (!this._motors) {

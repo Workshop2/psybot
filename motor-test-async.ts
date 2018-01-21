@@ -1,15 +1,13 @@
 import j5 = require("johnny-five");
 import async = require("async");
-import psybotLib = require("./psybot-lib/psybot");
+import { Psybot } from "./psybot-lib/psybot";
 var config = require('./config/config');
 
-var psybot = new psybotLib.Psybot(config.settings.usbConnection);
+Psybot.Create(config.settings.usbConnection)
+  .then(function(psybot) {
+    psybot.frontArm.center();
 
-psybot.board.on("ready", function() {
-  this.repl.inject({psybot: psybot});
-  psybot.frontArm.center();
-
-  psybot.motorsAsync.setSpeed(200)
+    psybot.motorsAsync.setSpeed(200)
     .then(() => psybot.motorsAsync.forward())
     .delay(1000)
     .then(() => psybot.motorsAsync.setSpeed(100))
@@ -32,4 +30,4 @@ psybot.board.on("ready", function() {
     .delay(1000)
     .then(() => psybot.motorsAsync.brake())
     .done();
-});
+  });
