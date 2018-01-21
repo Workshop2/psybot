@@ -23,8 +23,8 @@ export class MotorsAsync {
     public forward() : Promise<any> {
         return Q.fcall<any>(() => {
             console.log("Moving forward...");
-            this.leftMotor.forward(this.speed);
-            this.rightMotor.forward(this.speed);
+            this.leftMotor.forward(this.leftSpeed);
+            this.rightMotor.forward(this.rightSpeed);
           })
           .delay(this.operationCooldown);
     }
@@ -32,8 +32,8 @@ export class MotorsAsync {
     public reverse() : Promise<any> {
         return Q.fcall<any>(() => {
             console.log("Moving forward...");
-            this.leftMotor.reverse(this.speed);
-            this.rightMotor.reverse(this.speed);
+            this.leftMotor.reverse(this.leftSpeed);
+            this.rightMotor.reverse(this.rightSpeed);
           })
           .delay(this.operationCooldown);
     }
@@ -50,8 +50,8 @@ export class MotorsAsync {
     public left() : Promise<any> {
         return Q.fcall<any>(() => {
             console.log("Turning left");
-            this.leftMotor.reverse(this.speed);
-            this.rightMotor.forward(this.speed);
+            this.leftMotor.reverse(this.leftSpeed);
+            this.rightMotor.forward(this.rightSpeed);
           })
           .delay(this.operationCooldown);
     }
@@ -59,8 +59,8 @@ export class MotorsAsync {
     public right() : Promise<any> {
         return Q.fcall<any>(() => {
             console.log("Turning right");
-            this.leftMotor.forward(this.speed);
-            this.rightMotor.reverse(this.speed);
+            this.leftMotor.forward(this.leftSpeed);
+            this.rightMotor.reverse(this.rightSpeed);
           })
           .delay(this.operationCooldown);
     }
@@ -87,11 +87,11 @@ export class MotorsAsync {
             
             promise.then(() => {
               if(this.leftMotor.isOn) {
-                this.leftMotor.start(newSpeed);
+                this.leftMotor.start(this.leftSpeed);
               }
 
               if(this.rightMotor.isOn) {
-                this.rightMotor.start(newSpeed);
+                this.rightMotor.start(this.rightSpeed);
               }
             })
             .delay(this.operationCooldown);

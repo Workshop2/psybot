@@ -18,8 +18,8 @@ var MotorsAsync = /** @class */ (function () {
         var _this = this;
         return Q.fcall(function () {
             console.log("Moving forward...");
-            _this.leftMotor.forward(_this.speed);
-            _this.rightMotor.forward(_this.speed);
+            _this.leftMotor.forward(_this.leftSpeed);
+            _this.rightMotor.forward(_this.rightSpeed);
         })
             .delay(this.operationCooldown);
     };
@@ -27,8 +27,8 @@ var MotorsAsync = /** @class */ (function () {
         var _this = this;
         return Q.fcall(function () {
             console.log("Moving forward...");
-            _this.leftMotor.reverse(_this.speed);
-            _this.rightMotor.reverse(_this.speed);
+            _this.leftMotor.reverse(_this.leftSpeed);
+            _this.rightMotor.reverse(_this.rightSpeed);
         })
             .delay(this.operationCooldown);
     };
@@ -45,8 +45,8 @@ var MotorsAsync = /** @class */ (function () {
         var _this = this;
         return Q.fcall(function () {
             console.log("Turning left");
-            _this.leftMotor.reverse(_this.speed);
-            _this.rightMotor.forward(_this.speed);
+            _this.leftMotor.reverse(_this.leftSpeed);
+            _this.rightMotor.forward(_this.rightSpeed);
         })
             .delay(this.operationCooldown);
     };
@@ -54,8 +54,8 @@ var MotorsAsync = /** @class */ (function () {
         var _this = this;
         return Q.fcall(function () {
             console.log("Turning right");
-            _this.leftMotor.forward(_this.speed);
-            _this.rightMotor.reverse(_this.speed);
+            _this.leftMotor.forward(_this.leftSpeed);
+            _this.rightMotor.reverse(_this.rightSpeed);
         })
             .delay(this.operationCooldown);
     };
@@ -81,10 +81,10 @@ var MotorsAsync = /** @class */ (function () {
                 this._speed = newSpeed;
                 promise.then(function () {
                     if (_this.leftMotor.isOn) {
-                        _this.leftMotor.start(newSpeed);
+                        _this.leftMotor.start(_this.leftSpeed);
                     }
                     if (_this.rightMotor.isOn) {
-                        _this.rightMotor.start(newSpeed);
+                        _this.rightMotor.start(_this.rightSpeed);
                     }
                 })
                     .delay(this.operationCooldown);
