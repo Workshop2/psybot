@@ -5,6 +5,7 @@ var config = require('./config/config');
 var psybot = new psybotLib.Psybot(config.settings.usbConnection);
 psybot.board.on("ready", function () {
     this.repl.inject({ psybot: psybot });
+    psybot.frontArm.center();
     psybot.motorsAsync.setSpeed(200)
         .then(function () { return psybot.motorsAsync.forward(); })
         .delay(1000)

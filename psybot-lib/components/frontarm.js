@@ -7,7 +7,7 @@ var FrontArm = /** @class */ (function () {
         this.stopTimeout = 100;
         this.bottomServo = new johnny_five_1.Servo({
             pin: bottomServoPin,
-            range: [40, 180],
+            range: [30, 180],
             center: true
         });
         this.topServo = new johnny_five_1.Servo({
