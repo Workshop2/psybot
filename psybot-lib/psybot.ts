@@ -7,25 +7,41 @@ import { Promise } from "q";
 import * as Q from "q";
 
 export class Psybot {
+  //TODO: Make private
   board : Board;
 
   public static Create(usbConnection : boolean) : Promise<Psybot> {
     var deferred = Q.defer<Psybot>();
-    var psybot = new Psybot(usbConnection);
-    
-    psybot.board.on("ready", () => deferred.resolve(psybot));
-    psybot.board.on("fail", () => deferred.reject());
+
+    let board = usbConnection 
+      ? new Board() 
+      : new Board({ port: "/dev/serial0" });
+      
+    board.on("ready", () => {
+      var psybot = new Psybot(board);
+      deferred.resolve(psybot);
+      psybot.board.repl.inject({psybot: psybot});
+      psybot.frontArm.center();
+    });
+
+    board.on("fail", () => deferred.reject());
 
     return deferred.promise;
   }
 
-  constructor(usbConnection : boolean) {
-      if(usbConnection) {
+  constructor(input : boolean | Board) {
+    if(input instanceof Board) {
+      this.board = input;
+    }
+    else {
+      // TODO: Remove
+      if(input) {
         this.board = new Board();
       }
       else { 
         this.board = new Board({ port: "/dev/serial0" });
       }
+    }
   }
 
   private _motors : psybotMotors.Motors;

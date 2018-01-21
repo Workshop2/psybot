@@ -7,20 +7,32 @@ var johnny_five_1 = require("johnny-five");
 var motors_async_1 = require("./components/motors-async");
 var Q = require("q");
 var Psybot = /** @class */ (function () {
-    function Psybot(usbConnection) {
-        if (usbConnection) {
-            this.board = new johnny_five_1.Board();
+    function Psybot(input) {
+        if (input instanceof johnny_five_1.Board) {
+            this.board = input;
         }
         else {
-            // connect over serial
-            this.board = new johnny_five_1.Board({ port: "/dev/serial0" });
+            // TODO: Remove
+            if (input) {
+                this.board = new johnny_five_1.Board();
+            }
+            else {
+                this.board = new johnny_five_1.Board({ port: "/dev/serial0" });
+            }
         }
     }
     Psybot.Create = function (usbConnection) {
         var deferred = Q.defer();
-        var psybot = new Psybot(usbConnection);
-        psybot.board.on("ready", function () { return deferred.resolve(psybot); });
-        psybot.board.on("fail", function () { return deferred.reject(); });
+        var board = usbConnection
+            ? new johnny_five_1.Board()
+            : new johnny_five_1.Board({ port: "/dev/serial0" });
+        board.on("ready", function () {
+            var psybot = new Psybot(board);
+            deferred.resolve(psybot);
+            psybot.board.repl.inject({ psybot: psybot });
+            psybot.frontArm.center();
+        });
+        board.on("fail", function () { return deferred.reject(); });
         return deferred.promise;
     };
     Object.defineProperty(Psybot.prototype, "motors", {

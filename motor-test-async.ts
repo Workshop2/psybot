@@ -5,8 +5,6 @@ var config = require('./config/config');
 
 Psybot.Create(config.settings.usbConnection)
   .then(function(psybot) {
-    psybot.frontArm.center();
-
     psybot.motorsAsync.setSpeed(200)
     .then(() => psybot.motorsAsync.forward())
     .delay(1000)
