@@ -1,5 +1,3 @@
-import j5 = require("johnny-five");
-import async = require("async");
 import { Psybot } from "./psybot-lib/psybot";
 var config = require('./config/config');
 
