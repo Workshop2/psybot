@@ -4,6 +4,7 @@ var psybotMotors = require("./components/motors");
 var psybotFrontarm = require("./components/frontarm");
 var psybotSpeedReader = require("./components/speed-reader");
 var johnny_five_1 = require("johnny-five");
+var motors_async_1 = require("./components/motors-async");
 var Psybot = /** @class */ (function () {
     function Psybot(usbConnection) {
         if (usbConnection) {
@@ -20,6 +21,16 @@ var Psybot = /** @class */ (function () {
                 this._motors = new psybotMotors.Motors();
             }
             return this._motors;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Psybot.prototype, "motorsAsync", {
+        get: function () {
+            if (!this._motorsAsync) {
+                this._motorsAsync = new motors_async_1.MotorsAsync();
+            }
+            return this._motorsAsync;
         },
         enumerable: true,
         configurable: true

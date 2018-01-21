@@ -2,6 +2,7 @@ import psybotMotors = require("./components/motors");
 import psybotFrontarm = require("./components/frontarm");
 import psybotSpeedReader = require("./components/speed-reader");
 import { Board } from "johnny-five";
+import { MotorsAsync } from "./components/motors-async";
 
 export class Psybot {
   board : Board;
@@ -23,6 +24,15 @@ export class Psybot {
     }
 
     return this._motors;
+  }
+
+  private _motorsAsync : MotorsAsync;
+  get motorsAsync() : MotorsAsync {
+    if(!this._motorsAsync) {
+      this._motorsAsync = new MotorsAsync();
+    }
+
+    return this._motorsAsync;
   }
 
   private _frontArm : psybotFrontarm.FrontArm;
