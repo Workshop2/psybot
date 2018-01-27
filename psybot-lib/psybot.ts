@@ -13,18 +13,24 @@ export class Psybot {
   public static Create(usbConnection : boolean) : Promise<Psybot> {
     var deferred = Q.defer<Psybot>();
 
+    console.log("Connecting to board...");
     let board = usbConnection 
       ? new Board() 
       : new Board({ port: "/dev/serial0" });
       
     board.on("ready", () => {
+      console.log("Connected :)");
+
       var psybot = new Psybot(board);
       deferred.resolve(psybot);
       psybot.board.repl.inject({psybot: psybot});
       psybot.frontArm.center();
     });
 
-    board.on("fail", () => deferred.reject());
+    board.on("fail", () => { 
+      console.log("Failed to connect :(");
+      deferred.reject();
+    });
 
     return deferred.promise;
   }

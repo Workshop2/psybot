@@ -23,16 +23,21 @@ var Psybot = /** @class */ (function () {
     }
     Psybot.Create = function (usbConnection) {
         var deferred = Q.defer();
+        console.log("Connecting to board...");
         var board = usbConnection
             ? new johnny_five_1.Board()
             : new johnny_five_1.Board({ port: "/dev/serial0" });
         board.on("ready", function () {
+            console.log("Connected :)");
             var psybot = new Psybot(board);
             deferred.resolve(psybot);
             psybot.board.repl.inject({ psybot: psybot });
             psybot.frontArm.center();
         });
-        board.on("fail", function () { return deferred.reject(); });
+        board.on("fail", function () {
+            console.log("Failed to connect :(");
+            deferred.reject();
+        });
         return deferred.promise;
     };
     Object.defineProperty(Psybot.prototype, "motors", {
