@@ -27,5 +27,6 @@ psybot_1.Psybot.Create(config.settings.usbConnection)
         .delay(1000)
         .then(function () { return psybot.motorsAsync.brake(); })
         .done();
-});
+})
+    .done();
 //# sourceMappingURL=motor-test-async.js.map

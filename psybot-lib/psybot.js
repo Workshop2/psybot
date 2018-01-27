@@ -30,9 +30,9 @@ var Psybot = /** @class */ (function () {
         board.on("ready", function () {
             console.log("Connected :)");
             var psybot = new Psybot(board);
-            deferred.resolve(psybot);
             psybot.board.repl.inject({ psybot: psybot });
             psybot.frontArm.center();
+            deferred.resolve(psybot);
         });
         board.on("fail", function () {
             console.log("Failed to connect :(");

@@ -26,4 +26,5 @@ Psybot.Create(config.settings.usbConnection)
     .delay(1000)
     .then(() => psybot.motorsAsync.brake())
     .done();
-  });
+  })
+  .done();

@@ -21,10 +21,11 @@ export class Psybot {
     board.on("ready", () => {
       console.log("Connected :)");
 
-      var psybot = new Psybot(board);
-      deferred.resolve(psybot);
+      var psybot = new Psybot(board);   
       psybot.board.repl.inject({psybot: psybot});
       psybot.frontArm.center();
+
+      deferred.resolve(psybot);
     });
 
     board.on("fail", () => { 
