@@ -1,9 +1,9 @@
 import j5 = require("johnny-five");
 
-var board = new j5.Board({port: "/dev/ttyAMA0"});
+var board = new j5.Board();
 
 board.on("ready", function() {  
-    var proximity = new j5.IR.Proximity({
+    var proximity = new j5.Proximity({
       controller: "GP2Y0A21YK",
       pin: "A0"
     });
@@ -12,5 +12,4 @@ board.on("ready", function() {
       console.log("inches: ", this.inches);
       console.log("cm: ", this.cm);
     });
-    
 });

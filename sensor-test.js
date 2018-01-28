@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var j5 = require("johnny-five");
-var board = new j5.Board({ port: "/dev/ttyAMA0" });
+var board = new j5.Board();
 board.on("ready", function () {
-    var proximity = new j5.IR.Proximity({
+    var proximity = new j5.Proximity({
         controller: "GP2Y0A21YK",
         pin: "A0"
     });
