@@ -1,6 +1,8 @@
 import psybotMotors = require("./components/motors");
 import psybotFrontarm = require("./components/frontarm");
-import psybotSpeedReader = require("./components/speed-reader");
+import { Sonar } from "./components/sonar";
+import { Motors } from "./components/motors";
+import { FrontArm } from "./components/frontarm";
 import { Board } from "johnny-five";
 import { MotorsAsync } from "./components/motors-async";
 import { Promise } from "q";
@@ -10,7 +12,8 @@ export class Psybot {
   //TODO: Make private
   board : Board;
 
-  public static Create(usbConnection : boolean) : Promise<Psybot> {
+  public static Create(usbConnection : boolean) : Promise<Psybot> 
+  {
     var deferred = Q.defer<Psybot>();
 
     console.log("Connecting to board...");
@@ -51,10 +54,10 @@ export class Psybot {
     }
   }
 
-  private _motors : psybotMotors.Motors;
-  get motors() : psybotMotors.Motors {
+  private _motors : Motors;
+  get motors() : Motors {
     if(!this._motors) {
-      this._motors = new psybotMotors.Motors();
+      this._motors = new Motors();
     }
 
     return this._motors;
@@ -69,23 +72,23 @@ export class Psybot {
     return this._motorsAsync;
   }
 
-  private _frontArm : psybotFrontarm.FrontArm;
-  get frontArm() : psybotFrontarm.FrontArm {
+  private _frontArm : FrontArm;
+  get frontArm() : FrontArm {
     if(!this._frontArm) {
-      this._frontArm = new psybotFrontarm.FrontArm(9, 10);
+      this._frontArm = new FrontArm(9, 10);
     }
 
     return this._frontArm;
   }
 
-  private _someSensor : psybotSpeedReader.SpeedReader
-  get someSensor() : psybotSpeedReader.SpeedReader {
-    if(!this._someSensor) {
-      console.log("Generating sensor...")
-      var pin = new psybotSpeedReader.SensorOptions("A5", 5);
-      this._someSensor = new psybotSpeedReader.SpeedReader(pin);
+  private _sonar : Sonar;
+  get sonar() : Sonar {
+    if(!this._sonar) {
+      this._sonar = new Sonar({
+        controller: "GP2Y0A21YK",
+        pin: "A0"})
     }
 
-    return this._someSensor;
+    return this._sonar;
   }
 }

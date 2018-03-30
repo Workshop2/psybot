@@ -1,13 +1,24 @@
 import j5 = require("johnny-five");
+import { ProximityData } from "johnny-five";
 
 export class Sonar {
-  private sonar : j5.Sonar;
+  private minimumDistance : number = 9;
+  private sonar : j5.Proximity;
+  private _obstacleDetected? : () => void;
 
-  constructor(private sonarOptions : SonarOptions) {
-    this.sonar = new j5.Sonar(sonarOptions);
+  constructor(sonarOptions : j5.ProximityOption) {
+    this.sonar = new j5.Proximity(sonarOptions);
+    this.sonar.on("data", (proximityData : ProximityData) => {
+      if(this._obstacleDetected != null) {
+        if(proximityData.cm < this.minimumDistance) {
+          this._obstacleDetected();
+        }
+      }
+    });
   }
-}
 
-export class SonarOptions implements j5.SonarOption {
-  constructor(public pin: number, public device: string) { }
+  public setObstacleDetectedCallback(obstacleDetected : () => void) : void {
+    console.log("settings");
+    this._obstacleDetected = obstacleDetected;
+  }
 }

@@ -1,31 +1,36 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var StateMachine = require('fsm-as-promised');
 var q_1 = require("q");
+var psybot_1 = require("./psybot-lib/psybot");
+var StateMachine = require('fsm-as-promised');
+var config = require('./config/config');
 StateMachine.Promise = q_1.Promise;
-var fsm = new StateMachine({
-    initial: 'solid',
-    events: [
-        { name: 'melt', from: 'solid', to: 'liquid' },
-        { name: 'freeze', from: 'liquid', to: 'solid' },
-        { name: 'vaporize', from: 'liquid', to: 'gas' },
-        { name: 'condense', from: 'gas', to: 'liquid' }
-    ],
-    callbacks: {
-        onmelt: function () { return console.log('I melted'); },
-        onfreeze: function () { return console.log('I froze'); },
-        onvaporize: function () { return console.log('I vaporized'); },
-        oncondense: function () { return console.log('I condensed'); }
-    }
-});
-console.log(fsm.current);
-fsm.melt()
-    .then(function () { return console.log(fsm.current); })
-    .then(function () { return fsm.vaporize(); })
-    .then(function () { return console.log(fsm.current); })
-    .then(function () { return fsm.condense(); })
-    .then(function () { return console.log(fsm.current); })
-    .then(function () { return fsm.freeze(); })
-    .then(function () { return console.log(fsm.current); })
+psybot_1.Psybot.Create(config.settings.usbConnection)
+    .then(function (psybot) {
+    var fsm = new StateMachine({
+        events: [
+            { name: 'forward', from: 'none', to: 'obstacleDetected' },
+            { name: 'obstacleDetected', from: 'forward' },
+        ],
+        callbacks: {
+            onforward: function () { return psybot.motorsAsync.forward(); },
+            obstacleDetected: function () { return psybot.motorsAsync.brake(); },
+        }
+    });
+    psybot.sonar.setObstacleDetectedCallback(function () {
+        fsm.obstacleDetected();
+    });
+    //fsm.forward();
+})
     .done();
+// console.log(fsm.current);
+// fsm.melt()
+//     .then(() => console.log(fsm.current))
+//     .then(() => fsm.vaporize())
+//     .then(() => console.log(fsm.current))
+//     .then(() => fsm.condense())
+//     .then(() => console.log(fsm.current))
+//     .then(() => fsm.freeze())
+//     .then(() => console.log(fsm.current))
+//     .done();
 //# sourceMappingURL=state-machine.js.map

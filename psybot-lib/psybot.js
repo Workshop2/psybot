@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var psybotMotors = require("./components/motors");
-var psybotFrontarm = require("./components/frontarm");
-var psybotSpeedReader = require("./components/speed-reader");
+var sonar_1 = require("./components/sonar");
+var motors_1 = require("./components/motors");
+var frontarm_1 = require("./components/frontarm");
 var johnny_five_1 = require("johnny-five");
 var motors_async_1 = require("./components/motors-async");
 var Q = require("q");
@@ -43,7 +43,7 @@ var Psybot = /** @class */ (function () {
     Object.defineProperty(Psybot.prototype, "motors", {
         get: function () {
             if (!this._motors) {
-                this._motors = new psybotMotors.Motors();
+                this._motors = new motors_1.Motors();
             }
             return this._motors;
         },
@@ -63,21 +63,22 @@ var Psybot = /** @class */ (function () {
     Object.defineProperty(Psybot.prototype, "frontArm", {
         get: function () {
             if (!this._frontArm) {
-                this._frontArm = new psybotFrontarm.FrontArm(9, 10);
+                this._frontArm = new frontarm_1.FrontArm(9, 10);
             }
             return this._frontArm;
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(Psybot.prototype, "someSensor", {
+    Object.defineProperty(Psybot.prototype, "sonar", {
         get: function () {
-            if (!this._someSensor) {
-                console.log("Generating sensor...");
-                var pin = new psybotSpeedReader.SensorOptions("A5", 5);
-                this._someSensor = new psybotSpeedReader.SpeedReader(pin);
+            if (!this._sonar) {
+                this._sonar = new sonar_1.Sonar({
+                    controller: "GP2Y0A21YK",
+                    pin: "A0"
+                });
             }
-            return this._someSensor;
+            return this._sonar;
         },
         enumerable: true,
         configurable: true
