@@ -17,8 +17,14 @@ Psybot.Create(config.settings.usbConnection)
             // { name: 'condense', from: 'gas',    to: 'liquid' }
         ],
         callbacks: {
-            onforward:          () =>  psybot.motorsAsync.forward(),
-            obstacleDetected:   () => psybot.motorsAsync.brake(),
+            onforward:          () =>  {
+                console.log("Moving forward...");
+                psybot.motorsAsync.forward();
+            },
+            obstacleDetected:   () => {
+                console.log("Stopping...");
+                psybot.motorsAsync.brake();
+            },
             // onmelt:     () =>  console.log('I melted'),
             // onfreeze:   () =>  console.log('I froze'),
             // onvaporize: () =>  console.log('I vaporized'),
@@ -29,7 +35,8 @@ Psybot.Create(config.settings.usbConnection)
     psybot.sonar.setObstacleDetectedCallback(() => {
         fsm.obstacleDetected();
     });
-    //fsm.forward();
+    
+    fsm.forward();
   })
   .done();
 

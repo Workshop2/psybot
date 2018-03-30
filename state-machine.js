@@ -13,14 +13,20 @@ psybot_1.Psybot.Create(config.settings.usbConnection)
             { name: 'obstacleDetected', from: 'forward' },
         ],
         callbacks: {
-            onforward: function () { return psybot.motorsAsync.forward(); },
-            obstacleDetected: function () { return psybot.motorsAsync.brake(); },
+            onforward: function () {
+                console.log("Moving forward...");
+                psybot.motorsAsync.forward();
+            },
+            obstacleDetected: function () {
+                console.log("Stopping...");
+                psybot.motorsAsync.brake();
+            },
         }
     });
     psybot.sonar.setObstacleDetectedCallback(function () {
         fsm.obstacleDetected();
     });
-    //fsm.forward();
+    fsm.forward();
 })
     .done();
 // console.log(fsm.current);
