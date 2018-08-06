@@ -36,7 +36,7 @@ psybot_1.Psybot.Create(config.settings.usbConnection)
         //console.log("after")
     });
     fsm.forward();
-    fsm.onobstacleDetected();
+    fsm.obstacleDetected();
     return fsm;
 })
     .done();

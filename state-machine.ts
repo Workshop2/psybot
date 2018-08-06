@@ -45,7 +45,7 @@ Psybot.Create(config.settings.usbConnection)
     });
     
     fsm.forward();
-    fsm.onobstacleDetected();
+    fsm.obstacleDetected();
     return fsm;
   })
   .done();
