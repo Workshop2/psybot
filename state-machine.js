@@ -16,11 +16,11 @@ psybot_1.Psybot.Create(config.settings.usbConnection)
         callbacks: {
             onforward: function () {
                 console.log("onforward");
-                //psybot.motorsAsync.forward();
+                return psybot.motorsAsync.forward();
             },
             onobstacleDetected: function () {
                 console.log("onobstacleDetected");
-                //psybot.motorsAsync.brake();
+                return psybot.motorsAsync.brake();
             },
         },
         error: function (msg, options) {
