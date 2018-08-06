@@ -9,7 +9,7 @@ export class Sonar {
   constructor(sonarOptions : j5.ProximityOption) {
     this.sonar = new j5.Proximity(sonarOptions);
     this.sonar.on("data", (proximityData : ProximityData) => {
-      console.log("data");
+      //console.log("data");
       if(this._obstacleDetected != null) {
         if(proximityData.cm < this.minimumDistance) {
           this._obstacleDetected();
