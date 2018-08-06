@@ -8,26 +8,33 @@ StateMachine.Promise = q_1.Promise;
 psybot_1.Psybot.Create(config.settings.usbConnection)
     .then(function (psybot) {
     var fsm = new StateMachine({
+        initial: "forward",
         events: [
-            { name: 'forward', from: 'none', to: 'obstacleDetected' },
+            { name: 'forward', to: 'obstacleDetected' },
             { name: 'obstacleDetected', from: 'forward' },
         ],
         callbacks: {
             onforward: function () {
-                console.log("Moving forward...");
+                console.log("onforward");
                 //psybot.motorsAsync.forward();
             },
             onobstacleDetected: function () {
-                console.log("Stopping...");
+                console.log("onobstacleDetected");
                 //psybot.motorsAsync.brake();
             },
+        },
+        error: function (msg, options) {
+            console.error("Errrroror found: " + msg);
         }
     });
     psybot.sonar.setObstacleDetectedCallback(function () {
-        console.log("I AM CALLING");
-        fsm.obstacleDetected(); //<<<<<< "THIS ISN'T CALLING - WHYEEE?"22
+        //console.log("I AM CALLING")
+        //fsm.obstacleDetected(); //<<<<<< "THIS ISN'T CALLING - WHYEEE?"22
+        //console.log("after")
     });
-    //fsm.forward();
+    fsm.forward();
+    fsm.onobstacleDetected();
+    return fsm;
 })
     .done();
 // console.log(fsm.current);

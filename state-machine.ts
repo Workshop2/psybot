@@ -9,35 +9,42 @@ Psybot.Create(config.settings.usbConnection)
   .then((psybot) => {
 
     var fsm = new StateMachine({
+        initial: "forward",
         events: [
-            { name: 'forward',              from: 'none', to: 'obstacleDetected' },
+            { name: 'forward',              to: 'obstacleDetected' },
             { name: 'obstacleDetected',     from: 'forward' },
             // { name: 'freeze',   from: 'liquid', to: 'solid'  },
             // { name: 'vaporize', from: 'liquid', to: 'gas'    },
             // { name: 'condense', from: 'gas',    to: 'liquid' }
         ],
         callbacks: {
-            onforward:          () =>  {
-                console.log("Moving forward...");
+            onforward: () =>  {
+                console.log("onforward");
                 //psybot.motorsAsync.forward();
             },
-            onobstacleDetected:   () => {
-                console.log("Stopping...");
+            onobstacleDetected: () => {
+                console.log("onobstacleDetected");
                 //psybot.motorsAsync.brake();
             },
             // onmelt:     () =>  console.log('I melted'),
             // onfreeze:   () =>  console.log('I froze'),
             // onvaporize: () =>  console.log('I vaporized'),
             // oncondense: () =>  console.log('I condensed')
+        },
+        error: (msg, options) => {
+            console.error("Errrroror found: " + msg);
         }
     });
 
     psybot.sonar.setObstacleDetectedCallback(() => {
-        console.log("I AM CALLING")
-        fsm.obstacleDetected(); //<<<<<< "THIS ISN'T CALLING - WHYEEE?"22
+        //console.log("I AM CALLING")
+        //fsm.obstacleDetected(); //<<<<<< "THIS ISN'T CALLING - WHYEEE?"22
+        //console.log("after")
     });
     
-    //fsm.forward();
+    fsm.forward();
+    fsm.onobstacleDetected();
+    return fsm;
   })
   .done();
 
