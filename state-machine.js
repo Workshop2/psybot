@@ -24,6 +24,7 @@ psybot_1.Psybot.Create(config.settings.usbConnection)
         }
     });
     psybot.sonar.setObstacleDetectedCallback(function () {
+        console.log("I AM CALLING");
         fsm.obstacleDetected(); //<<<<<< "THIS ISN'T CALLING - WHYEEE?"22
     });
     //fsm.forward();
