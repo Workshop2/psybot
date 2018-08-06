@@ -7,6 +7,7 @@ var Sonar = /** @class */ (function () {
         this.minimumDistance = 9;
         this.sonar = new j5.Proximity(sonarOptions);
         this.sonar.on("data", function (proximityData) {
+            console.log("data");
             if (_this._obstacleDetected != null) {
                 if (proximityData.cm < _this.minimumDistance) {
                     _this._obstacleDetected();

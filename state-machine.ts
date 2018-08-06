@@ -10,7 +10,7 @@ Psybot.Create(config.settings.usbConnection)
 
     var fsm = new StateMachine({
         events: [
-            { name: 'forward',              from: 'none',   to: 'obstacleDetected' },
+            { name: 'forward',              from: 'none', to: 'obstacleDetected' },
             { name: 'obstacleDetected',     from: 'forward' },
             // { name: 'freeze',   from: 'liquid', to: 'solid'  },
             // { name: 'vaporize', from: 'liquid', to: 'gas'    },
@@ -19,11 +19,11 @@ Psybot.Create(config.settings.usbConnection)
         callbacks: {
             onforward:          () =>  {
                 console.log("Moving forward...");
-                psybot.motorsAsync.forward();
+                //psybot.motorsAsync.forward();
             },
-            obstacleDetected:   () => {
+            onobstacleDetected:   () => {
                 console.log("Stopping...");
-                psybot.motorsAsync.brake();
+                //psybot.motorsAsync.brake();
             },
             // onmelt:     () =>  console.log('I melted'),
             // onfreeze:   () =>  console.log('I froze'),
@@ -33,10 +33,10 @@ Psybot.Create(config.settings.usbConnection)
     });
 
     psybot.sonar.setObstacleDetectedCallback(() => {
-        fsm.obstacleDetected();
+        fsm.obstacleDetected(); //<<<<<< "THIS ISN'T CALLING - WHYEEE?"22
     });
     
-    fsm.forward();
+    //fsm.forward();
   })
   .done();
 
