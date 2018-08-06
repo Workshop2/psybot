@@ -1,4 +1,5 @@
 "use strict";
+var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var q_1 = require("q");
 var psybot_1 = require("./psybot-lib/psybot");
@@ -10,7 +11,7 @@ psybot_1.Psybot.Create(config.settings.usbConnection)
     var fsm = new StateMachine({
         initial: "forward",
         events: [
-            { name: 'forward', to: 'obstacleDetected' },
+            { name: 'forward', from: 'none', to: 'obstacleDetected' },
             { name: 'obstacleDetected', from: 'forward' },
         ],
         callbacks: {
@@ -25,6 +26,8 @@ psybot_1.Psybot.Create(config.settings.usbConnection)
         },
         error: function (msg, options) {
             console.error("Errrroror found: " + msg);
+            console.log(options);
+            console.log(_this);
         }
     });
     psybot.sonar.setObstacleDetectedCallback(function () {

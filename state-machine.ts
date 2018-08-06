@@ -11,7 +11,7 @@ Psybot.Create(config.settings.usbConnection)
     var fsm = new StateMachine({
         initial: "forward",
         events: [
-            { name: 'forward',              to: 'obstacleDetected' },
+            { name: 'forward',              from: 'none', to: 'obstacleDetected' },
             { name: 'obstacleDetected',     from: 'forward' },
             // { name: 'freeze',   from: 'liquid', to: 'solid'  },
             // { name: 'vaporize', from: 'liquid', to: 'gas'    },
@@ -33,6 +33,8 @@ Psybot.Create(config.settings.usbConnection)
         },
         error: (msg, options) => {
             console.error("Errrroror found: " + msg);
+            console.log(options);
+            console.log(this);
         }
     });
 
