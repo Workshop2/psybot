@@ -2,7 +2,7 @@ import j5 = require("johnny-five");
 import { ProximityData } from "johnny-five";
 
 export class Sonar {
-  private minimumDistance : number = 9;
+  private minimumDistance : number = 20;
   private sonar : j5.Proximity;
   private _obstacleDetected? : () => void;
 
