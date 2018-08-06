@@ -9,10 +9,9 @@ StateMachine.Promise = q_1.Promise;
 psybot_1.Psybot.Create(config.settings.usbConnection)
     .then(function (psybot) {
     var fsm = new StateMachine({
-        initial: "forward",
         events: [
-            { name: 'forward', from: 'none', to: 'obstacleDetected' },
-            { name: 'obstacleDetected', from: 'forward' },
+            { name: 'forward', from: 'none', to: 'moving' },
+            { name: 'obstacleDetected', from: 'moving', to: 'stopped' },
         ],
         callbacks: {
             onforward: function () {
@@ -32,12 +31,19 @@ psybot_1.Psybot.Create(config.settings.usbConnection)
     });
     psybot.sonar.setObstacleDetectedCallback(function () {
         //console.log("I AM CALLING")
-        //fsm.obstacleDetected(); //<<<<<< "THIS ISN'T CALLING - WHYEEE?"22
+        fsm.obstacleDetected()
+            .done(); //<<<<<< "THIS ISN'T CALLING - WHYEEE?"22
+        //console.log(test);
         //console.log("after")
     });
-    fsm.forward();
-    fsm.obstacleDetected();
+    // fsm.forward()
+    //     .then(() => {
+    //         fsm.obstacleDetected();
+    //     });
     return fsm;
+})
+    .then(function (stateMachine) {
+    return stateMachine.forward();
 })
     .done();
 // console.log(fsm.current);
