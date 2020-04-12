@@ -19,8 +19,10 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
 # Rerun Profile script to start NVM
 source ~/.bashrc 
 
-nvm install 8 
-nvm use 8
+### Try increasing the version number
+**Note:** If node starts downloading source and 
+`nvm install 11` 
+`nvm use 11`
 
 sudo nano /boot/config.txt
 # set: enable_uart=1
