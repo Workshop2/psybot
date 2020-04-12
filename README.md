@@ -19,8 +19,8 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
 # Rerun Profile script to start NVM
 source ~/.bashrc 
 
-nvm install 8 
-nvm use 8 
+nvm install node
+nvm use node 
 
 sudo nano /boot/config.txt
 # set: enable_uart=1
