@@ -14,7 +14,7 @@ sudo apt-get remove nodejs nodejs-legacy -y
 sudo apt-get remove npm  -y
 
 # Install Node Version Manager (NVM)
-curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
 
 # Rerun Profile script to start NVM
 source ~/.bashrc 
