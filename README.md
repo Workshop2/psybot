@@ -19,8 +19,8 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
 # Rerun Profile script to start NVM
 source ~/.bashrc 
 
-### Try increasing the version number
-**Note:** If node starts downloading source and 
+# Try increasing the version number
+## Note: If node starts downloading source rather than install, cancel and decrease the version number
 `nvm install 11` 
 `nvm use 11`
 
