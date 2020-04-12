@@ -10,8 +10,8 @@
   "author": "S Colmer",
   "license": "ISC",
   "dependencies": {
-    "async": "^2.6.0",
-    "fsm-as-promised": "^0.15.1",
+    "async": "^2.6.3",
+    "fsm-as-promised": "^0.16.0",
     "johnny-five": "^1.4.0",
     "q": "^1.5.1",
     "serialport": "^8.0.7",
