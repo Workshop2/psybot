@@ -1,9 +1,9 @@
-import { Promise } from "q";
+//import { Promise } from "q";
 import { Psybot } from "./psybot-lib/psybot";
 var StateMachine = require('fsm-as-promised');
 var config = require('./config/config');
 
-StateMachine.Promise = Promise;
+//StateMachine.Promise = Promise;
 
 Psybot.Create(config.settings.usbConnection)
   .then((psybot) => {
@@ -11,7 +11,7 @@ Psybot.Create(config.settings.usbConnection)
     var fsm = new StateMachine({
         events: [
             { name: 'forward',              from: 'none',    to: 'moving' },
-            { name: 'obstacleDetected',     from: 'moving',  to: 'stopped' },
+            { name: 'obstacleDetected',     from: 'moving',  to: 'search' },
             // { name: 'freeze',   from: 'liquid', to: 'solid'  },
             // { name: 'vaporize', from: 'liquid', to: 'gas'    },
             // { name: 'condense', from: 'gas',    to: 'liquid' }
@@ -20,9 +20,14 @@ Psybot.Create(config.settings.usbConnection)
             onforward: () =>  {
                 console.log("onforward");
                 return psybot.motorsAsync.forward();
-            },
-            onobstacleDetected: () => {
+            }, 
+            onobstacleDetected: async () => {
                 console.log("onobstacleDetected");
+                await psybot.motorsAsync.brake();
+                console.log("HAI")
+            },
+            onsearch: () => {
+                console.log("search");
                 return psybot.motorsAsync.brake();
             },
             // onmelt:     () =>  console.log('I melted'),
@@ -33,16 +38,15 @@ Psybot.Create(config.settings.usbConnection)
         error: (msg, options) => {
             console.error("Errrroror found: " + msg);
             console.log(options);
-            console.log(this);
+            // console.log(this);
         }
     });
 
     psybot.sonar.setObstacleDetectedCallback(() => {
-        //console.log("I AM CALLING")
-        fsm.obstacleDetected()
-            .done(); //<<<<<< "THIS ISN'T CALLING - WHYEEE?"22
-        //console.log(test);
-        //console.log("after")
+        if(fsm.current == "moving") {
+            fsm.obstacleDetected()
+                .done();
+        }
     });
     
     // fsm.forward()
