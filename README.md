@@ -40,3 +40,4 @@ npm install
 ### Windows
 You will probably need to run this to ensure python 2.7 and VS Build tools are installed and working
 `npm install --global --production windows-build-tools`
+_(if that fails, use npm install --global --production windows-build-tools@4.0.0 )_
