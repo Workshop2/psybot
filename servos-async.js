@@ -1,20 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var psybot_1 = require("./psybot-lib/psybot");
+const psybot_1 = require("./psybot-lib/psybot");
 var config = require('./config/config');
 psybot_1.Psybot.Create(config.settings.usbConnection)
-    .then(function (psybot) {
+    .then((psybot) => {
     psybot.frontArm.centerAsync()
-        .then(function () { return psybot.frontArm.faceUpAsync(); })
-        .then(function () { return psybot.frontArm.centerAsync(); })
-        .then(function () { return psybot.frontArm.faceDownAsync(); })
-        .then(function () { return psybot.frontArm.centerAsync(); })
-        .then(function () { return psybot.frontArm.faceLeftAsync(); })
-        .then(function () { return psybot.frontArm.centerAsync(); })
-        .then(function () { return psybot.frontArm.faceRightAsync(); })
-        .then(function () { return psybot.frontArm.centerAsync(); })
-        .then(function () { return psybot.frontArm.sweepLeftAsync(); })
-        .then(function () { return psybot.frontArm.sweepUpDownAsync(); })
+        .then(() => psybot.frontArm.faceUpAsync())
+        .then(() => psybot.frontArm.centerAsync())
+        .then(() => psybot.frontArm.faceDownAsync())
+        .then(() => psybot.frontArm.centerAsync())
+        .then(() => psybot.frontArm.faceLeftAsync())
+        .then(() => psybot.frontArm.centerAsync())
+        .then(() => psybot.frontArm.faceRightAsync())
+        .then(() => psybot.frontArm.centerAsync())
+        .then(() => psybot.frontArm.sweepLeftAsync())
+        .then(() => psybot.frontArm.sweepUpDownAsync())
         .done();
 })
     .done();

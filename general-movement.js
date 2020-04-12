@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var async = require("async");
-var psybotLib = require("./psybot-lib/psybot");
+const async = require("async");
+const psybotLib = require("./psybot-lib/psybot");
 var config = require('./config/config');
 var psybot = new psybotLib.Psybot(config.settings.usbConnection);
 psybot.board.on("ready", function () {

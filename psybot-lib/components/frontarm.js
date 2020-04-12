@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var johnny_five_1 = require("johnny-five");
-var Q = require("q");
-var FrontArm = /** @class */ (function () {
-    function FrontArm(bottomServoPin, topServoPin) {
+const johnny_five_1 = require("johnny-five");
+const Q = require("q");
+class FrontArm {
+    constructor(bottomServoPin, topServoPin) {
         this.movementSpeed = 800;
         this.stopTimeout = 100;
         this.operationTimeout = 400;
@@ -18,158 +18,142 @@ var FrontArm = /** @class */ (function () {
             center: true
         });
     }
-    FrontArm.prototype.stop = function (callback) {
+    stop(callback) {
         this.stopBottom();
         this.stopTop();
         if (callback) {
             setTimeout(callback, this.stopTimeout);
         }
-    };
-    FrontArm.prototype.stopAsync = function () {
-        var _this = this;
-        return Q.fcall(function () {
+    }
+    stopAsync() {
+        return Q.fcall(() => {
             console.log("stop");
-            _this.topServo.stop();
-            _this.bottomServo.stop();
+            this.topServo.stop();
+            this.bottomServo.stop();
         });
-    };
-    FrontArm.prototype.stopBottom = function (callback) {
+    }
+    stopBottom(callback) {
         console.log("stopBottom");
         this.bottomServo.stop();
         if (callback) {
             setTimeout(callback, this.stopTimeout);
         }
-    };
-    FrontArm.prototype.stopBottomAsync = function () {
-        var _this = this;
-        return Q.fcall(function () {
+    }
+    stopBottomAsync() {
+        return Q.fcall(() => {
             console.log("stopBottom");
-            _this.bottomServo.stop();
+            this.bottomServo.stop();
         });
-    };
-    FrontArm.prototype.stopTop = function (callback) {
+    }
+    stopTop(callback) {
         console.log("stopTop");
         this.topServo.stop();
         if (callback) {
             setTimeout(callback, this.stopTimeout);
         }
-    };
-    FrontArm.prototype.stopTopAsync = function () {
-        var _this = this;
-        return Q.fcall(function () {
+    }
+    stopTopAsync() {
+        return Q.fcall(() => {
             console.log("stopTop");
-            _this.topServo.stop();
+            this.topServo.stop();
         });
-    };
+    }
     // based on trust that the callbacks work...
-    FrontArm.prototype.center = function (callback) {
-        var _this = this;
+    center(callback) {
         this.stop();
         this.bottomServo.center();
         this.topServo.center();
-        setTimeout(function () {
-            _this.stop();
+        setTimeout(() => {
+            this.stop();
             if (callback) {
                 callback();
             }
         }, this.movementSpeed);
-    };
-    FrontArm.prototype.centerAsync = function () {
-        var _this = this;
-        return Q.fcall(function () {
+    }
+    centerAsync() {
+        return Q.fcall(() => {
             console.log("center");
-            _this.bottomServo.center();
-            _this.topServo.center();
+            this.bottomServo.center();
+            this.topServo.center();
         })
             .delay(500);
-    };
-    FrontArm.prototype.faceUp = function (callback) {
-        var _this = this;
-        this.stopTop(function () {
+    }
+    faceUp(callback) {
+        this.stopTop(() => {
             console.log("faceUp");
-            _this.topServo.min();
-            setTimeout(function () { _this.stopTop(callback); }, _this.movementSpeed);
+            this.topServo.min();
+            setTimeout(() => { this.stopTop(callback); }, this.movementSpeed);
         });
-    };
-    FrontArm.prototype.faceUpAsync = function () {
-        var _this = this;
-        return Q.fcall(function () {
+    }
+    faceUpAsync() {
+        return Q.fcall(() => {
             console.log("faceUp");
-            _this.topServo.min();
+            this.topServo.min();
         })
             .delay(this.operationTimeout);
-    };
-    FrontArm.prototype.faceDown = function (callback) {
-        var _this = this;
-        this.stopTop(function () {
+    }
+    faceDown(callback) {
+        this.stopTop(() => {
             console.log("faceDown");
-            _this.topServo.max();
-            setTimeout(function () { _this.stopTop(callback); }, _this.movementSpeed);
+            this.topServo.max();
+            setTimeout(() => { this.stopTop(callback); }, this.movementSpeed);
         });
-    };
-    FrontArm.prototype.faceDownAsync = function () {
-        var _this = this;
-        return Q.fcall(function () {
+    }
+    faceDownAsync() {
+        return Q.fcall(() => {
             console.log("faceDown");
-            _this.topServo.max();
+            this.topServo.max();
         })
             .delay(this.operationTimeout);
-    };
-    FrontArm.prototype.faceRight = function (callback) {
-        var _this = this;
-        this.stopBottom(function () {
+    }
+    faceRight(callback) {
+        this.stopBottom(() => {
             console.log("faceRight");
-            _this.bottomServo.min();
-            setTimeout(function () { _this.stopBottom(callback); }, _this.movementSpeed);
+            this.bottomServo.min();
+            setTimeout(() => { this.stopBottom(callback); }, this.movementSpeed);
         });
-    };
-    FrontArm.prototype.faceRightAsync = function () {
-        var _this = this;
-        return Q.fcall(function () {
+    }
+    faceRightAsync() {
+        return Q.fcall(() => {
             console.log("faceRight");
-            _this.bottomServo.min();
+            this.bottomServo.min();
         })
             .delay(this.operationTimeout);
-    };
-    FrontArm.prototype.faceLeft = function (callback) {
-        var _this = this;
-        this.stopBottom(function () {
+    }
+    faceLeft(callback) {
+        this.stopBottom(() => {
             console.log("faceLeft");
-            _this.bottomServo.max();
-            setTimeout(function () { _this.stopBottom(callback); }, _this.movementSpeed);
+            this.bottomServo.max();
+            setTimeout(() => { this.stopBottom(callback); }, this.movementSpeed);
         });
-    };
-    FrontArm.prototype.faceLeftAsync = function () {
-        var _this = this;
-        return Q.fcall(function () {
+    }
+    faceLeftAsync() {
+        return Q.fcall(() => {
             console.log("faceLeft");
-            _this.bottomServo.max();
+            this.bottomServo.max();
         })
             .delay(this.operationTimeout);
-    };
-    FrontArm.prototype.sweepUpDown = function (sweepOptions) {
+    }
+    sweepUpDown(sweepOptions) {
         this.stopTop();
         this.topServo.sweep(sweepOptions);
-    };
-    FrontArm.prototype.sweepUpDownAsync = function (sweepOptions) {
-        var _this = this;
+    }
+    sweepUpDownAsync(sweepOptions) {
         return this.stopTopAsync()
-            .then(function () {
-            _this.topServo.sweep(sweepOptions);
+            .then(() => {
+            this.topServo.sweep(sweepOptions);
         });
-    };
-    FrontArm.prototype.sweepLeftRight = function (sweepOptions) {
+    }
+    sweepLeftRight(sweepOptions) {
         this.stopBottom();
         this.bottomServo.sweep(sweepOptions);
-    };
-    FrontArm.prototype.sweepLeftAsync = function (sweepOptions) {
-        var _this = this;
+    }
+    sweepLeftAsync(sweepOptions) {
         return this.stopBottomAsync()
-            .then(function () {
-            _this.bottomServo.sweep(sweepOptions);
+            .then(() => {
+            this.bottomServo.sweep(sweepOptions);
         });
-    };
-    return FrontArm;
-}());
+    }
+}
 exports.FrontArm = FrontArm;
 //# sourceMappingURL=frontarm.js.map

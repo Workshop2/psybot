@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var j5 = require("johnny-five");
+const j5 = require("johnny-five");
 var board = new j5.Board();
 board.on("ready", function () {
     var proximity = new j5.Proximity({

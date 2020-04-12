@@ -1,15 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var psybotLib = require("./psybot-lib/psybot");
-var johnny_five_1 = require("johnny-five");
+const psybotLib = require("./psybot-lib/psybot");
+const johnny_five_1 = require("johnny-five");
 var config = require('./config/config');
-var argv = require('yargs').argv;
+const argv = require('yargs').argv;
 var psybot = new psybotLib.Psybot(config.settings.usbConnection);
 psybot.board.on("ready", function () {
     this.repl.inject({ psybot: psybot });
-    var pin = argv.pin || 9;
-    var min = argv.min || 0;
-    var max = argv.max || 180;
+    const pin = argv.pin || 9;
+    const min = argv.min || 0;
+    const max = argv.max || 180;
     console.log("Pin = " + pin);
     console.log("Min = " + min);
     console.log("Max = " + max);

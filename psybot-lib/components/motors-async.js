@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var johnny_five_1 = require("johnny-five");
-var shields_1 = require("../../j5-types/shields");
-var Q = require("q");
-var MotorsAsync = /** @class */ (function () {
-    function MotorsAsync() {
+const johnny_five_1 = require("johnny-five");
+const shields_1 = require("../../j5-types/shields");
+const Q = require("q");
+class MotorsAsync {
+    constructor() {
         this.minSpeed = 50;
         this.maxSpeed = 255;
         this.operationCooldown = 50;
@@ -14,60 +14,50 @@ var MotorsAsync = /** @class */ (function () {
         console.log("Done!");
         this._speed = this.maxSpeed;
     }
-    MotorsAsync.prototype.forward = function () {
-        var _this = this;
-        return Q.fcall(function () {
+    forward() {
+        return Q.fcall(() => {
             console.log("Moving forward...");
-            _this.leftMotor.forward(_this.leftSpeed);
-            _this.rightMotor.forward(_this.rightSpeed);
+            this.leftMotor.forward(this.leftSpeed);
+            this.rightMotor.forward(this.rightSpeed);
         })
             .delay(this.operationCooldown);
-    };
-    MotorsAsync.prototype.reverse = function () {
-        var _this = this;
-        return Q.fcall(function () {
+    }
+    reverse() {
+        return Q.fcall(() => {
             console.log("Moving forward...");
-            _this.leftMotor.reverse(_this.leftSpeed);
-            _this.rightMotor.reverse(_this.rightSpeed);
+            this.leftMotor.reverse(this.leftSpeed);
+            this.rightMotor.reverse(this.rightSpeed);
         })
             .delay(this.operationCooldown);
-    };
-    MotorsAsync.prototype.brake = function () {
-        var _this = this;
-        return Q.fcall(function () {
+    }
+    brake() {
+        return Q.fcall(() => {
             console.log("Breaking...");
-            _this.leftMotor.brake();
-            _this.rightMotor.brake();
+            this.leftMotor.brake();
+            this.rightMotor.brake();
         })
             .delay(this.operationCooldown);
-    };
-    MotorsAsync.prototype.left = function () {
-        var _this = this;
-        return Q.fcall(function () {
+    }
+    left() {
+        return Q.fcall(() => {
             console.log("Turning left");
-            _this.leftMotor.reverse(_this.leftSpeed);
-            _this.rightMotor.forward(_this.rightSpeed);
+            this.leftMotor.reverse(this.leftSpeed);
+            this.rightMotor.forward(this.rightSpeed);
         })
             .delay(this.operationCooldown);
-    };
-    MotorsAsync.prototype.right = function () {
-        var _this = this;
-        return Q.fcall(function () {
+    }
+    right() {
+        return Q.fcall(() => {
             console.log("Turning right");
-            _this.leftMotor.forward(_this.leftSpeed);
-            _this.rightMotor.reverse(_this.rightSpeed);
+            this.leftMotor.forward(this.leftSpeed);
+            this.rightMotor.reverse(this.rightSpeed);
         })
             .delay(this.operationCooldown);
-    };
-    Object.defineProperty(MotorsAsync.prototype, "speed", {
-        get: function () {
-            return this._speed;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    MotorsAsync.prototype.setSpeed = function (newSpeed) {
-        var _this = this;
+    }
+    get speed() {
+        return this._speed;
+    }
+    setSpeed(newSpeed) {
         if (newSpeed) {
             if (newSpeed < this.minSpeed) {
                 newSpeed = this.minSpeed;
@@ -75,38 +65,29 @@ var MotorsAsync = /** @class */ (function () {
             if (newSpeed > this.maxSpeed) {
                 newSpeed = this.maxSpeed;
             }
-            var promise = Q.fcall(function () { });
+            let promise = Q.fcall(() => { });
             if (newSpeed != this.speed) {
                 console.log("Changing speed to " + newSpeed);
                 this._speed = newSpeed;
-                promise.then(function () {
-                    if (_this.leftMotor.isOn) {
-                        _this.leftMotor.start(_this.leftSpeed);
+                promise.then(() => {
+                    if (this.leftMotor.isOn) {
+                        this.leftMotor.start(this.leftSpeed);
                     }
-                    if (_this.rightMotor.isOn) {
-                        _this.rightMotor.start(_this.rightSpeed);
+                    if (this.rightMotor.isOn) {
+                        this.rightMotor.start(this.rightSpeed);
                     }
                 })
                     .delay(this.operationCooldown);
             }
             return promise;
         }
-    };
-    Object.defineProperty(MotorsAsync.prototype, "leftSpeed", {
-        get: function () {
-            return this.speed;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MotorsAsync.prototype, "rightSpeed", {
-        get: function () {
-            return this.speed * 0.985;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return MotorsAsync;
-}());
+    }
+    get leftSpeed() {
+        return this.speed;
+    }
+    get rightSpeed() {
+        return this.speed * 0.985;
+    }
+}
 exports.MotorsAsync = MotorsAsync;
 //# sourceMappingURL=motors-async.js.map

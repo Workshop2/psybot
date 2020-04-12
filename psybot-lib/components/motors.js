@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var shields_1 = require("../../j5-types/shields");
-var johnny_five_1 = require("johnny-five");
-var Motors = /** @class */ (function () {
-    function Motors() {
+const shields_1 = require("../../j5-types/shields");
+const johnny_five_1 = require("johnny-five");
+class Motors {
+    constructor() {
         this.minSpeed = 50;
         this.maxSpeed = 255;
         this.operationCooldown = 50;
@@ -13,35 +13,33 @@ var Motors = /** @class */ (function () {
         console.log("Done!");
         this.speed = this.maxSpeed;
     }
-    Motors.prototype.forward = function (callback) {
-        var _this = this;
+    forward(callback) {
         var hasAlreadyCalledBack = false;
-        this.runOperation(function () {
+        this.runOperation(() => {
             console.log("Moving forward");
-            _this.leftMotor.forward(_this.leftSpeed);
-            _this.rightMotor.forward(_this.rightSpeed);
+            this.leftMotor.forward(this.leftSpeed);
+            this.rightMotor.forward(this.rightSpeed);
             if (callback && !hasAlreadyCalledBack) {
                 console.log("Forward callback()...");
                 hasAlreadyCalledBack = true;
                 callback();
             }
         });
-    };
-    Motors.prototype.reverse = function (callback) {
-        var _this = this;
+    }
+    reverse(callback) {
         var hasAlreadyCalledBack = false;
-        this.runOperation(function () {
+        this.runOperation(() => {
             console.log("Moving backwards");
-            _this.leftMotor.reverse(_this.leftSpeed);
-            _this.rightMotor.reverse(_this.rightSpeed);
+            this.leftMotor.reverse(this.leftSpeed);
+            this.rightMotor.reverse(this.rightSpeed);
             if (callback && !hasAlreadyCalledBack) {
                 console.log("Reverse callback()...");
                 hasAlreadyCalledBack = true;
                 callback();
             }
         });
-    };
-    Motors.prototype.brake = function (callback) {
+    }
+    brake(callback) {
         console.log("Braking");
         this.leftMotor.brake();
         this.rightMotor.brake();
@@ -49,83 +47,67 @@ var Motors = /** @class */ (function () {
         if (callback) {
             setTimeout(callback, this.operationCooldown);
         }
-    };
-    Motors.prototype.left = function (callback) {
-        var _this = this;
+    }
+    left(callback) {
         var hasAlreadyCalledBack = false;
-        this.runOperation(function () {
+        this.runOperation(() => {
             console.log("Turning left");
-            _this.leftMotor.reverse(_this.maxSpeed);
-            _this.rightMotor.forward(_this.maxSpeed);
+            this.leftMotor.reverse(this.maxSpeed);
+            this.rightMotor.forward(this.maxSpeed);
             if (callback && !hasAlreadyCalledBack) {
                 console.log("Left callback()...");
                 hasAlreadyCalledBack = true;
                 callback();
             }
         });
-    };
-    Motors.prototype.right = function (callback) {
-        var _this = this;
+    }
+    right(callback) {
         var hasAlreadyCalledBack = false;
-        this.runOperation(function () {
+        this.runOperation(() => {
             console.log("Turning right");
-            _this.leftMotor.forward(_this.maxSpeed);
-            _this.rightMotor.reverse(_this.maxSpeed);
+            this.leftMotor.forward(this.maxSpeed);
+            this.rightMotor.reverse(this.maxSpeed);
             if (callback && !hasAlreadyCalledBack) {
                 console.log("Right callback()...");
                 hasAlreadyCalledBack = true;
                 callback();
             }
         });
-    };
-    Object.defineProperty(Motors.prototype, "speed", {
-        get: function () {
-            return this._speed;
-        },
-        set: function (newSpeed) {
-            if (newSpeed) {
-                if (newSpeed < this.minSpeed) {
-                    newSpeed = this.minSpeed;
-                }
-                if (newSpeed > this.maxSpeed) {
-                    newSpeed = this.maxSpeed;
-                }
-                if (newSpeed != this._speed) {
-                    console.log("Speed changed to " + newSpeed);
-                    this._speed = newSpeed;
-                    if (this.lastOperation) {
-                        this.lastOperation();
-                    }
+    }
+    get speed() {
+        return this._speed;
+    }
+    set speed(newSpeed) {
+        if (newSpeed) {
+            if (newSpeed < this.minSpeed) {
+                newSpeed = this.minSpeed;
+            }
+            if (newSpeed > this.maxSpeed) {
+                newSpeed = this.maxSpeed;
+            }
+            if (newSpeed != this._speed) {
+                console.log("Speed changed to " + newSpeed);
+                this._speed = newSpeed;
+                if (this.lastOperation) {
+                    this.lastOperation();
                 }
             }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Motors.prototype, "leftSpeed", {
-        get: function () {
-            return this.speed;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Motors.prototype, "rightSpeed", {
-        get: function () {
-            return this.speed * 0.985;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Motors.prototype.runOperation = function (operation) {
-        var _this = this;
-        this.brake(function () {
+        }
+    }
+    get leftSpeed() {
+        return this.speed;
+    }
+    get rightSpeed() {
+        return this.speed * 0.985;
+    }
+    runOperation(operation) {
+        this.brake(() => {
             operation();
-            _this.lastOperation = operation;
+            this.lastOperation = operation;
         });
-    };
-    Motors.leftMotorPin = shields_1.Shields.M1;
-    Motors.rightMotorPin = shields_1.Shields.M2;
-    return Motors;
-}());
+    }
+}
 exports.Motors = Motors;
+Motors.leftMotorPin = shields_1.Shields.M1;
+Motors.rightMotorPin = shields_1.Shields.M2;
 //# sourceMappingURL=motors.js.map

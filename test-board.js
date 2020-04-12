@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var johnny_five_1 = require("johnny-five");
+const johnny_five_1 = require("johnny-five");
 var config = require('./config/config');
-var port = config.settings.usbConnection
+let port = config.settings.usbConnection
     ? null
     : { port: "/dev/serial0" };
 if (port === null) {

@@ -1,25 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var j5 = require("johnny-five");
-var Sonar = /** @class */ (function () {
-    function Sonar(sonarOptions) {
-        var _this = this;
+const j5 = require("johnny-five");
+class Sonar {
+    constructor(sonarOptions) {
         this.minimumDistance = 20;
         this.sonar = new j5.Proximity(sonarOptions);
-        this.sonar.on("data", function (proximityData) {
+        this.sonar.on("data", (proximityData) => {
             //console.log("data");
-            if (_this._obstacleDetected != null) {
-                if (proximityData.cm < _this.minimumDistance) {
-                    _this._obstacleDetected();
+            if (this._obstacleDetected != null) {
+                if (proximityData.cm < this.minimumDistance) {
+                    this._obstacleDetected();
                 }
             }
         });
     }
-    Sonar.prototype.setObstacleDetectedCallback = function (obstacleDetected) {
+    setObstacleDetectedCallback(obstacleDetected) {
         console.log("settings");
         this._obstacleDetected = obstacleDetected;
-    };
-    return Sonar;
-}());
+    }
+}
 exports.Sonar = Sonar;
 //# sourceMappingURL=sonar.js.map
