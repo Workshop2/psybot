@@ -5,7 +5,8 @@ An Arduino/RPi robot built on NodeJs &amp; Typescript with Johnny5
 ```bash
 sudo raspi-config
 # expand SD card (under advance)
-# disable serial console, enable serial port (under interfaces, https://serialport.io/docs/guide-installation#raspberry-pi-linux)
+# disable serial console
+# enable serial port (under interfaces, https://serialport.io/docs/guide-installation#raspberry-pi-linux)
 # increase resolution (under advance)
 # reboot
 
@@ -19,7 +20,7 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
 # Rerun Profile script to start NVM
 source ~/.bashrc 
 
-# Try increasing the version number
+## Try increasing the version number
 ## Note: If node starts downloading source rather than install, cancel and decrease the version number
 nvm install 11
 nvm use 11
@@ -42,5 +43,8 @@ You will probably need to run this to ensure python 2.7 and VS Build tools are i
 `npm install --global --production windows-build-tools`
 _(if that fails, use `npm install --global --production windows-build-tools@4.0.0` )_
 
-## build typescript
+## build typescript (manual)
 `npm run build`
+
+## build (watch)
+`tsc -w`
