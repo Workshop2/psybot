@@ -21,8 +21,8 @@ source ~/.bashrc
 
 # Try increasing the version number
 ## Note: If node starts downloading source rather than install, cancel and decrease the version number
-`nvm install 11` 
-`nvm use 11`
+nvm install 11`
+nvm use 11
 
 sudo nano /boot/config.txt
 # set: enable_uart=1
