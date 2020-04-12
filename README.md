@@ -5,7 +5,7 @@ An Arduino/RPi robot built on NodeJs &amp; Typescript with Johnny5
 ```bash
 sudo raspi-config
 # expand SD card (under advance)
-# disable serial console, enable serial port (under interfaces)
+# disable serial console, enable serial port (under interfaces, https://serialport.io/docs/guide-installation#raspberry-pi-linux)
 # increase resolution (under advance)
 # reboot
 
@@ -40,3 +40,4 @@ npm install
 ### Windows
 You will probably need to run this to ensure python 2.7 and VS Build tools are installed and working
 `npm install --global --production windows-build-tools`
+_(if that fails, use `npm install --global --production windows-build-tools@4.0.0` )_
