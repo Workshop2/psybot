@@ -9,16 +9,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-//import { Promise } from "q";
 const psybot_1 = require("./psybot-lib/psybot");
-var StateMachine = require('javascript-state-machine');
+var StateMachine = require('fsm-as-promised');
 var config = require('./config/config');
-//StateMachine.Promise = Promise;
-psybot_1.Psybot.Create(config.settings.usbConnection)
-    .then((psybot) => {
+const run = () => __awaiter(void 0, void 0, void 0, function* () {
+    var psybot = yield psybot_1.Psybot.Create(config.settings.usbConnection);
     var fsm = new StateMachine({
+        initial: 'stopped',
         events: [
-            { name: 'goForward', from: 'none', to: 'moving' },
+            { name: 'goForward', from: 'stopped', to: 'moving' },
             { name: 'obstacleDetected', from: 'moving', to: 'searching' },
             { name: 'turnLeft', from: 'search', to: 'moving' },
             { name: 'turnRight', from: 'search', to: 'moving' },
@@ -77,10 +76,8 @@ psybot_1.Psybot.Create(config.settings.usbConnection)
         }
     });
     setInterval(() => console.log("Current state: " + fsm.current), 2000);
-    return fsm;
-})
-    .then((stateMachine) => {
-    return stateMachine.goForward();
-})
-    .done();
+    console.log("fsm", fsm);
+    fsm.goForward();
+});
+run();
 //# sourceMappingURL=state-machine.js.map

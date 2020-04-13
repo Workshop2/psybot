@@ -5,8 +5,6 @@ import { Motors } from "./components/motors";
 import { FrontArm } from "./components/frontarm";
 import { Board } from "johnny-five";
 import { MotorsAsync } from "./components/motors-async";
-import { Promise } from "q";
-import * as Q from "q";
 
 export class Psybot {
   //TODO: Make private
@@ -14,29 +12,27 @@ export class Psybot {
 
   public static Create(usbConnection : boolean) : Promise<Psybot> 
   {
-    var deferred = Q.defer<Psybot>();
-
-    console.log("Connecting to board...");
-    let board = usbConnection 
-      ? new Board() 
-      : new Board({ port: "/dev/serial0" });
-      
-    board.on("ready", () => {
-      console.log("Connected :)");
-
-      var psybot = new Psybot(board);   
-      psybot.board.repl.inject({psybot: psybot});
-      psybot.frontArm.center();
-
-      deferred.resolve(psybot);
+    return new Promise<Psybot>((resolve, reject) => {
+      console.log("Connecting to board...");
+      let board = usbConnection 
+        ? new Board() 
+        : new Board({ port: "/dev/serial0" });
+        
+      board.on("ready", () => {
+        console.log("Connected :)");
+  
+        var psybot = new Psybot(board);   
+        psybot.board.repl.inject({psybot: psybot});
+        psybot.frontArm.center();
+  
+        resolve(psybot);
+      });
+  
+      board.on("fail", () => { 
+        console.log("Failed to connect :(");
+        reject();
+      });
     });
-
-    board.on("fail", () => { 
-      console.log("Failed to connect :(");
-      deferred.reject();
-    });
-
-    return deferred.promise;
   }
 
   constructor(input : boolean | Board) {

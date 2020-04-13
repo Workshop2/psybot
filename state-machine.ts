@@ -1,19 +1,18 @@
-//import { Promise } from "q";
 import { Psybot } from "./psybot-lib/psybot";
-var StateMachine = require('javascript-state-machine');
+var StateMachine = require('fsm-as-promised');
 var config = require('./config/config');
 
-//StateMachine.Promise = Promise;
 
-Psybot.Create(config.settings.usbConnection)
-  .then((psybot) => {
+const run = async () => {
+    var psybot = await Psybot.Create(config.settings.usbConnection);
 
     var fsm = new StateMachine({
+        initial: 'stopped',
         events: [
-            { name: 'goForward',            from: 'none',    to: 'moving' },
-            { name: 'obstacleDetected',     from: 'moving',  to: 'searching' },
-            { name: 'turnLeft',             from: 'search',  to: 'moving' },
-            { name: 'turnRight',            from: 'search',  to: 'moving' },
+            { name: 'goForward', from: 'stopped', to: 'moving' },
+            { name: 'obstacleDetected', from: 'moving', to: 'searching' },
+            { name: 'turnLeft', from: 'search', to: 'moving' },
+            { name: 'turnRight', from: 'search', to: 'moving' },
         ],
         callbacks: {
             onenter: (options) => {
@@ -25,13 +24,13 @@ Psybot.Create(config.settings.usbConnection)
             onleave: (options) => {
                 console.log("onleave: " + options.name);
             },
-            
+
             ongoForward: (options) => {
                 return psybot.motorsAsync.forward();
             },
 
             onentermoving: (options) => {
-                
+
             },
 
             onobstacleDetected: () => {
@@ -42,7 +41,7 @@ Psybot.Create(config.settings.usbConnection)
             onentersearching: (options) => {
                 console.log("3) onentersearching - this", this);
                 options.next = "left";
-                
+
                 // console.log(options)
                 return options;
             },
@@ -58,7 +57,7 @@ Psybot.Create(config.settings.usbConnection)
             onturnLeft: async () => {
                 await psybot.motorsAsync.left();
             },
-            onturnRight: async () => {          
+            onturnRight: async () => {
                 await psybot.motorsAsync.right();
             },
         },
@@ -70,7 +69,7 @@ Psybot.Create(config.settings.usbConnection)
     });
 
     psybot.sonar.setObstacleDetectedCallback(() => {
-        if(fsm.can("obstacleDetected")) {
+        if (fsm.can("obstacleDetected")) {
             console.log("1) raising obstacleDetected")
             fsm.obstacleDetected();
         }
@@ -78,9 +77,8 @@ Psybot.Create(config.settings.usbConnection)
 
     setInterval(() => console.log("Current state: " + fsm.current), 2000);
 
-    return fsm;
-  })
-  .then((stateMachine) => {
-    return stateMachine.goForward();
-  })
-  .done();
+    console.log("fsm", fsm)
+    fsm.goForward();
+}
+
+run();

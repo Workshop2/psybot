@@ -12,8 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const psybot_1 = require("./psybot-lib/psybot");
 var config = require('./config/config');
 const delay_1 = require("./psybot-lib/delay");
-psybot_1.Psybot.Create(config.settings.usbConnection)
-    .then((psybot) => __awaiter(void 0, void 0, void 0, function* () {
+const run = () => __awaiter(void 0, void 0, void 0, function* () {
+    var psybot = yield psybot_1.Psybot.Create(config.settings.usbConnection);
     psybot.motorsAsync.setSpeed(200);
     yield psybot.motorsAsync.forward();
     yield delay_1.default(1000);
@@ -36,6 +36,6 @@ psybot_1.Psybot.Create(config.settings.usbConnection)
     yield psybot.motorsAsync.left();
     yield delay_1.default(1000);
     yield psybot.motorsAsync.brake();
-}))
-    .done();
+});
+run();
 //# sourceMappingURL=motor-test-async.js.map

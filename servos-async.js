@@ -11,8 +11,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const psybot_1 = require("./psybot-lib/psybot");
 var config = require('./config/config');
-psybot_1.Psybot.Create(config.settings.usbConnection)
-    .then((psybot) => __awaiter(void 0, void 0, void 0, function* () {
+const run = () => __awaiter(void 0, void 0, void 0, function* () {
+    var psybot = yield psybot_1.Psybot.Create(config.settings.usbConnection);
     yield psybot.frontArm.centerAsync();
     yield psybot.frontArm.faceUpAsync();
     yield psybot.frontArm.centerAsync();
@@ -24,6 +24,6 @@ psybot_1.Psybot.Create(config.settings.usbConnection)
     yield psybot.frontArm.centerAsync();
     yield psybot.frontArm.sweepLeftAsync();
     yield psybot.frontArm.sweepUpDownAsync();
-}))
-    .done();
+});
+run();
 //# sourceMappingURL=servos-async.js.map

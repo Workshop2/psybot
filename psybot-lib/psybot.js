@@ -5,7 +5,6 @@ const motors_1 = require("./components/motors");
 const frontarm_1 = require("./components/frontarm");
 const johnny_five_1 = require("johnny-five");
 const motors_async_1 = require("./components/motors-async");
-const Q = require("q");
 class Psybot {
     constructor(input) {
         if (input instanceof johnny_five_1.Board) {
@@ -22,23 +21,23 @@ class Psybot {
         }
     }
     static Create(usbConnection) {
-        var deferred = Q.defer();
-        console.log("Connecting to board...");
-        let board = usbConnection
-            ? new johnny_five_1.Board()
-            : new johnny_five_1.Board({ port: "/dev/serial0" });
-        board.on("ready", () => {
-            console.log("Connected :)");
-            var psybot = new Psybot(board);
-            psybot.board.repl.inject({ psybot: psybot });
-            psybot.frontArm.center();
-            deferred.resolve(psybot);
+        return new Promise((resolve, reject) => {
+            console.log("Connecting to board...");
+            let board = usbConnection
+                ? new johnny_five_1.Board()
+                : new johnny_five_1.Board({ port: "/dev/serial0" });
+            board.on("ready", () => {
+                console.log("Connected :)");
+                var psybot = new Psybot(board);
+                psybot.board.repl.inject({ psybot: psybot });
+                psybot.frontArm.center();
+                resolve(psybot);
+            });
+            board.on("fail", () => {
+                console.log("Failed to connect :(");
+                reject();
+            });
         });
-        board.on("fail", () => {
-            console.log("Failed to connect :(");
-            deferred.reject();
-        });
-        return deferred.promise;
     }
     get motors() {
         if (!this._motors) {
