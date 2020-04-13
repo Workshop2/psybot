@@ -11,7 +11,8 @@
       "typeRoots": [
           "node_modules/@types"
       ],
-      "lib": [ "es6" ]
+      "lib": [ "es6" ],
+      "outDir": "build"
   },
   "exclude": [
       "node_modules",
