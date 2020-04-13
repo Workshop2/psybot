@@ -1,80 +1,83 @@
 import { Psybot } from "./psybot-lib/psybot";
-var StateMachine = require('fsm-as-promised');
+var StateMachine = require('javascript-state-machine');
 var config = require('./config/config');
+var visualize = require('javascript-state-machine/lib/visualize');
+import delay from "./psybot-lib/delay";
 
 const run = async () => {
     var psybot = await Psybot.Create(config.settings.usbConnection);
 
+    var searchForRoute = async () => {
+        console.log("Before delay...");
+        await delay(2000);
+        console.log("After delay...");
+        await psybot.frontArm.faceLeftAsync();
+        await psybot.frontArm.faceRightAsync();
+        await psybot.frontArm.centerAsync();
+        
+        console.log("Attempting turnLeft...");
+        fsm.turnLeft();
+    }
+
     var fsm = new StateMachine({
-        initial: 'stopped',
-        events: [
+        init: 'stopped',
+        transitions: [
             { name: 'goForward', from: 'stopped', to: 'moving' },
             { name: 'obstacleDetected', from: 'moving', to: 'searching' },
-            { name: 'turnLeft', from: 'search', to: 'moving' },
-            { name: 'turnRight', from: 'search', to: 'moving' },
+            { name: 'turnLeft', from: 'searching', to: 'moving' },
+            { name: 'turnRight', from: 'searching', to: 'moving' },
         ],
-        callbacks: {
-            onenter: (options) => {
-                console.log("onEnter: " + options.name);
-            },
-            onentered: (options) => {
-                console.log("onEntered: " + options.name);
-            },
-            onleave: (options) => {
-                console.log("onleave: " + options.name);
+        methods: {
+            onGoForward: async (options) => {
+                await psybot.motors.forwardAsync();
             },
 
-            ongoForward: (options) => {
-                return psybot.motors.forwardAsync();
+            // onBeforeTransition: (lifecycle) => {
+            //     console.log("BEFORE: " + lifecycle.transition, true);
+            // },
+
+            // onLeaveState: (lifecycle) => {
+            //     console.log("LEAVE: " + lifecycle.from);
+            // },
+
+            // onEnterState: (lifecycle) => {
+            //     console.log("ENTER: " + lifecycle.to);
+            // },
+
+            // onAfterTransition: (lifecycle) => {
+            //     console.log("AFTER: " + lifecycle.transition);
+            // },
+
+            // onTransition: (lifecycle) => {
+            //     console.log("DURING: " + lifecycle.transition + " (from " + lifecycle.from + " to " + lifecycle.to + ")");
+            // },
+
+            onObstacleDetected: async (lifecycle) => {
+                await psybot.motors.brakeAsync();
+            },
+            
+            onSearching: (lifecycle) => {
+                console.log("Searching for new route...");
+                searchForRoute();
             },
 
-            onentermoving: (options) => {
-
-            },
-
-            onobstacleDetected: () => {
-                console.log("2) onobstacleDetected - this", this);
-                return psybot.motors.brakeAsync();
-            },
-
-            onentersearching: (options) => {
-                console.log("3) onentersearching - this", this);
-                options.next = "left";
-
-                // console.log(options)
-                return options;
-            },
-            onenteredsearching: (options) => {
-                console.log("4) onenteredsearching - this", this);
-                return options;
-            },
-            onleavesearching: (options) => {
-                console.log("5) onenteredsearching - this", this);
-                console.log("next:" + options.next);
-                return options;
-            },
-            onturnLeft: async () => {
+            onTurnLeft: async () => {
                 await psybot.motors.leftAsync();
-            },
-            onturnRight: async () => {
-                await psybot.motors.rightAsync();
-            },
-        },
-        error: (msg, options) => {
-            console.error("Errrroror found: " + msg);
-            console.log(options);
-            // console.log(this);
+                await delay(1000);
+                await psybot.motors.forwardAsync();
+            }
         }
     });
 
+    console.log(visualize(fsm))
+
     psybot.sonar.setObstacleDetectedCallback(() => {
         if (fsm.can("obstacleDetected")) {
-            console.log("1) raising obstacleDetected")
             fsm.obstacleDetected();
         }
     });
 
-    setInterval(() => console.log("Current state: " + fsm.current), 2000);
+    setInterval(() => console.log("Current state: " + fsm.state), 1000);
 
     console.log("fsm", fsm)
     fsm.goForward();

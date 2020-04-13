@@ -48,3 +48,11 @@ _(if that fails, use `npm install --global --production windows-build-tools@4.0.
 
 ## build (watch)
 `tsc -w`
+
+# State machine
+To view in vs-code:
+```powershell
+code --install-extension thankcreate.power-fsm-viewer
+```
+
+Then when open, press `CTRL` + `SHIFT` + `P` and search for `FSM View: Open` and it will visualise the state machine file you have open :smile:
