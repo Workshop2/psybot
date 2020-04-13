@@ -1,7 +1,5 @@
 import { Motor } from "johnny-five";
 import { Shields } from "../../j5-types/shields";
-// import { Promise } from "q";
-// import * as Q from "q";
 
 export class MotorsAsync {
   private readonly minSpeed: number = 50;

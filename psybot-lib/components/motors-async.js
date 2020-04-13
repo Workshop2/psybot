@@ -11,8 +11,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const johnny_five_1 = require("johnny-five");
 const shields_1 = require("../../j5-types/shields");
-// import { Promise } from "q";
-// import * as Q from "q";
 class MotorsAsync {
     constructor() {
         this.minSpeed = 50;
