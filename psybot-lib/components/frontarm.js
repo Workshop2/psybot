@@ -1,7 +1,16 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const johnny_five_1 = require("johnny-five");
-const Q = require("q");
+const delay_1 = require("../delay");
 class FrontArm {
     constructor(bottomServoPin, topServoPin) {
         this.movementSpeed = 800;
@@ -26,10 +35,11 @@ class FrontArm {
         }
     }
     stopAsync() {
-        return Q.fcall(() => {
+        return __awaiter(this, void 0, void 0, function* () {
             console.log("stop");
             this.topServo.stop();
             this.bottomServo.stop();
+            yield delay_1.default(this.operationTimeout);
         });
     }
     stopBottom(callback) {
@@ -40,9 +50,10 @@ class FrontArm {
         }
     }
     stopBottomAsync() {
-        return Q.fcall(() => {
+        return __awaiter(this, void 0, void 0, function* () {
             console.log("stopBottom");
             this.bottomServo.stop();
+            yield delay_1.default(this.operationTimeout);
         });
     }
     stopTop(callback) {
@@ -53,9 +64,10 @@ class FrontArm {
         }
     }
     stopTopAsync() {
-        return Q.fcall(() => {
+        return __awaiter(this, void 0, void 0, function* () {
             console.log("stopTop");
             this.topServo.stop();
+            yield delay_1.default(this.operationTimeout);
         });
     }
     // based on trust that the callbacks work...
@@ -71,12 +83,12 @@ class FrontArm {
         }, this.movementSpeed);
     }
     centerAsync() {
-        return Q.fcall(() => {
+        return __awaiter(this, void 0, void 0, function* () {
             console.log("center");
             this.bottomServo.center();
             this.topServo.center();
-        })
-            .delay(500);
+            yield delay_1.default(this.operationTimeout);
+        });
     }
     faceUp(callback) {
         this.stopTop(() => {
@@ -86,11 +98,11 @@ class FrontArm {
         });
     }
     faceUpAsync() {
-        return Q.fcall(() => {
+        return __awaiter(this, void 0, void 0, function* () {
             console.log("faceUp");
             this.topServo.min();
-        })
-            .delay(this.operationTimeout);
+            yield delay_1.default(this.operationTimeout);
+        });
     }
     faceDown(callback) {
         this.stopTop(() => {
@@ -100,11 +112,11 @@ class FrontArm {
         });
     }
     faceDownAsync() {
-        return Q.fcall(() => {
+        return __awaiter(this, void 0, void 0, function* () {
             console.log("faceDown");
             this.topServo.max();
-        })
-            .delay(this.operationTimeout);
+            yield delay_1.default(this.operationTimeout);
+        });
     }
     faceRight(callback) {
         this.stopBottom(() => {
@@ -114,11 +126,11 @@ class FrontArm {
         });
     }
     faceRightAsync() {
-        return Q.fcall(() => {
+        return __awaiter(this, void 0, void 0, function* () {
             console.log("faceRight");
             this.bottomServo.min();
-        })
-            .delay(this.operationTimeout);
+            yield delay_1.default(this.operationTimeout);
+        });
     }
     faceLeft(callback) {
         this.stopBottom(() => {
@@ -128,19 +140,19 @@ class FrontArm {
         });
     }
     faceLeftAsync() {
-        return Q.fcall(() => {
+        return __awaiter(this, void 0, void 0, function* () {
             console.log("faceLeft");
             this.bottomServo.max();
-        })
-            .delay(this.operationTimeout);
+            yield delay_1.default(this.operationTimeout);
+        });
     }
     sweepUpDown(sweepOptions) {
         this.stopTop();
         this.topServo.sweep(sweepOptions);
     }
     sweepUpDownAsync(sweepOptions) {
-        return this.stopTopAsync()
-            .then(() => {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.stopTopAsync();
             this.topServo.sweep(sweepOptions);
         });
     }
@@ -149,8 +161,8 @@ class FrontArm {
         this.bottomServo.sweep(sweepOptions);
     }
     sweepLeftAsync(sweepOptions) {
-        return this.stopBottomAsync()
-            .then(() => {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.stopBottomAsync();
             this.bottomServo.sweep(sweepOptions);
         });
     }

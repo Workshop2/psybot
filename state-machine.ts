@@ -1,6 +1,6 @@
 //import { Promise } from "q";
 import { Psybot } from "./psybot-lib/psybot";
-var StateMachine = require('fsm-as-promised');
+var StateMachine = require('javascript-state-machine');
 var config = require('./config/config');
 
 //StateMachine.Promise = Promise;

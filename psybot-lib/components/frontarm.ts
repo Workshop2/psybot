@@ -1,15 +1,14 @@
 import { ServoSweepOpts, Servo } from "johnny-five";
-import { Promise } from "q";
-import * as Q from "q";
+import delay from "../delay"
 
 export class FrontArm {
-  private bottomServo : Servo;
-  private topServo : Servo;
-  private movementSpeed : number = 800;
+  private bottomServo: Servo;
+  private topServo: Servo;
+  private movementSpeed: number = 800;
   private stopTimeout: number = 100;
   private operationTimeout: number = 400;
 
-  constructor(bottomServoPin : number, topServoPin : number) {
+  constructor(bottomServoPin: number, topServoPin: number) {
     this.bottomServo = new Servo({
       pin: bottomServoPin,
       range: [30, 180],
@@ -23,78 +22,75 @@ export class FrontArm {
     });
   }
 
-  public stop(callback? : () => void) : void {
+  public stop(callback?: () => void): void {
     this.stopBottom();
     this.stopTop();
 
-    if(callback) {
+    if (callback) {
       setTimeout(callback, this.stopTimeout);
     }
   }
-  
-  public stopAsync() : Promise<any> {
-    return Q.fcall<any>(() => {
-      console.log("stop");
-      this.topServo.stop();
-      this.bottomServo.stop();
-    })
+
+  public async stopAsync(): Promise<void> {
+    console.log("stop");
+    this.topServo.stop();
+    this.bottomServo.stop();
+
+    await delay(this.operationTimeout);
   }
 
-  public stopBottom(callback? : () => void) : void {
+  public stopBottom(callback?: () => void): void {
     console.log("stopBottom");
     this.bottomServo.stop();
 
-    if(callback) {
+    if (callback) {
       setTimeout(callback, this.stopTimeout);
     }
   }
-  
-  public stopBottomAsync() : Promise<any> {
-    return Q.fcall<any>(() => {
-      console.log("stopBottom");
-      this.bottomServo.stop();
-    })
+
+  public async stopBottomAsync(): Promise<void> {
+    console.log("stopBottom");
+    this.bottomServo.stop();
+    await delay(this.operationTimeout);
   }
 
-  public stopTop(callback? : () => void) : void {
+  public stopTop(callback?: () => void): void {
     console.log("stopTop");
     this.topServo.stop();
 
-    if(callback) {
+    if (callback) {
       setTimeout(callback, this.stopTimeout);
     }
   }
-  public stopTopAsync() : Promise<any> {
-    return Q.fcall<any>(() => {
-      console.log("stopTop");
-      this.topServo.stop();
-    })
+  public async stopTopAsync(): Promise<void> {
+    console.log("stopTop");
+    this.topServo.stop();
+    await delay(this.operationTimeout);
   }
 
   // based on trust that the callbacks work...
-  public center(callback? : () => void) : void {
+  public center(callback?: () => void): void {
     this.stop();
 
     this.bottomServo.center();
     this.topServo.center();
-    setTimeout(() => { 
-      this.stop(); 
-      if(callback) {
-        callback(); 
+    setTimeout(() => {
+      this.stop();
+      if (callback) {
+        callback();
       }
     }, this.movementSpeed);
   }
 
-  public centerAsync() : Promise<any> {
-    return Q.fcall<any>(() => {
-      console.log("center");
-      this.bottomServo.center();
-      this.topServo.center();
-    })
-    .delay(500);
+  public async centerAsync(): Promise<void> {
+    console.log("center");
+    this.bottomServo.center();
+    this.topServo.center();
+
+    await delay(this.operationTimeout);
   }
 
-  public faceUp(callback? : () => void) : void {
+  public faceUp(callback?: () => void): void {
     this.stopTop(() => {
       console.log("faceUp");
       this.topServo.min();
@@ -102,15 +98,14 @@ export class FrontArm {
     });
   }
 
-  public faceUpAsync() : Promise<any> {
-    return Q.fcall<any>(() => {
-      console.log("faceUp");
-      this.topServo.min();
-    })
-    .delay(this.operationTimeout);
+  public async faceUpAsync(): Promise<void> {
+    console.log("faceUp");
+    this.topServo.min();
+
+    await delay(this.operationTimeout);
   }
 
-  public faceDown(callback? : () => void) : void {
+  public faceDown(callback?: () => void): void {
     this.stopTop(() => {
       console.log("faceDown");
       this.topServo.max();
@@ -118,15 +113,14 @@ export class FrontArm {
     });
   }
 
-  public faceDownAsync() : Promise<any> {
-    return Q.fcall<any>(() => {
-      console.log("faceDown");
-      this.topServo.max();
-    })
-    .delay(this.operationTimeout);
+  public async faceDownAsync(): Promise<void> {
+    console.log("faceDown");
+    this.topServo.max();
+
+    await delay(this.operationTimeout);
   }
 
-  public faceRight(callback? : () => void) : void {
+  public faceRight(callback?: () => void): void {
     this.stopBottom(() => {
       console.log("faceRight");
       this.bottomServo.min();
@@ -134,15 +128,14 @@ export class FrontArm {
     });
   }
 
-  public faceRightAsync() : Promise<any> {
-    return Q.fcall<any>(() => {
-      console.log("faceRight");
-      this.bottomServo.min();
-    })
-    .delay(this.operationTimeout);
+  public async faceRightAsync(): Promise<void> {
+    console.log("faceRight");
+    this.bottomServo.min();
+
+    await delay(this.operationTimeout);
   }
 
-  public faceLeft(callback? : () => void) : void {
+  public faceLeft(callback?: () => void): void {
     this.stopBottom(() => {
       console.log("faceLeft");
       this.bottomServo.max();
@@ -150,35 +143,30 @@ export class FrontArm {
     });
   }
 
-  public faceLeftAsync() : Promise<any> {
-    return Q.fcall<any>(() => {
-      console.log("faceLeft");
-      this.bottomServo.max();
-    })
-    .delay(this.operationTimeout);
+  public async faceLeftAsync(): Promise<void> {
+    console.log("faceLeft");
+    this.bottomServo.max();
+
+    await delay(this.operationTimeout);
   }
 
-  public sweepUpDown(sweepOptions? : ServoSweepOpts) : void {
+  public sweepUpDown(sweepOptions?: ServoSweepOpts): void {
     this.stopTop();
     this.topServo.sweep(sweepOptions);
   }
 
-  public sweepUpDownAsync(sweepOptions? : ServoSweepOpts) : Promise<any> {
-    return this.stopTopAsync()
-      .then(() => {
-        this.topServo.sweep(sweepOptions);
-      });
+  public async sweepUpDownAsync(sweepOptions?: ServoSweepOpts): Promise<void> {
+    await this.stopTopAsync();
+    this.topServo.sweep(sweepOptions);
   }
 
-  public sweepLeftRight(sweepOptions? : ServoSweepOpts) : void {
+  public sweepLeftRight(sweepOptions?: ServoSweepOpts): void {
     this.stopBottom();
     this.bottomServo.sweep(sweepOptions);
   }
 
-  public sweepLeftAsync(sweepOptions? : ServoSweepOpts) : Promise<any> {
-    return this.stopBottomAsync()
-      .then(() => {
-        this.bottomServo.sweep(sweepOptions);
-      });
+  public async sweepLeftAsync(sweepOptions?: ServoSweepOpts): Promise<void> {
+    await this.stopBottomAsync();
+    this.bottomServo.sweep(sweepOptions);
   }
 }

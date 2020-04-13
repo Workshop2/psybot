@@ -1,5 +1,6 @@
 import { Motor } from "johnny-five";
 import { Shields } from "../../j5-types/shields";
+import delay from "../delay"
 
 export class MotorsAsync {
   private readonly minSpeed: number = 50;
@@ -18,16 +19,12 @@ export class MotorsAsync {
     this._speed = this.maxSpeed;
   }
 
-  private delay(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
   public async forward(): Promise<void> {
     console.log("Moving forward...");
     this.leftMotor.forward(this.leftSpeed);
     this.rightMotor.forward(this.rightSpeed);
 
-    await this.delay(this.operationCooldown);
+    await delay(this.operationCooldown);
   }
 
   public async reverse(): Promise<void> {
@@ -35,7 +32,7 @@ export class MotorsAsync {
     this.leftMotor.reverse(this.leftSpeed);
     this.rightMotor.reverse(this.rightSpeed);
 
-    await this.delay(this.operationCooldown);
+    await delay(this.operationCooldown);
   }
 
   public async brake(): Promise<void> {
@@ -43,7 +40,7 @@ export class MotorsAsync {
     this.leftMotor.brake();
     this.rightMotor.brake();
 
-    await this.delay(this.operationCooldown)
+    await delay(this.operationCooldown)
   }
 
   public async left(): Promise<void> {
@@ -51,7 +48,7 @@ export class MotorsAsync {
     this.leftMotor.reverse(this.leftSpeed);
     this.rightMotor.forward(this.rightSpeed);
 
-    await this.delay(this.operationCooldown);
+    await delay(this.operationCooldown);
   }
 
   public async right(): Promise<void> {
@@ -59,7 +56,7 @@ export class MotorsAsync {
     this.leftMotor.forward(this.leftSpeed);
     this.rightMotor.reverse(this.rightSpeed);
 
-    await this.delay(this.operationCooldown);
+    await delay(this.operationCooldown);
   }
 
   private _speed: number;
@@ -90,7 +87,7 @@ export class MotorsAsync {
         }
       }
 
-      await this.delay(this.operationCooldown);
+      await delay(this.operationCooldown);
     }
   }
 

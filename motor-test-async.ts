@@ -1,9 +1,6 @@
 import { Psybot } from "./psybot-lib/psybot";
 var config = require('./config/config');
-
-function delay(ms: number) {
-  return new Promise( resolve => setTimeout(resolve, ms) );
-}
+import delay from "./psybot-lib/delay"
 
 Psybot.Create(config.settings.usbConnection)
   .then(async (psybot) => {

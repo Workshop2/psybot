@@ -11,32 +11,30 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const psybot_1 = require("./psybot-lib/psybot");
 var config = require('./config/config');
-function delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
+const delay_1 = require("./psybot-lib/delay");
 psybot_1.Psybot.Create(config.settings.usbConnection)
     .then((psybot) => __awaiter(void 0, void 0, void 0, function* () {
     psybot.motorsAsync.setSpeed(200);
     yield psybot.motorsAsync.forward();
-    yield delay(1000);
+    yield delay_1.default(1000);
     yield psybot.motorsAsync.setSpeed(100);
-    yield delay(1000);
+    yield delay_1.default(1000);
     yield psybot.motorsAsync.setSpeed(50);
-    yield delay(1000);
+    yield delay_1.default(1000);
     yield psybot.motorsAsync.reverse();
-    yield delay(1000);
+    yield delay_1.default(1000);
     yield psybot.motorsAsync.setSpeed(520);
-    yield delay(1000);
+    yield delay_1.default(1000);
     yield psybot.motorsAsync.brake();
-    yield delay(1000);
+    yield delay_1.default(1000);
     yield psybot.motorsAsync.setSpeed(250);
-    yield delay(1000);
+    yield delay_1.default(1000);
     yield psybot.motorsAsync.right();
-    yield delay(1000);
+    yield delay_1.default(1000);
     yield psybot.motorsAsync.setSpeed(70);
-    yield delay(1000);
+    yield delay_1.default(1000);
     yield psybot.motorsAsync.left();
-    yield delay(1000);
+    yield delay_1.default(1000);
     yield psybot.motorsAsync.brake();
 }))
     .done();

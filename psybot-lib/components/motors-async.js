@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const johnny_five_1 = require("johnny-five");
 const shields_1 = require("../../j5-types/shields");
+const delay_1 = require("../delay");
 class MotorsAsync {
     constructor() {
         this.minSpeed = 50;
@@ -22,15 +23,12 @@ class MotorsAsync {
         console.log("Done!");
         this._speed = this.maxSpeed;
     }
-    delay(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
     forward() {
         return __awaiter(this, void 0, void 0, function* () {
             console.log("Moving forward...");
             this.leftMotor.forward(this.leftSpeed);
             this.rightMotor.forward(this.rightSpeed);
-            yield this.delay(this.operationCooldown);
+            yield delay_1.default(this.operationCooldown);
         });
     }
     reverse() {
@@ -38,7 +36,7 @@ class MotorsAsync {
             console.log("Moving forward...");
             this.leftMotor.reverse(this.leftSpeed);
             this.rightMotor.reverse(this.rightSpeed);
-            yield this.delay(this.operationCooldown);
+            yield delay_1.default(this.operationCooldown);
         });
     }
     brake() {
@@ -46,7 +44,7 @@ class MotorsAsync {
             console.log("Breaking...");
             this.leftMotor.brake();
             this.rightMotor.brake();
-            yield this.delay(this.operationCooldown);
+            yield delay_1.default(this.operationCooldown);
         });
     }
     left() {
@@ -54,7 +52,7 @@ class MotorsAsync {
             console.log("Turning left");
             this.leftMotor.reverse(this.leftSpeed);
             this.rightMotor.forward(this.rightSpeed);
-            yield this.delay(this.operationCooldown);
+            yield delay_1.default(this.operationCooldown);
         });
     }
     right() {
@@ -62,7 +60,7 @@ class MotorsAsync {
             console.log("Turning right");
             this.leftMotor.forward(this.leftSpeed);
             this.rightMotor.reverse(this.rightSpeed);
-            yield this.delay(this.operationCooldown);
+            yield delay_1.default(this.operationCooldown);
         });
     }
     get speed() {
@@ -87,7 +85,7 @@ class MotorsAsync {
                         this.rightMotor.start(this.rightSpeed);
                     }
                 }
-                yield this.delay(this.operationCooldown);
+                yield delay_1.default(this.operationCooldown);
             }
         });
     }
