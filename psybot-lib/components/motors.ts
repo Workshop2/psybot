@@ -1,138 +1,101 @@
+import { Motor } from "johnny-five";
 import { Shields } from "../../j5-types/shields";
-import { MotorOption, Motor } from "johnny-five";
+import delay from "../delay"
 
 export class Motors {
-    public static leftMotorPin : MotorOption = Shields.M1;
-    public static rightMotorPin : MotorOption = Shields.M2;
-    
-    private leftMotor : Motor;
-    private rightMotor : Motor;
-    private lastOperation : () => void;
-    private minSpeed : number = 50;
-    private maxSpeed : number = 255;
-    private operationCooldown : number = 50;
+  private readonly minSpeed: number = 50;
+  private readonly maxSpeed: number = 255;
+  private readonly operationCooldown: number = 50;
 
-    constructor () {
-      console.log("Initialising motors...");
-      this.leftMotor = new Motor(Motors.leftMotorPin);
-      this.rightMotor = new Motor(Motors.rightMotorPin);
-      console.log("Done!");
+  private rightMotor: Motor;
+  private leftMotor: Motor;
 
-      this.speed = this.maxSpeed;
-    }
+  constructor() {
+    console.log("Initialising motors...");
+    this.leftMotor = new Motor(Shields.M1);
+    this.rightMotor = new Motor(Shields.M2);
+    console.log("Done!");
 
-    forward(callback?: () => void) : void {
-      var hasAlreadyCalledBack : boolean = false;
+    this._speed = this.maxSpeed;
+  }
 
-      this.runOperation(() => {
-        console.log("Moving forward");
-        this.leftMotor.forward(this.leftSpeed);
-        this.rightMotor.forward(this.rightSpeed);
+  public async forward(): Promise<void> {
+    console.log("Moving forward...");
+    this.leftMotor.forward(this.leftSpeed);
+    this.rightMotor.forward(this.rightSpeed);
 
-        if(callback && !hasAlreadyCalledBack) {
-          console.log("Forward callback()...")
-          hasAlreadyCalledBack = true;
-          callback();
-        }
-      });
-    }
+    await delay(this.operationCooldown);
+  }
 
-    reverse(callback?: () => void) : void {
-      var hasAlreadyCalledBack : boolean = false;
+  public async reverse(): Promise<void> {
+    console.log("Moving forward...");
+    this.leftMotor.reverse(this.leftSpeed);
+    this.rightMotor.reverse(this.rightSpeed);
 
-      this.runOperation(() => {
-        console.log("Moving backwards");
-        this.leftMotor.reverse(this.leftSpeed);
-        this.rightMotor.reverse(this.rightSpeed);
+    await delay(this.operationCooldown);
+  }
 
-        if(callback && !hasAlreadyCalledBack) {
-          console.log("Reverse callback()...")
-          hasAlreadyCalledBack = true;
-          callback();
-        }
-      });
-    }
+  public async brake(): Promise<void> {
+    console.log("Breaking...");
+    this.leftMotor.brake();
+    this.rightMotor.brake();
 
-    brake(callback?: () => void) : void {
-      console.log("Braking");
+    await delay(this.operationCooldown)
+  }
 
-      this.leftMotor.brake();
-      this.rightMotor.brake();
-      this.lastOperation = null;
+  public async left(): Promise<void> {
+    console.log("Turning left");
+    this.leftMotor.reverse(this.leftSpeed);
+    this.rightMotor.forward(this.rightSpeed);
 
-      if(callback) {
-        setTimeout(callback, this.operationCooldown);
+    await delay(this.operationCooldown);
+  }
+
+  public async right(): Promise<void> {
+    console.log("Turning right");
+    this.leftMotor.forward(this.leftSpeed);
+    this.rightMotor.reverse(this.rightSpeed);
+
+    await delay(this.operationCooldown);
+  }
+
+  private _speed: number;
+  get speed(): number {
+    return this._speed;
+  }
+
+  public async setSpeed(newSpeed: number): Promise<void> {
+    if (newSpeed) {
+      if (newSpeed < this.minSpeed) {
+        newSpeed = this.minSpeed;
       }
-    }
 
-    left(callback?: () => void) : void {
-      var hasAlreadyCalledBack : boolean = false;
+      if (newSpeed > this.maxSpeed) {
+        newSpeed = this.maxSpeed;
+      }
 
-      this.runOperation(() => {
-        console.log("Turning left");
-        this.leftMotor.reverse(this.maxSpeed);
-        this.rightMotor.forward(this.maxSpeed);
+      if (newSpeed != this.speed) {
+        console.log("Changing speed to " + newSpeed);
+        this._speed = newSpeed;
 
-        if(callback && !hasAlreadyCalledBack) {
-          console.log("Left callback()...")
-          hasAlreadyCalledBack = true;
-          callback();
-        }
-      });
-    }
-
-    right(callback?: () => void) : void {
-      var hasAlreadyCalledBack : boolean = false;
-
-      this.runOperation(() => {
-        console.log("Turning right");
-        this.leftMotor.forward(this.maxSpeed);
-        this.rightMotor.reverse(this.maxSpeed);
-
-        if(callback && !hasAlreadyCalledBack) {
-          console.log("Right callback()...")
-          hasAlreadyCalledBack = true;
-          callback();
-        }
-      });
-    }
-
-    private _speed : number;
-    get speed(): number {
-      return this._speed;
-    }
-    set speed(newSpeed : number) {
-      if(newSpeed) {
-        if(newSpeed < this.minSpeed) {
-          newSpeed = this.minSpeed;
-        }
-        if(newSpeed > this.maxSpeed) {
-          newSpeed = this.maxSpeed;
+        if (this.leftMotor.isOn) {
+          this.leftMotor.start(this.leftSpeed);
         }
 
-        if(newSpeed != this._speed) {
-          console.log("Speed changed to " + newSpeed);
-          this._speed = newSpeed;
-
-          if(this.lastOperation) {
-            this.lastOperation();
-          }
+        if (this.rightMotor.isOn) {
+          this.rightMotor.start(this.rightSpeed);
         }
       }
-    }
 
-    get leftSpeed(): number {
-      return this.speed;
+      await delay(this.operationCooldown);
     }
+  }
 
-    get rightSpeed(): number {
-      return this.speed * 0.985;
-    }
+  get leftSpeed(): number {
+    return this.speed;
+  }
 
-    private runOperation(operation : () => void) {
-      this.brake(() => {
-        operation();
-        this.lastOperation = operation;
-      });
-    }
+  get rightSpeed(): number {
+    return this.speed * 0.985;
+  }
 }

@@ -4,29 +4,29 @@ import delay from "./psybot-lib/delay";
 
 const run = async () => {
   var psybot = await Psybot.Create(config.settings.usbConnection);
-  psybot.motorsAsync.setSpeed(200);
+  psybot.motors.setSpeed(200);
   
-  await psybot.motorsAsync.forward();
+  await psybot.motors.forward();
   await delay(1000);
-  await psybot.motorsAsync.setSpeed(100);
+  await psybot.motors.setSpeed(100);
   await delay(1000);
-  await psybot.motorsAsync.setSpeed(50);
+  await psybot.motors.setSpeed(50);
   await delay(1000);
-  await psybot.motorsAsync.reverse();
+  await psybot.motors.reverse();
   await delay(1000);
-  await psybot.motorsAsync.setSpeed(520);
+  await psybot.motors.setSpeed(520);
   await delay(1000);
-  await psybot.motorsAsync.brake();
+  await psybot.motors.brake();
   await delay(1000);
-  await psybot.motorsAsync.setSpeed(250);
+  await psybot.motors.setSpeed(250);
   await delay(1000);
-  await psybot.motorsAsync.right();
+  await psybot.motors.right();
   await delay(1000);
-  await psybot.motorsAsync.setSpeed(70);
+  await psybot.motors.setSpeed(70);
   await delay(1000);
-  await psybot.motorsAsync.left();
+  await psybot.motors.left();
   await delay(1000);
-  await psybot.motorsAsync.brake();
+  await psybot.motors.brake();
 }
 
 run();

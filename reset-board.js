@@ -13,7 +13,7 @@ const psybot_1 = require("./psybot-lib/psybot");
 var config = require('./config/config');
 psybot_1.Psybot.Create(config.settings.usbConnection)
     .then((psybot) => __awaiter(void 0, void 0, void 0, function* () {
-    yield psybot.motorsAsync.brake();
+    yield psybot.motors.brake();
     yield psybot.frontArm.centerAsync();
 }));
 //# sourceMappingURL=reset-board.js.map

@@ -1,98 +1,93 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const shields_1 = require("../../j5-types/shields");
 const johnny_five_1 = require("johnny-five");
+const shields_1 = require("../../j5-types/shields");
+const delay_1 = require("../delay");
 class Motors {
     constructor() {
         this.minSpeed = 50;
         this.maxSpeed = 255;
         this.operationCooldown = 50;
         console.log("Initialising motors...");
-        this.leftMotor = new johnny_five_1.Motor(Motors.leftMotorPin);
-        this.rightMotor = new johnny_five_1.Motor(Motors.rightMotorPin);
+        this.leftMotor = new johnny_five_1.Motor(shields_1.Shields.M1);
+        this.rightMotor = new johnny_five_1.Motor(shields_1.Shields.M2);
         console.log("Done!");
-        this.speed = this.maxSpeed;
+        this._speed = this.maxSpeed;
     }
-    forward(callback) {
-        var hasAlreadyCalledBack = false;
-        this.runOperation(() => {
-            console.log("Moving forward");
+    forward() {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log("Moving forward...");
             this.leftMotor.forward(this.leftSpeed);
             this.rightMotor.forward(this.rightSpeed);
-            if (callback && !hasAlreadyCalledBack) {
-                console.log("Forward callback()...");
-                hasAlreadyCalledBack = true;
-                callback();
-            }
+            yield delay_1.default(this.operationCooldown);
         });
     }
-    reverse(callback) {
-        var hasAlreadyCalledBack = false;
-        this.runOperation(() => {
-            console.log("Moving backwards");
+    reverse() {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log("Moving forward...");
             this.leftMotor.reverse(this.leftSpeed);
             this.rightMotor.reverse(this.rightSpeed);
-            if (callback && !hasAlreadyCalledBack) {
-                console.log("Reverse callback()...");
-                hasAlreadyCalledBack = true;
-                callback();
-            }
+            yield delay_1.default(this.operationCooldown);
         });
     }
-    brake(callback) {
-        console.log("Braking");
-        this.leftMotor.brake();
-        this.rightMotor.brake();
-        this.lastOperation = null;
-        if (callback) {
-            setTimeout(callback, this.operationCooldown);
-        }
+    brake() {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log("Breaking...");
+            this.leftMotor.brake();
+            this.rightMotor.brake();
+            yield delay_1.default(this.operationCooldown);
+        });
     }
-    left(callback) {
-        var hasAlreadyCalledBack = false;
-        this.runOperation(() => {
+    left() {
+        return __awaiter(this, void 0, void 0, function* () {
             console.log("Turning left");
-            this.leftMotor.reverse(this.maxSpeed);
-            this.rightMotor.forward(this.maxSpeed);
-            if (callback && !hasAlreadyCalledBack) {
-                console.log("Left callback()...");
-                hasAlreadyCalledBack = true;
-                callback();
-            }
+            this.leftMotor.reverse(this.leftSpeed);
+            this.rightMotor.forward(this.rightSpeed);
+            yield delay_1.default(this.operationCooldown);
         });
     }
-    right(callback) {
-        var hasAlreadyCalledBack = false;
-        this.runOperation(() => {
+    right() {
+        return __awaiter(this, void 0, void 0, function* () {
             console.log("Turning right");
-            this.leftMotor.forward(this.maxSpeed);
-            this.rightMotor.reverse(this.maxSpeed);
-            if (callback && !hasAlreadyCalledBack) {
-                console.log("Right callback()...");
-                hasAlreadyCalledBack = true;
-                callback();
-            }
+            this.leftMotor.forward(this.leftSpeed);
+            this.rightMotor.reverse(this.rightSpeed);
+            yield delay_1.default(this.operationCooldown);
         });
     }
     get speed() {
         return this._speed;
     }
-    set speed(newSpeed) {
-        if (newSpeed) {
-            if (newSpeed < this.minSpeed) {
-                newSpeed = this.minSpeed;
-            }
-            if (newSpeed > this.maxSpeed) {
-                newSpeed = this.maxSpeed;
-            }
-            if (newSpeed != this._speed) {
-                console.log("Speed changed to " + newSpeed);
-                this._speed = newSpeed;
-                if (this.lastOperation) {
-                    this.lastOperation();
+    setSpeed(newSpeed) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (newSpeed) {
+                if (newSpeed < this.minSpeed) {
+                    newSpeed = this.minSpeed;
                 }
+                if (newSpeed > this.maxSpeed) {
+                    newSpeed = this.maxSpeed;
+                }
+                if (newSpeed != this.speed) {
+                    console.log("Changing speed to " + newSpeed);
+                    this._speed = newSpeed;
+                    if (this.leftMotor.isOn) {
+                        this.leftMotor.start(this.leftSpeed);
+                    }
+                    if (this.rightMotor.isOn) {
+                        this.rightMotor.start(this.rightSpeed);
+                    }
+                }
+                yield delay_1.default(this.operationCooldown);
             }
-        }
+        });
     }
     get leftSpeed() {
         return this.speed;
@@ -100,14 +95,6 @@ class Motors {
     get rightSpeed() {
         return this.speed * 0.985;
     }
-    runOperation(operation) {
-        this.brake(() => {
-            operation();
-            this.lastOperation = operation;
-        });
-    }
 }
 exports.Motors = Motors;
-Motors.leftMotorPin = shields_1.Shields.M1;
-Motors.rightMotorPin = shields_1.Shields.M2;
 //# sourceMappingURL=motors.js.map

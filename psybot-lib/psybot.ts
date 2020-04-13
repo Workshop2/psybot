@@ -4,7 +4,6 @@ import { Sonar } from "./components/sonar";
 import { Motors } from "./components/motors";
 import { FrontArm } from "./components/frontarm";
 import { Board } from "johnny-five";
-import { MotorsAsync } from "./components/motors-async";
 
 export class Psybot {
   //TODO: Make private
@@ -50,13 +49,13 @@ export class Psybot {
     }
   }
 
-  private _motorsAsync : MotorsAsync;
-  get motorsAsync() : MotorsAsync {
-    if(!this._motorsAsync) {
-      this._motorsAsync = new MotorsAsync();
+  private _motors : Motors;
+  get motors() : Motors {
+    if(!this._motors) {
+      this._motors = new Motors();
     }
 
-    return this._motorsAsync;
+    return this._motors;
   }
 
   private _frontArm : FrontArm;

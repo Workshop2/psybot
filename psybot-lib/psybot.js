@@ -10,9 +10,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const sonar_1 = require("./components/sonar");
+const motors_1 = require("./components/motors");
 const frontarm_1 = require("./components/frontarm");
 const johnny_five_1 = require("johnny-five");
-const motors_async_1 = require("./components/motors-async");
 class Psybot {
     constructor(input) {
         if (input instanceof johnny_five_1.Board) {
@@ -47,11 +47,11 @@ class Psybot {
             });
         });
     }
-    get motorsAsync() {
-        if (!this._motorsAsync) {
-            this._motorsAsync = new motors_async_1.MotorsAsync();
+    get motors() {
+        if (!this._motors) {
+            this._motors = new motors_1.Motors();
         }
-        return this._motorsAsync;
+        return this._motors;
     }
     get frontArm() {
         if (!this._frontArm) {
