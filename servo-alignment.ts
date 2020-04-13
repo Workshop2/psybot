@@ -1,28 +1,29 @@
-import j5 = require("johnny-five");
-import psybotLib = require("./psybot-lib/psybot");
-import { Servo } from "johnny-five";
-
+import { Psybot } from "./psybot-lib/psybot";
 var config = require('./config/config');
-const argv = require('yargs').argv;
+import { Servo } from "johnny-five";
+import delay from "./psybot-lib/delay";
 
-var psybot = new psybotLib.Psybot(config.settings.usbConnection);
+const run = async () => {
+  var psybot = await Psybot.Create(config.settings.usbConnection);
 
-psybot.board.on("ready", function() {
-  this.repl.inject({psybot: psybot});
+  const armPins = {
+    bottomServoPin: 9,
+    topServoPin: 10
+  }
 
-  const pin = argv.pin || 9;
-  const min = argv.min || 0;
-  const max = argv.max || 180;
-
-  console.log("Pin = " + pin)
-  console.log("Min = " + min);
-  console.log("Max = " + max);
+  const pin = armPins.bottomServoPin;
 
   var servo = new Servo({
     pin: pin,
-    range: [min, max],
+    range: [30, 180],
     center: true
   });
 
-  //servo.min();
-});
+  servo.min();
+  await delay(5000);
+  servo.max();
+  await delay(5000);
+  servo.center();
+};
+
+run();

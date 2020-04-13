@@ -6,73 +6,80 @@ import { FrontArm } from "./components/frontarm";
 import { Board } from "johnny-five";
 
 export class Psybot {
-  //TODO: Make private
-  board : Board;
+  private armPins = {
+    bottomServoPin: 9,
+    topServoPin: 10
+  }
 
-  public static Create(usbConnection : boolean) : Promise<Psybot> 
-  {
+  //TODO: Make private
+  board: Board;
+
+  public static Create(usbConnection: boolean): Promise<Psybot> {
     return new Promise<Psybot>((resolve, reject) => {
       console.log("Connecting to board...");
-      let board = usbConnection 
-        ? new Board() 
+      let board = usbConnection
+        ? new Board()
         : new Board({ port: "/dev/serial0" });
-        
+
       board.on("ready", async () => {
         console.log("Connected :)");
-  
-        var psybot = new Psybot(board);   
-        psybot.board.repl.inject({psybot: psybot});
+
+        var psybot = new Psybot(board);
+        psybot.board.repl.inject({ psybot: psybot });
         await psybot.frontArm.centerAsync();
-  
+
         resolve(psybot);
       });
-  
-      board.on("fail", () => { 
+
+      board.on("fail", () => {
         console.log("Failed to connect :(");
         reject();
       });
     });
   }
 
-  constructor(input : boolean | Board) {
-    if(input instanceof Board) {
+  constructor(input: boolean | Board) {
+    if (input instanceof Board) {
       this.board = input;
     }
     else {
       // TODO: Remove
-      if(input) {
+      if (input) {
         this.board = new Board();
       }
-      else { 
+      else {
         this.board = new Board({ port: "/dev/serial0" });
       }
     }
   }
 
-  private _motors : Motors;
-  get motors() : Motors {
-    if(!this._motors) {
+  private _motors: Motors;
+  get motors(): Motors {
+    if (!this._motors) {
       this._motors = new Motors();
     }
 
     return this._motors;
   }
 
-  private _frontArm : FrontArm;
-  get frontArm() : FrontArm {
-    if(!this._frontArm) {
-      this._frontArm = new FrontArm(9, 10);
+  private _frontArm: FrontArm;
+  get frontArm(): FrontArm {
+    if (!this._frontArm) {
+      this._frontArm = new FrontArm(
+        this.armPins.bottomServoPin,
+        this.armPins.topServoPin);
     }
 
     return this._frontArm;
   }
 
-  private _sonar : Sonar;
-  get sonar() : Sonar {
-    if(!this._sonar) {
+  private _sonar: Sonar;
+  get sonar(): Sonar {
+    if (!this._sonar) {
       this._sonar = new Sonar({
         controller: "GP2Y0A21YK",
-        pin: "A0"})
+        pin: "A0"
+      })
     }
 
     return this._sonar;

@@ -4,8 +4,6 @@ import delay from "../delay"
 export class FrontArm {
   private bottomServo: Servo;
   private topServo: Servo;
-  private movementSpeed: number = 800;
-  private stopTimeout: number = 100;
   private operationTimeout: number = 400;
 
   constructor(bottomServoPin: number, topServoPin: number) {
