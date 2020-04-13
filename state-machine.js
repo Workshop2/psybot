@@ -33,13 +33,13 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
                 console.log("onleave: " + options.name);
             },
             ongoForward: (options) => {
-                return psybot.motors.forward();
+                return psybot.motors.forwardAsync();
             },
             onentermoving: (options) => {
             },
             onobstacleDetected: () => {
                 console.log("2) onobstacleDetected - this", this);
-                return psybot.motors.brake();
+                return psybot.motors.brakeAsync();
             },
             onentersearching: (options) => {
                 console.log("3) onentersearching - this", this);
@@ -57,10 +57,10 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
                 return options;
             },
             onturnLeft: () => __awaiter(void 0, void 0, void 0, function* () {
-                yield psybot.motors.left();
+                yield psybot.motors.leftAsync();
             }),
             onturnRight: () => __awaiter(void 0, void 0, void 0, function* () {
-                yield psybot.motors.right();
+                yield psybot.motors.rightAsync();
             }),
         },
         error: (msg, options) => {

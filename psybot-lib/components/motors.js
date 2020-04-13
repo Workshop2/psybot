@@ -23,7 +23,7 @@ class Motors {
         console.log("Done!");
         this._speed = this.maxSpeed;
     }
-    forward() {
+    forwardAsync() {
         return __awaiter(this, void 0, void 0, function* () {
             console.log("Moving forward...");
             this.leftMotor.forward(this.leftSpeed);
@@ -31,7 +31,7 @@ class Motors {
             yield delay_1.default(this.operationCooldown);
         });
     }
-    reverse() {
+    reverseAsync() {
         return __awaiter(this, void 0, void 0, function* () {
             console.log("Moving forward...");
             this.leftMotor.reverse(this.leftSpeed);
@@ -39,7 +39,7 @@ class Motors {
             yield delay_1.default(this.operationCooldown);
         });
     }
-    brake() {
+    brakeAsync() {
         return __awaiter(this, void 0, void 0, function* () {
             console.log("Breaking...");
             this.leftMotor.brake();
@@ -47,7 +47,7 @@ class Motors {
             yield delay_1.default(this.operationCooldown);
         });
     }
-    left() {
+    leftAsync() {
         return __awaiter(this, void 0, void 0, function* () {
             console.log("Turning left");
             this.leftMotor.reverse(this.leftSpeed);
@@ -55,7 +55,7 @@ class Motors {
             yield delay_1.default(this.operationCooldown);
         });
     }
-    right() {
+    rightAsync() {
         return __awaiter(this, void 0, void 0, function* () {
             console.log("Turning right");
             this.leftMotor.forward(this.leftSpeed);
@@ -66,7 +66,7 @@ class Motors {
     get speed() {
         return this._speed;
     }
-    setSpeed(newSpeed) {
+    setSpeedAsync(newSpeed) {
         return __awaiter(this, void 0, void 0, function* () {
             if (newSpeed) {
                 if (newSpeed < this.minSpeed) {

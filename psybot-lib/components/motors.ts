@@ -19,7 +19,7 @@ export class Motors {
     this._speed = this.maxSpeed;
   }
 
-  public async forward(): Promise<void> {
+  public async forwardAsync(): Promise<void> {
     console.log("Moving forward...");
     this.leftMotor.forward(this.leftSpeed);
     this.rightMotor.forward(this.rightSpeed);
@@ -27,7 +27,7 @@ export class Motors {
     await delay(this.operationCooldown);
   }
 
-  public async reverse(): Promise<void> {
+  public async reverseAsync(): Promise<void> {
     console.log("Moving forward...");
     this.leftMotor.reverse(this.leftSpeed);
     this.rightMotor.reverse(this.rightSpeed);
@@ -35,7 +35,7 @@ export class Motors {
     await delay(this.operationCooldown);
   }
 
-  public async brake(): Promise<void> {
+  public async brakeAsync(): Promise<void> {
     console.log("Breaking...");
     this.leftMotor.brake();
     this.rightMotor.brake();
@@ -43,7 +43,7 @@ export class Motors {
     await delay(this.operationCooldown)
   }
 
-  public async left(): Promise<void> {
+  public async leftAsync(): Promise<void> {
     console.log("Turning left");
     this.leftMotor.reverse(this.leftSpeed);
     this.rightMotor.forward(this.rightSpeed);
@@ -51,7 +51,7 @@ export class Motors {
     await delay(this.operationCooldown);
   }
 
-  public async right(): Promise<void> {
+  public async rightAsync(): Promise<void> {
     console.log("Turning right");
     this.leftMotor.forward(this.leftSpeed);
     this.rightMotor.reverse(this.rightSpeed);
@@ -64,7 +64,7 @@ export class Motors {
     return this._speed;
   }
 
-  public async setSpeed(newSpeed: number): Promise<void> {
+  public async setSpeedAsync(newSpeed: number): Promise<void> {
     if (newSpeed) {
       if (newSpeed < this.minSpeed) {
         newSpeed = this.minSpeed;

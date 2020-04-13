@@ -25,7 +25,7 @@ const run = async () => {
             },
 
             ongoForward: (options) => {
-                return psybot.motors.forward();
+                return psybot.motors.forwardAsync();
             },
 
             onentermoving: (options) => {
@@ -34,7 +34,7 @@ const run = async () => {
 
             onobstacleDetected: () => {
                 console.log("2) onobstacleDetected - this", this);
-                return psybot.motors.brake();
+                return psybot.motors.brakeAsync();
             },
 
             onentersearching: (options) => {
@@ -54,10 +54,10 @@ const run = async () => {
                 return options;
             },
             onturnLeft: async () => {
-                await psybot.motors.left();
+                await psybot.motors.leftAsync();
             },
             onturnRight: async () => {
-                await psybot.motors.right();
+                await psybot.motors.rightAsync();
             },
         },
         error: (msg, options) => {

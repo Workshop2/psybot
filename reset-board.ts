@@ -3,6 +3,6 @@ var config = require('./config/config');
 
 Psybot.Create(config.settings.usbConnection)
   .then(async (psybot) => {
-    await psybot.motors.brake();
+    await psybot.motors.brakeAsync();
     await psybot.frontArm.centerAsync();
   });
