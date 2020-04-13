@@ -27,13 +27,6 @@ class FrontArm {
             center: true
         });
     }
-    stop(callback) {
-        this.stopBottom();
-        this.stopTop();
-        if (callback) {
-            setTimeout(callback, this.stopTimeout);
-        }
-    }
     stopAsync() {
         return __awaiter(this, void 0, void 0, function* () {
             console.log("stop");
@@ -42,13 +35,6 @@ class FrontArm {
             yield delay_1.default(this.operationTimeout);
         });
     }
-    stopBottom(callback) {
-        console.log("stopBottom");
-        this.bottomServo.stop();
-        if (callback) {
-            setTimeout(callback, this.stopTimeout);
-        }
-    }
     stopBottomAsync() {
         return __awaiter(this, void 0, void 0, function* () {
             console.log("stopBottom");
@@ -56,31 +42,12 @@ class FrontArm {
             yield delay_1.default(this.operationTimeout);
         });
     }
-    stopTop(callback) {
-        console.log("stopTop");
-        this.topServo.stop();
-        if (callback) {
-            setTimeout(callback, this.stopTimeout);
-        }
-    }
     stopTopAsync() {
         return __awaiter(this, void 0, void 0, function* () {
             console.log("stopTop");
             this.topServo.stop();
             yield delay_1.default(this.operationTimeout);
         });
-    }
-    // based on trust that the callbacks work...
-    center(callback) {
-        this.stop();
-        this.bottomServo.center();
-        this.topServo.center();
-        setTimeout(() => {
-            this.stop();
-            if (callback) {
-                callback();
-            }
-        }, this.movementSpeed);
     }
     centerAsync() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -90,25 +57,11 @@ class FrontArm {
             yield delay_1.default(this.operationTimeout);
         });
     }
-    faceUp(callback) {
-        this.stopTop(() => {
-            console.log("faceUp");
-            this.topServo.min();
-            setTimeout(() => { this.stopTop(callback); }, this.movementSpeed);
-        });
-    }
     faceUpAsync() {
         return __awaiter(this, void 0, void 0, function* () {
             console.log("faceUp");
             this.topServo.min();
             yield delay_1.default(this.operationTimeout);
-        });
-    }
-    faceDown(callback) {
-        this.stopTop(() => {
-            console.log("faceDown");
-            this.topServo.max();
-            setTimeout(() => { this.stopTop(callback); }, this.movementSpeed);
         });
     }
     faceDownAsync() {
@@ -118,25 +71,11 @@ class FrontArm {
             yield delay_1.default(this.operationTimeout);
         });
     }
-    faceRight(callback) {
-        this.stopBottom(() => {
-            console.log("faceRight");
-            this.bottomServo.min();
-            setTimeout(() => { this.stopBottom(callback); }, this.movementSpeed);
-        });
-    }
     faceRightAsync() {
         return __awaiter(this, void 0, void 0, function* () {
             console.log("faceRight");
             this.bottomServo.min();
             yield delay_1.default(this.operationTimeout);
-        });
-    }
-    faceLeft(callback) {
-        this.stopBottom(() => {
-            console.log("faceLeft");
-            this.bottomServo.max();
-            setTimeout(() => { this.stopBottom(callback); }, this.movementSpeed);
         });
     }
     faceLeftAsync() {
@@ -146,19 +85,11 @@ class FrontArm {
             yield delay_1.default(this.operationTimeout);
         });
     }
-    sweepUpDown(sweepOptions) {
-        this.stopTop();
-        this.topServo.sweep(sweepOptions);
-    }
     sweepUpDownAsync(sweepOptions) {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.stopTopAsync();
             this.topServo.sweep(sweepOptions);
         });
-    }
-    sweepLeftRight(sweepOptions) {
-        this.stopBottom();
-        this.bottomServo.sweep(sweepOptions);
     }
     sweepLeftAsync(sweepOptions) {
         return __awaiter(this, void 0, void 0, function* () {

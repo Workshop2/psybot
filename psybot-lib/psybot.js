@@ -1,7 +1,15 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const sonar_1 = require("./components/sonar");
-const motors_1 = require("./components/motors");
 const frontarm_1 = require("./components/frontarm");
 const johnny_five_1 = require("johnny-five");
 const motors_async_1 = require("./components/motors-async");
@@ -26,24 +34,18 @@ class Psybot {
             let board = usbConnection
                 ? new johnny_five_1.Board()
                 : new johnny_five_1.Board({ port: "/dev/serial0" });
-            board.on("ready", () => {
+            board.on("ready", () => __awaiter(this, void 0, void 0, function* () {
                 console.log("Connected :)");
                 var psybot = new Psybot(board);
                 psybot.board.repl.inject({ psybot: psybot });
-                psybot.frontArm.center();
+                yield psybot.frontArm.centerAsync();
                 resolve(psybot);
-            });
+            }));
             board.on("fail", () => {
                 console.log("Failed to connect :(");
                 reject();
             });
         });
-    }
-    get motors() {
-        if (!this._motors) {
-            this._motors = new motors_1.Motors();
-        }
-        return this._motors;
     }
     get motorsAsync() {
         if (!this._motorsAsync) {

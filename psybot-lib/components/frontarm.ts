@@ -22,15 +22,6 @@ export class FrontArm {
     });
   }
 
-  public stop(callback?: () => void): void {
-    this.stopBottom();
-    this.stopTop();
-
-    if (callback) {
-      setTimeout(callback, this.stopTimeout);
-    }
-  }
-
   public async stopAsync(): Promise<void> {
     console.log("stop");
     this.topServo.stop();
@@ -39,47 +30,16 @@ export class FrontArm {
     await delay(this.operationTimeout);
   }
 
-  public stopBottom(callback?: () => void): void {
-    console.log("stopBottom");
-    this.bottomServo.stop();
-
-    if (callback) {
-      setTimeout(callback, this.stopTimeout);
-    }
-  }
-
   public async stopBottomAsync(): Promise<void> {
     console.log("stopBottom");
     this.bottomServo.stop();
     await delay(this.operationTimeout);
   }
 
-  public stopTop(callback?: () => void): void {
-    console.log("stopTop");
-    this.topServo.stop();
-
-    if (callback) {
-      setTimeout(callback, this.stopTimeout);
-    }
-  }
   public async stopTopAsync(): Promise<void> {
     console.log("stopTop");
     this.topServo.stop();
     await delay(this.operationTimeout);
-  }
-
-  // based on trust that the callbacks work...
-  public center(callback?: () => void): void {
-    this.stop();
-
-    this.bottomServo.center();
-    this.topServo.center();
-    setTimeout(() => {
-      this.stop();
-      if (callback) {
-        callback();
-      }
-    }, this.movementSpeed);
   }
 
   public async centerAsync(): Promise<void> {
@@ -90,27 +50,11 @@ export class FrontArm {
     await delay(this.operationTimeout);
   }
 
-  public faceUp(callback?: () => void): void {
-    this.stopTop(() => {
-      console.log("faceUp");
-      this.topServo.min();
-      setTimeout(() => { this.stopTop(callback); }, this.movementSpeed);
-    });
-  }
-
   public async faceUpAsync(): Promise<void> {
     console.log("faceUp");
     this.topServo.min();
 
     await delay(this.operationTimeout);
-  }
-
-  public faceDown(callback?: () => void): void {
-    this.stopTop(() => {
-      console.log("faceDown");
-      this.topServo.max();
-      setTimeout(() => { this.stopTop(callback); }, this.movementSpeed);
-    });
   }
 
   public async faceDownAsync(): Promise<void> {
@@ -120,27 +64,11 @@ export class FrontArm {
     await delay(this.operationTimeout);
   }
 
-  public faceRight(callback?: () => void): void {
-    this.stopBottom(() => {
-      console.log("faceRight");
-      this.bottomServo.min();
-      setTimeout(() => { this.stopBottom(callback); }, this.movementSpeed);
-    });
-  }
-
   public async faceRightAsync(): Promise<void> {
     console.log("faceRight");
     this.bottomServo.min();
 
     await delay(this.operationTimeout);
-  }
-
-  public faceLeft(callback?: () => void): void {
-    this.stopBottom(() => {
-      console.log("faceLeft");
-      this.bottomServo.max();
-      setTimeout(() => { this.stopBottom(callback); }, this.movementSpeed);
-    });
   }
 
   public async faceLeftAsync(): Promise<void> {
@@ -150,19 +78,9 @@ export class FrontArm {
     await delay(this.operationTimeout);
   }
 
-  public sweepUpDown(sweepOptions?: ServoSweepOpts): void {
-    this.stopTop();
-    this.topServo.sweep(sweepOptions);
-  }
-
   public async sweepUpDownAsync(sweepOptions?: ServoSweepOpts): Promise<void> {
     await this.stopTopAsync();
     this.topServo.sweep(sweepOptions);
-  }
-
-  public sweepLeftRight(sweepOptions?: ServoSweepOpts): void {
-    this.stopBottom();
-    this.bottomServo.sweep(sweepOptions);
   }
 
   public async sweepLeftAsync(sweepOptions?: ServoSweepOpts): Promise<void> {

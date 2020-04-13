@@ -18,12 +18,12 @@ export class Psybot {
         ? new Board() 
         : new Board({ port: "/dev/serial0" });
         
-      board.on("ready", () => {
+      board.on("ready", async () => {
         console.log("Connected :)");
   
         var psybot = new Psybot(board);   
         psybot.board.repl.inject({psybot: psybot});
-        psybot.frontArm.center();
+        await psybot.frontArm.centerAsync();
   
         resolve(psybot);
       });
@@ -48,15 +48,6 @@ export class Psybot {
         this.board = new Board({ port: "/dev/serial0" });
       }
     }
-  }
-
-  private _motors : Motors;
-  get motors() : Motors {
-    if(!this._motors) {
-      this._motors = new Motors();
-    }
-
-    return this._motors;
   }
 
   private _motorsAsync : MotorsAsync;
