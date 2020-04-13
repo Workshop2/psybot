@@ -1,111 +1,106 @@
 import { Motor } from "johnny-five";
 import { Shields } from "../../j5-types/shields";
-import { Promise } from "q";
-import * as Q from "q";
+// import { Promise } from "q";
+// import * as Q from "q";
 
 export class MotorsAsync {
-    private readonly minSpeed : number = 50;
-    private readonly maxSpeed : number = 255;
-    private readonly operationCooldown : number = 50;
-    
-    private rightMotor: Motor;
-    private leftMotor: Motor;
+  private readonly minSpeed: number = 50;
+  private readonly maxSpeed: number = 255;
+  private readonly operationCooldown: number = 50;
 
-    constructor () {
-        console.log("Initialising motors...");
-        this.leftMotor = new Motor(Shields.M1);
-        this.rightMotor = new Motor(Shields.M2);
-        console.log("Done!");
-  
-        this._speed = this.maxSpeed;
-    }
+  private rightMotor: Motor;
+  private leftMotor: Motor;
 
-    public forward() : Promise<any> {
-        return Q.fcall<any>(() => {
-            console.log("Moving forward...");
-            this.leftMotor.forward(this.leftSpeed);
-            this.rightMotor.forward(this.rightSpeed);
-          })
-          .delay(this.operationCooldown);
-    }
+  constructor() {
+    console.log("Initialising motors...");
+    this.leftMotor = new Motor(Shields.M1);
+    this.rightMotor = new Motor(Shields.M2);
+    console.log("Done!");
 
-    public reverse() : Promise<any> {
-        return Q.fcall<any>(() => {
-            console.log("Moving forward...");
-            this.leftMotor.reverse(this.leftSpeed);
-            this.rightMotor.reverse(this.rightSpeed);
-          })
-          .delay(this.operationCooldown);
-    }
+    this._speed = this.maxSpeed;
+  }
 
-    public brake() : Promise<any> {
-        return Q.fcall<any>(() => {
-          console.log("Breaking...");
-          this.leftMotor.brake();
-          this.rightMotor.brake();
-        })
-        .delay(this.operationCooldown)
-    }
+  private delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 
-    public left() : Promise<any> {
-        return Q.fcall<any>(() => {
-            console.log("Turning left");
-            this.leftMotor.reverse(this.leftSpeed);
-            this.rightMotor.forward(this.rightSpeed);
-          })
-          .delay(this.operationCooldown);
-    }
+  public async forward(): Promise<void> {
+    console.log("Moving forward...");
+    this.leftMotor.forward(this.leftSpeed);
+    this.rightMotor.forward(this.rightSpeed);
 
-    public right() : Promise<any> {
-        return Q.fcall<any>(() => {
-            console.log("Turning right");
-            this.leftMotor.forward(this.leftSpeed);
-            this.rightMotor.reverse(this.rightSpeed);
-          })
-          .delay(this.operationCooldown);
-    }
-      
-    private _speed : number;
-    get speed(): number {
-      return this._speed;
-    }
+    await this.delay(this.operationCooldown);
+  }
 
-    public setSpeed(newSpeed : number) : Promise<any> {
-      if(newSpeed) {
-        if(newSpeed < this.minSpeed) {
-          newSpeed = this.minSpeed;
-        }
+  public async reverse(): Promise<void> {
+    console.log("Moving forward...");
+    this.leftMotor.reverse(this.leftSpeed);
+    this.rightMotor.reverse(this.rightSpeed);
 
-        if(newSpeed > this.maxSpeed) {
-          newSpeed = this.maxSpeed;
-        }
+    await this.delay(this.operationCooldown);
+  }
 
-        let promise = Q.fcall(() => {});
-        if(newSpeed != this.speed) {
-            console.log("Changing speed to " + newSpeed);
-            this._speed = newSpeed;
-            
-            promise.then(() => {
-              if(this.leftMotor.isOn) {
-                this.leftMotor.start(this.leftSpeed);
-              }
+  public async brake(): Promise<void> {
+    console.log("Breaking...");
+    this.leftMotor.brake();
+    this.rightMotor.brake();
 
-              if(this.rightMotor.isOn) {
-                this.rightMotor.start(this.rightSpeed);
-              }
-            })
-            .delay(this.operationCooldown);
-        }
+    await this.delay(this.operationCooldown)
+  }
 
-        return promise;
+  public async left(): Promise<void> {
+    console.log("Turning left");
+    this.leftMotor.reverse(this.leftSpeed);
+    this.rightMotor.forward(this.rightSpeed);
+
+    await this.delay(this.operationCooldown);
+  }
+
+  public async right(): Promise<void> {
+    console.log("Turning right");
+    this.leftMotor.forward(this.leftSpeed);
+    this.rightMotor.reverse(this.rightSpeed);
+
+    await this.delay(this.operationCooldown);
+  }
+
+  private _speed: number;
+  get speed(): number {
+    return this._speed;
+  }
+
+  public async setSpeed(newSpeed: number): Promise<void> {
+    if (newSpeed) {
+      if (newSpeed < this.minSpeed) {
+        newSpeed = this.minSpeed;
       }
-    }
 
-    get leftSpeed(): number {
-      return this.speed;
-    }
+      if (newSpeed > this.maxSpeed) {
+        newSpeed = this.maxSpeed;
+      }
 
-    get rightSpeed(): number {
-      return this.speed * 0.985;
+      if (newSpeed != this.speed) {
+        console.log("Changing speed to " + newSpeed);
+        this._speed = newSpeed;
+
+        if (this.leftMotor.isOn) {
+          this.leftMotor.start(this.leftSpeed);
+        }
+
+        if (this.rightMotor.isOn) {
+          this.rightMotor.start(this.rightSpeed);
+        }
+      }
+
+      await this.delay(this.operationCooldown);
     }
+  }
+
+  get leftSpeed(): number {
+    return this.speed;
+  }
+
+  get rightSpeed(): number {
+    return this.speed * 0.985;
+  }
 }

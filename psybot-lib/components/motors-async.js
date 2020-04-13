@@ -1,8 +1,18 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const johnny_five_1 = require("johnny-five");
 const shields_1 = require("../../j5-types/shields");
-const Q = require("q");
+// import { Promise } from "q";
+// import * as Q from "q";
 class MotorsAsync {
     constructor() {
         this.minSpeed = 50;
@@ -14,73 +24,74 @@ class MotorsAsync {
         console.log("Done!");
         this._speed = this.maxSpeed;
     }
+    delay(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
     forward() {
-        return Q.fcall(() => {
+        return __awaiter(this, void 0, void 0, function* () {
             console.log("Moving forward...");
             this.leftMotor.forward(this.leftSpeed);
             this.rightMotor.forward(this.rightSpeed);
-        })
-            .delay(this.operationCooldown);
+            yield this.delay(this.operationCooldown);
+        });
     }
     reverse() {
-        return Q.fcall(() => {
+        return __awaiter(this, void 0, void 0, function* () {
             console.log("Moving forward...");
             this.leftMotor.reverse(this.leftSpeed);
             this.rightMotor.reverse(this.rightSpeed);
-        })
-            .delay(this.operationCooldown);
+            yield this.delay(this.operationCooldown);
+        });
     }
     brake() {
-        return Q.fcall(() => {
+        return __awaiter(this, void 0, void 0, function* () {
             console.log("Breaking...");
             this.leftMotor.brake();
             this.rightMotor.brake();
-        })
-            .delay(this.operationCooldown);
+            yield this.delay(this.operationCooldown);
+        });
     }
     left() {
-        return Q.fcall(() => {
+        return __awaiter(this, void 0, void 0, function* () {
             console.log("Turning left");
             this.leftMotor.reverse(this.leftSpeed);
             this.rightMotor.forward(this.rightSpeed);
-        })
-            .delay(this.operationCooldown);
+            yield this.delay(this.operationCooldown);
+        });
     }
     right() {
-        return Q.fcall(() => {
+        return __awaiter(this, void 0, void 0, function* () {
             console.log("Turning right");
             this.leftMotor.forward(this.leftSpeed);
             this.rightMotor.reverse(this.rightSpeed);
-        })
-            .delay(this.operationCooldown);
+            yield this.delay(this.operationCooldown);
+        });
     }
     get speed() {
         return this._speed;
     }
     setSpeed(newSpeed) {
-        if (newSpeed) {
-            if (newSpeed < this.minSpeed) {
-                newSpeed = this.minSpeed;
-            }
-            if (newSpeed > this.maxSpeed) {
-                newSpeed = this.maxSpeed;
-            }
-            let promise = Q.fcall(() => { });
-            if (newSpeed != this.speed) {
-                console.log("Changing speed to " + newSpeed);
-                this._speed = newSpeed;
-                promise.then(() => {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (newSpeed) {
+                if (newSpeed < this.minSpeed) {
+                    newSpeed = this.minSpeed;
+                }
+                if (newSpeed > this.maxSpeed) {
+                    newSpeed = this.maxSpeed;
+                }
+                if (newSpeed != this.speed) {
+                    console.log("Changing speed to " + newSpeed);
+                    this._speed = newSpeed;
                     if (this.leftMotor.isOn) {
                         this.leftMotor.start(this.leftSpeed);
                     }
                     if (this.rightMotor.isOn) {
                         this.rightMotor.start(this.rightSpeed);
                     }
-                })
-                    .delay(this.operationCooldown);
+                }
+                yield this.delay(this.operationCooldown);
             }
-            return promise;
-        }
+        });
     }
     get leftSpeed() {
         return this.speed;
