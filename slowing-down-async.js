@@ -11,15 +11,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const psybot_1 = require("./psybot-lib/psybot");
 var config = require('./config/config');
+const delay_1 = require("./psybot-lib/delay");
 const run = () => __awaiter(void 0, void 0, void 0, function* () {
-    if (config.settings.usbConnection) {
-        console.log("Connecting via USB...");
-    }
-    else {
-        console.log("Connecting via serialport...");
-    }
     var psybot = yield psybot_1.Psybot.Create(config.settings.usbConnection);
-    console.log("Connected :)");
+    setInterval(() => psybot.motorsAsync.setSpeed(psybot.motorsAsync.speed - 10), 1000);
+    yield psybot.motorsAsync.forward();
+    yield delay_1.default(5000);
+    yield psybot.motorsAsync.reverse();
+    yield delay_1.default(5000);
+    yield psybot.motorsAsync.forward();
+    yield delay_1.default(5000);
+    yield psybot.motorsAsync.reverse();
+    yield delay_1.default(5000);
+    yield psybot.motorsAsync.brake();
+    yield delay_1.default(5000);
 });
 run();
-//# sourceMappingURL=test-board.js.map
+//# sourceMappingURL=slowing-down-async.js.map

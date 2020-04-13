@@ -2,7 +2,6 @@ import { Psybot } from "./psybot-lib/psybot";
 var StateMachine = require('fsm-as-promised');
 var config = require('./config/config');
 
-
 const run = async () => {
     var psybot = await Psybot.Create(config.settings.usbConnection);
 

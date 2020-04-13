@@ -1,20 +1,17 @@
-import { Board } from "johnny-five";
-
+import { Psybot } from "./psybot-lib/psybot";
 var config = require('./config/config');
-let port = (config.settings.usbConnection as boolean)
-            ? null
-            : {port: "/dev/serial0"};
 
-if(port === null) {
-  console.log("Connecting via USB")
-}
-else {
-  console.log("Connecting to serial: " + port.port)
-}
+const run = async () => {
 
-var board = new Board(port);
+    if(config.settings.usbConnection) {
+      console.log("Connecting via USB...")
+    }
+    else {
+      console.log("Connecting via serialport...")
+    }
 
-board.on("ready", function() {
-  this.repl.inject({board: board});
-  console.log("Connected :)");
-});
+    var psybot = await Psybot.Create(config.settings.usbConnection);
+    console.log("Connected :)");
+};
+
+run();
