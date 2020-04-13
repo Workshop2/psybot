@@ -14,7 +14,7 @@ const run = async () => {
 
             console.log("Turning left...");
             await psybot.motors.leftAsync();
-            await delay(1000);
+            await delay(500);
             await psybot.motors.brakeAsync();
             return fsm.routeFound();
         }
