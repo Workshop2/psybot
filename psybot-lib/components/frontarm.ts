@@ -21,7 +21,6 @@ export class FrontArm {
   }
 
   public async stopAsync(): Promise<void> {
-    console.log("stop");
     this.topServo.stop();
     this.bottomServo.stop();
 
@@ -29,19 +28,16 @@ export class FrontArm {
   }
 
   public async stopBottomAsync(): Promise<void> {
-    console.log("stopBottom");
     this.bottomServo.stop();
     await delay(this.operationTimeout);
   }
 
   public async stopTopAsync(): Promise<void> {
-    console.log("stopTop");
     this.topServo.stop();
     await delay(this.operationTimeout);
   }
 
   public async centerAsync(): Promise<void> {
-    console.log("center");
     this.bottomServo.center();
     this.topServo.center();
 
@@ -49,30 +45,24 @@ export class FrontArm {
   }
 
   public async faceUpAsync(): Promise<void> {
-    console.log("faceUp");
     this.topServo.min();
 
     await delay(this.operationTimeout);
   }
 
   public async faceDownAsync(): Promise<void> {
-    console.log("faceDown");
     this.topServo.max();
 
     await delay(this.operationTimeout);
   }
 
   public async faceRightAsync(): Promise<void> {
-    console.log("faceRight");
     this.bottomServo.min();
-
     await delay(this.operationTimeout);
   }
 
   public async faceLeftAsync(): Promise<void> {
-    console.log("faceLeft");
     this.bottomServo.max();
-
     await delay(this.operationTimeout);
   }
 

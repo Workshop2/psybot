@@ -1,5 +1,6 @@
 import j5 = require("johnny-five");
 import { ProximityData } from "johnny-five";
+import delay from "../delay"
 
 export class Sonar {
   private minimumDistance: number = 20;
@@ -25,8 +26,16 @@ export class Sonar {
     this._onObstacleDetected = obstacleDetected;
   }
 
-  private _obstacleDetected: boolean;
-  public get obstacleDetected(): boolean {
+  private _obstacleDetected: boolean = undefined;
+  public async waitForSensorData(): Promise<boolean> {
+    await delay(200);
+    this._obstacleDetected = undefined;
+
+    while(this._obstacleDetected === undefined) {
+      console.log("waiting for sensor data...");
+      await delay(5);
+    }
+
     return this._obstacleDetected;
   }
 }

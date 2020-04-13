@@ -20,7 +20,6 @@ export class Motors {
   }
 
   public async forwardAsync(): Promise<void> {
-    console.log("Moving forward...");
     this.leftMotor.forward(this.leftSpeed);
     this.rightMotor.forward(this.rightSpeed);
 
@@ -28,7 +27,6 @@ export class Motors {
   }
 
   public async reverseAsync(): Promise<void> {
-    console.log("Moving forward...");
     this.leftMotor.reverse(this.leftSpeed);
     this.rightMotor.reverse(this.rightSpeed);
 
@@ -36,15 +34,13 @@ export class Motors {
   }
 
   public async brakeAsync(): Promise<void> {
-    console.log("Breaking...");
     this.leftMotor.brake();
     this.rightMotor.brake();
-
-    await delay(this.operationCooldown)
+    
+    await delay(this.operationCooldown);
   }
 
   public async leftAsync(): Promise<void> {
-    console.log("Turning left");
     this.leftMotor.reverse(this.leftSpeed);
     this.rightMotor.forward(this.rightSpeed);
 
@@ -52,7 +48,6 @@ export class Motors {
   }
 
   public async rightAsync(): Promise<void> {
-    console.log("Turning right");
     this.leftMotor.forward(this.leftSpeed);
     this.rightMotor.reverse(this.rightSpeed);
 
@@ -75,7 +70,6 @@ export class Motors {
       }
 
       if (newSpeed != this.speed) {
-        console.log("Changing speed to " + newSpeed);
         this._speed = newSpeed;
 
         if (this.leftMotor.isOn) {

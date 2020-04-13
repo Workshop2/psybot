@@ -9,21 +9,28 @@ const run = async () => {
 
     var searchForRoute = async () => {
         await psybot.frontArm.faceLeftAsync();
-        await delay(2000);
+        if (!await psybot.sonar.waitForSensorData()) {
+            psybot.frontArm.centerAsync();
 
-        if (!psybot.sonar.obstacleDetected) {
-            await psybot.frontArm.centerAsync();
-            return fsm.turnLeft();
+            console.log("Turning left...");
+            await psybot.motors.leftAsync();
+            await delay(1000);
+            await psybot.motors.brakeAsync();
+            return fsm.routeFound();
         }
 
         await psybot.frontArm.faceRightAsync();
-        await delay(2000);
-        psybot.frontArm.centerAsync();
-
-        if (!psybot.sonar.obstacleDetected) {
+        if (!await psybot.sonar.waitForSensorData()) {
             psybot.frontArm.centerAsync();
-            return fsm.turnRight();
+
+            console.log("Turning right...");
+            await psybot.motors.rightAsync();
+            await delay(500);
+            await psybot.motors.brakeAsync();
+            return fsm.routeFound();
         }
+
+        fsm.stuck();
     }
 
     var fsm = new StateMachine({
@@ -31,33 +38,40 @@ const run = async () => {
         transitions: [
             { name: 'goForward', from: 'stopped', to: 'movingForward' },
             { name: 'obstacleDetected', from: 'movingForward', to: 'searching' },
-            { name: 'turnLeft', from: 'searching', to: 'movingForward' },
-            { name: 'turnRight', from: 'searching', to: 'movingForward' },
+            { name: 'routeFound', from: 'searching', to: 'movingForward' },
+            { name: 'stuck', from: 'searching', to: 'stopped' }
         ],
         methods: {
             onMovingForward: async (options) => {
+                console.log("onMovingForward");
                 await psybot.motors.forwardAsync();
             },
 
-            // onBeforeTransition: (lifecycle) => {
-            //     console.log("BEFORE: " + lifecycle.transition, true);
-            // },
+            onStuck: async () => {
+                console.log("I AM STUCK");
+                await psybot.frontArm.centerAsync();
+                await psybot.motors.brakeAsync();
+            },
 
-            // onLeaveState: (lifecycle) => {
-            //     console.log("LEAVE: " + lifecycle.from);
-            // },
+            onBeforeTransition: (lifecycle) => {
+                console.log("BEFORE: " + lifecycle.transition, true);
+            },
 
-            // onEnterState: (lifecycle) => {
-            //     console.log("ENTER: " + lifecycle.to);
-            // },
+            onLeaveState: (lifecycle) => {
+                console.log("LEAVE: " + lifecycle.from);
+            },
 
-            // onAfterTransition: (lifecycle) => {
-            //     console.log("AFTER: " + lifecycle.transition);
-            // },
+            onEnterState: (lifecycle) => {
+                console.log("ENTER: " + lifecycle.to);
+            },
 
-            // onTransition: (lifecycle) => {
-            //     console.log("DURING: " + lifecycle.transition + " (from " + lifecycle.from + " to " + lifecycle.to + ")");
-            // },
+            onAfterTransition: (lifecycle) => {
+                console.log("AFTER: " + lifecycle.transition);
+            },
+
+            onTransition: (lifecycle) => {
+                console.log("DURING: " + lifecycle.transition + " (from " + lifecycle.from + " to " + lifecycle.to + ")");
+            },
 
             onObstacleDetected: async (lifecycle) => {
                 await psybot.motors.brakeAsync();
@@ -68,18 +82,8 @@ const run = async () => {
                 searchForRoute();
             },
 
-            onTurnLeft: async () => {
-                await psybot.motors.leftAsync();
-                await delay(500);          
-                await psybot.motors.brakeAsync();
-                await delay(1000);     
-            },
-
-            onTurnRight: async () => {
-                await psybot.motors.rightAsync();
-                await delay(500);                
-                await psybot.motors.brakeAsync();
-                await delay(1000);                
+            onRouteFound: () => {
+                console.log("onRouteFound")
             },
         }
     });
