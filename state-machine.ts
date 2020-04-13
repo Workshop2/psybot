@@ -8,27 +8,34 @@ const run = async () => {
     var psybot = await Psybot.Create(config.settings.usbConnection);
 
     var searchForRoute = async () => {
-        console.log("Before delay...");
-        await delay(2000);
-        console.log("After delay...");
         await psybot.frontArm.faceLeftAsync();
+        await delay(2000);
+
+        if (!psybot.sonar.obstacleDetected) {
+            await psybot.frontArm.centerAsync();
+            return fsm.turnLeft();
+        }
+
         await psybot.frontArm.faceRightAsync();
-        await psybot.frontArm.centerAsync();
-        
-        console.log("Attempting turnLeft...");
-        fsm.turnLeft();
+        await delay(2000);
+        psybot.frontArm.centerAsync();
+
+        if (!psybot.sonar.obstacleDetected) {
+            psybot.frontArm.centerAsync();
+            return fsm.turnRight();
+        }
     }
 
     var fsm = new StateMachine({
         init: 'stopped',
         transitions: [
-            { name: 'goForward', from: 'stopped', to: 'moving' },
-            { name: 'obstacleDetected', from: 'moving', to: 'searching' },
-            { name: 'turnLeft', from: 'searching', to: 'moving' },
-            { name: 'turnRight', from: 'searching', to: 'moving' },
+            { name: 'goForward', from: 'stopped', to: 'movingForward' },
+            { name: 'obstacleDetected', from: 'movingForward', to: 'searching' },
+            { name: 'turnLeft', from: 'searching', to: 'movingForward' },
+            { name: 'turnRight', from: 'searching', to: 'movingForward' },
         ],
         methods: {
-            onGoForward: async (options) => {
+            onMovingForward: async (options) => {
                 await psybot.motors.forwardAsync();
             },
 
@@ -55,7 +62,7 @@ const run = async () => {
             onObstacleDetected: async (lifecycle) => {
                 await psybot.motors.brakeAsync();
             },
-            
+
             onSearching: (lifecycle) => {
                 console.log("Searching for new route...");
                 searchForRoute();
@@ -63,9 +70,17 @@ const run = async () => {
 
             onTurnLeft: async () => {
                 await psybot.motors.leftAsync();
-                await delay(1000);
-                await psybot.motors.forwardAsync();
-            }
+                await delay(500);          
+                await psybot.motors.brakeAsync();
+                await delay(1000);     
+            },
+
+            onTurnRight: async () => {
+                await psybot.motors.rightAsync();
+                await delay(500);                
+                await psybot.motors.brakeAsync();
+                await delay(1000);                
+            },
         }
     });
 
