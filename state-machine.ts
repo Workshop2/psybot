@@ -6,6 +6,7 @@ import delay from "./psybot-lib/delay";
 
 const run = async () => {
     var psybot = await Psybot.Create(config.settings.usbConnection);
+    await psybot.frontArm.centerAsync();
 
     var searchForRoute = async () => {
         await psybot.frontArm.faceLeftAsync();
