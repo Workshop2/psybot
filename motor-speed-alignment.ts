@@ -6,6 +6,7 @@ const run = async () => {
   var psybot = await Psybot.Create(config.settings.usbConnection);
   await psybot.motors.brakeAsync();
   
+  //await psybot.motors.setSpeedAsync(130);
   console.log("speed", psybot.motors.speed);
 
   console.log("3")
