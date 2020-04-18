@@ -18,6 +18,8 @@ export class FrontArm {
       range: [40, 140],
       center: true
     });
+
+    this.centerAsync();
   }
 
   public async stopAsync(): Promise<void> {
