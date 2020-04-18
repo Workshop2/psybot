@@ -15,14 +15,25 @@ const run = async () => {
 
   var servo = new Servo({
     pin: pin,
-    range: [30, 180],
+    range: [20, 180],
     center: true
   });
 
+  console.log("range", servo.range);
+
+  console.log("center");
+  servo.center();
+  await delay(5000);
+
+  console.log("min");
   servo.min();
   await delay(5000);
+
+  console.log("max");
   servo.max();
   await delay(5000);
+
+  console.log("center");
   servo.center();
 };
 
