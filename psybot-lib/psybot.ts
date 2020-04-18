@@ -11,13 +11,12 @@ export class Psybot {
     topServoPin: 10
   }
 
-  //TODO: Make private
-  board: Board;
+  private board: Board;
 
   public static Create(usbConnection: boolean): Promise<Psybot> {
     return new Promise<Psybot>((resolve, reject) => {
       console.log("Connecting to board...");
-      let board = usbConnection
+      const board = usbConnection
         ? new Board()
         : new Board({ port: "/dev/serial0" });
 
@@ -26,7 +25,6 @@ export class Psybot {
 
         var psybot = new Psybot(board);
         psybot.board.repl.inject({ psybot: psybot });
-        await psybot.frontArm.centerAsync();
 
         resolve(psybot);
       });
@@ -43,13 +41,7 @@ export class Psybot {
       this.board = input;
     }
     else {
-      // TODO: Remove
-      if (input) {
-        this.board = new Board();
-      }
-      else {
-        this.board = new Board({ port: "/dev/serial0" });
-      }
+      throw "Expected board to be supplied"
     }
   }
 
