@@ -36,7 +36,7 @@ export class Psybot {
     });
   }
 
-  constructor(input: boolean | Board) {
+  private constructor(input: boolean | Board) {
     if (input instanceof Board) {
       this.board = input;
     }
