@@ -3,21 +3,39 @@ import { ProximityData } from "johnny-five";
 import delay from "../delay"
 
 export class Sonar {
-  private minimumDistance: number = 20;
-  private sonar: j5.Proximity;
+  private readonly _minimumDistance: number = 20;
+  private readonly _sonar: j5.Proximity;
+  private readonly _bumpers: Array<j5.Pin>;
   private _onObstacleDetected?: () => void;
 
-  constructor(sonarOptions: j5.ProximityOption) {
-    this.sonar = new j5.Proximity(sonarOptions);
+  constructor(sonarOptions: j5.ProximityOption, bumperPins: Array<string>) {
+    this._sonar = new j5.Proximity(sonarOptions);
 
-    this.sonar
+    this._sonar
       .on("data", (proximityData: ProximityData) => {
-        this._obstacleDetected = proximityData.cm < this.minimumDistance;
+        this._obstacleDetected = proximityData.cm < this._minimumDistance;
 
         if (this._obstacleDetected && this._onObstacleDetected) {
           this._onObstacleDetected();
         }
       });
+    
+    this._bumpers = [];
+    for (let i = 0; i < bumperPins.length; i++) {
+      const pin = new j5.Pin(bumperPins[i]);
+      this._bumpers.push(pin);
+      
+      pin.on("data", (data) => {
+        if(data > 100) {
+          return;
+        }
+
+        console.log("bumper colision detected!");
+        if (this._onObstacleDetected) {
+          this._onObstacleDetected();
+        }
+      });
+    }
   }
 
   public setObstacleDetectedCallback(obstacleDetected: () => void): void {
