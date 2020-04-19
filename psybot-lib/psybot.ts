@@ -1,5 +1,3 @@
-import psybotMotors = require("./components/motors");
-import psybotFrontarm = require("./components/frontarm");
 import { Sonar } from "./components/sonar";
 import { Motors } from "./components/motors";
 import { FrontArm } from "./components/frontarm";
