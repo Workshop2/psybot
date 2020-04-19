@@ -1,6 +1,6 @@
-import { Psybot } from "./psybot-lib/psybot";
+import { Psybot } from "../psybot-lib/psybot";
 var config = require('./config/config');
-import delay from "./psybot-lib/delay";
+import delay from "../psybot-lib/delay";
 
 const run = async () => {
   var psybot = await Psybot.Create(config.settings.usbConnection);

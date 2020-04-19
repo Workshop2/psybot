@@ -1,4 +1,4 @@
-import { Psybot } from "./psybot-lib/psybot";
+import { Psybot } from "../psybot-lib/psybot";
 var config = require('./config/config');
 
 const run = async () => {
