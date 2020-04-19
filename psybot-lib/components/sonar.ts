@@ -27,7 +27,7 @@ export class Sonar {
   }
 
   private _obstacleDetected: boolean = undefined;
-  public async waitForSensorData(): Promise<boolean> {
+  public async waitForSensorData(): Promise<SensorState> {
     await delay(200);
     this._obstacleDetected = undefined;
 
@@ -36,6 +36,13 @@ export class Sonar {
       await delay(5);
     }
 
-    return this._obstacleDetected;
+    return this._obstacleDetected 
+      ? SensorState.ObstacleDetected
+      : SensorState.NothingDetected;
   }
+}
+
+export enum SensorState {
+  NothingDetected,
+  ObstacleDetected
 }

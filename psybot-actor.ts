@@ -1,6 +1,7 @@
 import { Psybot } from "./psybot-lib/psybot";
 import { PsybotStateMachine, StateEvents } from "./psybot-state-machine";
 import delay from "./psybot-lib/delay";
+import { SensorState } from "./psybot-lib/components/sonar";
 
 export class PsybotActor {
     private _psybot: Psybot;
@@ -67,7 +68,7 @@ export class PsybotActor {
 
     private async searchForRoute() {
         await this._psybot.frontArm.faceLeftAsync();
-        if (!await this._psybot.sonar.waitForSensorData()) {
+        if (await this._psybot.sonar.waitForSensorData() == SensorState.NothingDetected) {
             this._psybot.frontArm.centerAsync();
 
             console.log("Turning left...");
@@ -78,13 +79,28 @@ export class PsybotActor {
         }
 
         await this._psybot.frontArm.faceRightAsync();
-        if (!await this._psybot.sonar.waitForSensorData()) {
+        if (await this._psybot.sonar.waitForSensorData() == SensorState.NothingDetected) {
             this._psybot.frontArm.centerAsync();
 
             console.log("Turning right...");
             await this._psybot.motors.rightAsync();
             await delay(500);
             await this._psybot.motors.brakeAsync();
+            return this._stateMachine.routeFound();
+        }
+
+        this._psybot.frontArm.centerAsync();
+
+        console.log("Reversing...");
+        await this._psybot.motors.reverseAsync();
+        await delay(1500);
+        await this._psybot.motors.brakeAsync();
+
+        console.log("Turning around...");
+        await this._psybot.motors.rightAsync();
+        await delay(1000);
+        
+        if (await this._psybot.sonar.waitForSensorData() == SensorState.NothingDetected) {
             return this._stateMachine.routeFound();
         }
 
