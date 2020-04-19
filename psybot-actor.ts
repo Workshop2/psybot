@@ -25,7 +25,7 @@ export class PsybotActor {
     private wireUpExternalEvents() {
         setInterval(() =>
             console.log("Current state: " + this._stateMachine.state
-            ), 1000);
+        ), 1000);
 
         this._psybot.sonar.setObstacleDetectedCallback(() => {
             if (this._stateMachine.can("obstacleDetected")) {
@@ -42,7 +42,21 @@ export class PsybotActor {
 
     private async onMovingForwardAsync() {
         console.log("onMovingForward");
+        if(this._psybot.motors.motorsOn) {
+            await this._psybot.motors.forwardAsync();
+        }
+
+        await this._psybot.motors.setSpeedAsync(this._psybot.motors.MinSpeed);
         await this._psybot.motors.forwardAsync();
+
+        while(this._psybot.motors.speed < (this._psybot.motors.MaxSpeed - 10)){
+            const delta = (this._psybot.motors.MaxSpeed - this._psybot.motors.speed) / 3;
+            const newSpeed = this._psybot.motors.speed + delta;
+            await this._psybot.motors.setSpeedAsync(newSpeed);
+            await delay(10);
+        }
+
+        await this._psybot.motors.setSpeedAsync(this._psybot.motors.MaxSpeed);
     }
 
     private async onObstacleDetectedAsync() {

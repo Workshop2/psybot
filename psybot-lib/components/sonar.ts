@@ -14,10 +14,8 @@ export class Sonar {
       .on("data", (proximityData: ProximityData) => {
         this._obstacleDetected = proximityData.cm < this.minimumDistance;
 
-        if (this._obstacleDetected) {
-          if (this._onObstacleDetected != null) {
-            this._onObstacleDetected();
-          }
+        if (this._obstacleDetected && this._onObstacleDetected) {
+          this._onObstacleDetected();
         }
       });
   }
@@ -31,12 +29,12 @@ export class Sonar {
     await delay(200);
     this._obstacleDetected = undefined;
 
-    while(this._obstacleDetected === undefined) {
+    while (this._obstacleDetected === undefined) {
       console.log("waiting for sensor data...");
       await delay(5);
     }
 
-    return this._obstacleDetected 
+    return this._obstacleDetected
       ? SensorState.ObstacleDetected
       : SensorState.NothingDetected;
   }
