@@ -54,26 +54,6 @@ const run = async () => {
                 await psybot.motors.brakeAsync();
             },
 
-            onBeforeTransition: (lifecycle) => {
-                console.log("BEFORE: " + lifecycle.transition, true);
-            },
-
-            onLeaveState: (lifecycle) => {
-                console.log("LEAVE: " + lifecycle.from);
-            },
-
-            onEnterState: (lifecycle) => {
-                console.log("ENTER: " + lifecycle.to);
-            },
-
-            onAfterTransition: (lifecycle) => {
-                console.log("AFTER: " + lifecycle.transition);
-            },
-
-            onTransition: (lifecycle) => {
-                console.log("DURING: " + lifecycle.transition + " (from " + lifecycle.from + " to " + lifecycle.to + ")");
-            },
-
             onObstacleDetected: async (lifecycle) => {
                 await psybot.motors.brakeAsync();
             },
@@ -86,6 +66,26 @@ const run = async () => {
             onRouteFound: () => {
                 console.log("onRouteFound")
             },
+
+            // onBeforeTransition: (lifecycle) => {
+            //     console.log("BEFORE: " + lifecycle.transition, true);
+            // },
+
+            // onLeaveState: (lifecycle) => {
+            //     console.log("LEAVE: " + lifecycle.from);
+            // },
+
+            // onEnterState: (lifecycle) => {
+            //     console.log("ENTER: " + lifecycle.to);
+            // },
+
+            // onAfterTransition: (lifecycle) => {
+            //     console.log("AFTER: " + lifecycle.transition);
+            // },
+
+            // onTransition: (lifecycle) => {
+            //     console.log("DURING: " + lifecycle.transition + " (from " + lifecycle.from + " to " + lifecycle.to + ")");
+            // },
         }
     });
 
