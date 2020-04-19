@@ -1,7 +1,7 @@
 import { Psybot } from "./psybot-lib/psybot";
-var StateMachine = require('javascript-state-machine');
-var config = require('./config/config');
-var visualize = require('javascript-state-machine/lib/visualize');
+var StateMachine = require("javascript-state-machine");
+var config = require("./config/config");
+var visualize = require("javascript-state-machine/lib/visualize");
 import delay from "./psybot-lib/delay";
 
 const run = async () => {
@@ -35,12 +35,12 @@ const run = async () => {
     }
 
     var fsm = new StateMachine({
-        init: 'stopped',
+        init: "stopped",
         transitions: [
-            { name: 'goForward', from: 'stopped', to: 'movingForward' },
-            { name: 'obstacleDetected', from: 'movingForward', to: 'searching' },
-            { name: 'routeFound', from: 'searching', to: 'movingForward' },
-            { name: 'stuck', from: 'searching', to: 'stopped' }
+            { name: "goForward", from: "stopped", to: "movingForward" },
+            { name: "obstacleDetected", from: "movingForward", to: "searching" },
+            { name: "routeFound", from: "searching", to: "movingForward" },
+            { name: "stuck", from: "searching", to: "stopped" }
         ],
         methods: {
             onMovingForward: async (options) => {
