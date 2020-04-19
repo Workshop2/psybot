@@ -1,5 +1,5 @@
 import { Psybot } from "../psybot-lib/psybot";
-var config = require('./config/config');
+var config = require('../config/config');
 
 const run = async () => {
 
