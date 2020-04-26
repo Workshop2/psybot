@@ -70,7 +70,7 @@ export class Psybot {
         controller: "GP2Y0A21YK",
         pin: "A0"
       },
-      ["A1"])
+      [])
     }
 
     return this._sonar;
