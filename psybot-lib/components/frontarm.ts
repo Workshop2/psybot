@@ -9,7 +9,7 @@ export class FrontArm {
   constructor(bottomServoPin: number, topServoPin: number) {
     this.bottomServo = new Servo({
       pin: bottomServoPin,
-      range: [30, 180],
+      range: [20, 180],
       center: true
     });
 
@@ -59,12 +59,12 @@ export class FrontArm {
   }
 
   public async faceRightAsync(): Promise<void> {
-    this.bottomServo.min();
+    this.bottomServo.max();
     await delay(this.operationTimeout);
   }
 
   public async faceLeftAsync(): Promise<void> {
-    this.bottomServo.max();
+    this.bottomServo.min();
     await delay(this.operationTimeout);
   }
 
