@@ -15,7 +15,7 @@ const run = async () => {
 
   var servo = new Servo({
     pin: pin,
-    range: [20, 180],
+    range: [40, 180],
     center: true
   });
 

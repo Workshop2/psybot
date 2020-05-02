@@ -12,6 +12,8 @@ const run = async () => {
 
     var psybot = await Psybot.Create(config.settings.usbConnection);
     console.log("Connected :)");
+
+    await psybot.frontArm.centerAsync();
 };
 
 run();
