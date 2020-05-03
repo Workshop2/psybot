@@ -31,8 +31,8 @@ export class PsybotStateMachine {
 }
 
 export class StateEvents {
-    
-    public constructor(init?:Partial<StateEvents>) {
+
+    public constructor(init?: Partial<StateEvents>) {
         Object.assign(this, init);
     }
 
