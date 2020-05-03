@@ -3,6 +3,7 @@ import { Accelerometer } from "johnny-five";
 export class MovementSensors {
     private _accelerometer: Accelerometer;
     private _accelerometerData: any;
+    private _isStoppedCount: number;
 
     constructor(accelerometerController: string) {
         this._accelerometer = new Accelerometer({
@@ -25,8 +26,16 @@ export class MovementSensors {
 
         setInterval(() => {
             if(this._accelerometerData.acceleration >= 1.99) {
-                console.log("accelerometerData", this._accelerometerData);
+                //console.log("accelerometerData", this._accelerometerData);
+                this._isStoppedCount++;                
             }
-        }, 500);
+            else {
+                this._isStoppedCount = 0;
+            }
+
+            if(this._isStoppedCount > 5) {
+                console.log("I THINK I AM STOPPED?!");
+            }
+        }, 300);
     }
 }
