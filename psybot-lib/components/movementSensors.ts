@@ -12,7 +12,7 @@ export class MovementSensors {
             controller: accelerometerController
         });
 
-        this._accelerometer.on("data", () => {
+        this._accelerometer.on("change", () => {
             this._accelerometerData = {
                 x: this._accelerometer.x,
                 y: this._accelerometer.y,
@@ -24,6 +24,10 @@ export class MovementSensors {
                 inclination: this._accelerometer.inclination,
                 zeroV: this._accelerometer.zeroV,
             };
+
+            if (!this._onStopped) {
+                console.log(this._accelerometerData);
+            }
         });
 
         setInterval(() => {
@@ -42,7 +46,7 @@ export class MovementSensors {
         }, 100);
 
         setInterval(() => {
-            if(this._isMovingCount + this._isStoppedCount < 5) {
+            if (this._isMovingCount + this._isStoppedCount < 5) {
                 return;
             }
 
