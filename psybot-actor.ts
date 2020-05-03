@@ -32,6 +32,12 @@ export class PsybotActor {
                 this._stateMachine.obstacleDetected();
             }
         });
+
+        this._psybot.movementSensors.setStoppedCallback(() => {
+            if (this._stateMachine.can("stuck")) {
+                this._stateMachine.stuck();
+            }
+        });
     }
 
     public start() {

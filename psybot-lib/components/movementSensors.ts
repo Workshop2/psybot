@@ -5,6 +5,7 @@ export class MovementSensors {
     private _accelerometerData: any;
     private _isStoppedCount: number;
     private _isMovingCount: number;
+    private _onStopped?: () => void;
 
     constructor(accelerometerController: string) {
         this._accelerometer = new Accelerometer({
@@ -26,11 +27,11 @@ export class MovementSensors {
         });
 
         setInterval(() => {
-            if(!this._accelerometerData?.acceleration) {
+            if (!this._accelerometerData?.acceleration) {
                 return;
             }
 
-            if(this._accelerometerData.acceleration >= 1.99) {
+            if (this._accelerometerData.acceleration >= 1.99) {
                 //console.log("accelerometerData", this._accelerometerData);
                 this._isStoppedCount++;
                 //console.log("maybe stopped...");
@@ -41,8 +42,12 @@ export class MovementSensors {
         }, 100);
 
         setInterval(() => {
-            if(this._isStoppedCount > this._isMovingCount) {
+            if (this._isStoppedCount > this._isMovingCount) {
                 console.log("I THINK I AM STOPPED?!");
+
+                if (this._onStopped) {
+                    this._onStopped();
+                }
             }
 
             console.log("accelData", {
@@ -53,5 +58,9 @@ export class MovementSensors {
             this._isStoppedCount = 0;
             this._isMovingCount = 0;
         }, 1000);
+    }
+
+    public setStoppedCallback(onStopped: () => void): void {
+        this._onStopped = onStopped;
     }
 }
