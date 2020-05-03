@@ -11,7 +11,7 @@ export class MovementSensors {
             controller: accelerometerController
         });
 
-        this._accelerometer.on("change", () => {
+        this._accelerometer.on("data", () => {
             this._accelerometerData = {
                 x: this._accelerometer.x,
                 y: this._accelerometer.y,
@@ -26,13 +26,17 @@ export class MovementSensors {
         });
 
         setInterval(() => {
+            if(!this._accelerometerData?.acceleration) {
+                return;
+            }
+
             if(this._accelerometerData.acceleration >= 1.99) {
                 //console.log("accelerometerData", this._accelerometerData);
                 this._isStoppedCount++;
                 //console.log("maybe stopped...");
             }
             else {
-                this._isStoppedCount++;
+                this._isMovingCount++;
             }
         }, 100);
 
