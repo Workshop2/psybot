@@ -8,46 +8,28 @@ const run = async () => {
   var psybot = await Psybot.Create(config.settings.usbConnection);
 
   console.log("Stopped")
-  await delay(2000);
+  await psybot.motors.brakeAsync();
+  await delay(1000);
 
   console.log("Moving forward")
   await psybot.motors.forwardAsync();
-  await delay(2000);
+  await delay(1000);
 
   console.log("Stopped")
-  await delay(2000);
+  await psybot.motors.brakeAsync();
+  await delay(1000);
 
   console.log("Moving forward")
   await psybot.motors.forwardAsync();
-  await delay(2000);
+  await delay(1000);
 
   console.log("Stopped")
-  await delay(2000);
+  await psybot.motors.brakeAsync();
+  await delay(1000);
 
   console.log("Moving forward")
   await psybot.motors.forwardAsync();
-  await delay(2000);
-
-  console.log("Stopped")
-  await delay(2000);
-
-  console.log("Moving forward")
-  await psybot.motors.forwardAsync();
-  await delay(2000);
-
-  console.log("Stopped")
-  await delay(2000);
-
-  console.log("Moving forward")
-  await psybot.motors.forwardAsync();
-  await delay(2000);
-
-  console.log("Stopped")
-  await delay(2000);
-
-  console.log("Moving forward")
-  await psybot.motors.forwardAsync();
-  await delay(2000);
+  await delay(1000);
 }
 
 run();

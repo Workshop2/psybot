@@ -24,15 +24,15 @@ export class MovementSensors {
                 inclination: this._accelerometer.inclination,
                 zeroV: this._accelerometer.zeroV,
             };
-
-            if (!this._onStopped) {
-                console.log(this._accelerometerData);
-            }
         });
 
         setInterval(() => {
             if (!this._accelerometerData?.acceleration) {
                 return;
+            }
+
+            if (!this._onStopped) {
+                console.log(this._accelerometerData);
             }
 
             if (this._accelerometerData.acceleration >= 1.99) {
