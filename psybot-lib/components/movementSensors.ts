@@ -27,7 +27,8 @@ export class MovementSensors {
         setInterval(() => {
             if(this._accelerometerData.acceleration >= 1.99) {
                 //console.log("accelerometerData", this._accelerometerData);
-                this._isStoppedCount++;                
+                this._isStoppedCount++;
+                console.log("maybe stopped...");
             }
             else {
                 this._isStoppedCount = 0;
