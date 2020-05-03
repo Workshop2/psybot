@@ -29,24 +29,22 @@ export class MovementSensors {
             if(this._accelerometerData.acceleration >= 1.99) {
                 //console.log("accelerometerData", this._accelerometerData);
                 this._isStoppedCount++;
-                console.log("maybe stopped...");
+                //console.log("maybe stopped...");
             }
             else {
                 this._isStoppedCount++;
-            }
-
-            if(this._isStoppedCount > 5) {
-                console.log("I THINK I AM STOPPED?!");
             }
         }, 100);
 
         setInterval(() => {
             if(this._isStoppedCount > this._isMovingCount) {
-                console.log("I THINK I AM STOPPED?!", {
-                    isStoppedCount: this._isStoppedCount,
-                    isMovingCount: this._isMovingCount
-                });
+                console.log("I THINK I AM STOPPED?!");
             }
+
+            console.log("accelData", {
+                isStoppedCount: this._isStoppedCount,
+                isMovingCount: this._isMovingCount
+            });
 
             this._isStoppedCount = 0;
             this._isMovingCount = 0;
