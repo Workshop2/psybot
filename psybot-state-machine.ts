@@ -9,7 +9,8 @@ export class PsybotStateMachine {
                 { name: "goForward", from: "stopped", to: "movingForward" },
                 { name: "obstacleDetected", from: "movingForward", to: "searching" },
                 { name: "routeFound", from: "searching", to: "movingForward" },
-                { name: "stuck", from: "searching", to: "stopped" }
+                { name: "stuck", from: "searching", to: "stopped" },
+                { name: "crashed", from: "movingForward", to: "stopped" }
             ],
             methods: {
                 onMovingForward: stateEvents.onMoveForward,
@@ -17,6 +18,7 @@ export class PsybotStateMachine {
                 onObstacleDetected: stateEvents.onObstacleDetected,
                 onSearching: stateEvents.onSearching,
                 onRouteFound: stateEvents.onRouteFound,
+                onCrashed: stateEvents.onCrashed,
 
                 onTransition: (lifecycle) => {
                     console.log("Transitioning: " + lifecycle.transition + " (from " + lifecycle.from + " to " + lifecycle.to + ")");
@@ -74,5 +76,13 @@ export class StateEvents {
     }
     public set onRouteFound(v: Function) {
         this._onRouteFound = v;
+    }
+
+    private _onCrashed: Function;
+    public get onCrashed(): Function {
+        return this._onCrashed;
+    }
+    public set onCrashed(v: Function) {
+        this._onCrashed = v;
     }
 }

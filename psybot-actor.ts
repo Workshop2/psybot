@@ -17,6 +17,7 @@ export class PsybotActor {
             onSearching: () => this.onSearching(),
             onStuck: async () => await this.onStuckAsync(),
             onRouteFound: () => this.onRouteFound(),
+            onCrashed: async () => await this.onCrashedAsync(),
         }));
 
         this.wireUpExternalEvents();
@@ -34,7 +35,7 @@ export class PsybotActor {
         });
 
         this._psybot.movementSensors.setStoppedCallback(() => {
-            if (this._stateMachine.is("movingForward")) {
+            if (this._stateMachine.can("crashed")) {
                 this._stateMachine.stuck();
             }
         });
@@ -58,6 +59,12 @@ export class PsybotActor {
 
     private async onStuckAsync() {
         console.log("I AM STUCK");
+        await this._psybot.frontArm.centerAsync();
+        await this._psybot.motors.brakeAsync();
+    }
+
+    private async onCrashedAsync() {
+        console.log("<<CRASHED>>");
         await this._psybot.frontArm.centerAsync();
         await this._psybot.motors.brakeAsync();
     }
