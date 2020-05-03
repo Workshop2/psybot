@@ -2,6 +2,7 @@ import { Sonar } from "./components/sonar";
 import { Motors } from "./components/motors";
 import { FrontArm } from "./components/frontarm";
 import { Board } from "johnny-five";
+import { MovementSensors } from "./components/movementSensors";
 
 export class Psybot {
   private armPins = {
@@ -34,13 +35,17 @@ export class Psybot {
     });
   }
 
-  private constructor(input: boolean | Board) {
-    if (input instanceof Board) {
-      this.board = input;
+  private constructor(board: boolean | Board) {
+    if (board instanceof Board) {
+      this.board = board;
     }
     else {
       throw "Expected board to be supplied"
     }
+
+    this._movementSensors = new MovementSensors(
+      "ADXL345"
+    );
   }
 
   private _motors: Motors;
@@ -74,5 +79,10 @@ export class Psybot {
     }
 
     return this._sonar;
+  }
+
+  private _movementSensors: MovementSensors;
+  get movementSensors(): MovementSensors {
+    return this._movementSensors;
   }
 }
