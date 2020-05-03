@@ -3,8 +3,8 @@ import { Accelerometer } from "johnny-five";
 export class MovementSensors {
     private _accelerometer: Accelerometer;
     private _accelerometerData: any;
-    private _isStoppedCount: number;
-    private _isMovingCount: number;
+    private _isStoppedCount: number = 0;
+    private _isMovingCount: number = 0;
     private _onStopped?: () => void;
 
     constructor(accelerometerController: string) {
@@ -35,9 +35,7 @@ export class MovementSensors {
             }
 
             if (this._accelerometerData.acceleration < 2) {
-                //console.log("accelerometerData", this._accelerometerData);
                 this._isStoppedCount++;
-                //console.log("maybe stopped...");
             }
             else {
                 this._isMovingCount++;
@@ -45,10 +43,6 @@ export class MovementSensors {
         }, 100);
 
         setInterval(() => {
-            if (!this._isMovingCount || !this._isStoppedCount) {
-                return;
-            }
-
             if (this._isStoppedCount > 7) {
                 console.log("I THINK I AM STOPPED?!");
 
@@ -69,5 +63,9 @@ export class MovementSensors {
 
     public setStoppedCallback(onStopped: () => void): void {
         this._onStopped = onStopped;
+    }
+
+    private isDefined(val: number): boolean {
+        return !Number.isNaN(val) && val !== null && val !== undefined;
     }
 }
