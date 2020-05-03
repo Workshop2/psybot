@@ -24,7 +24,9 @@ export class MovementSensors {
         });
 
         setInterval(() => {
-            console.log("accelerometerData", this._accelerometerData)
-        }, 1000);
+            if(this._accelerometerData.acceleration >= 1.99) {
+                console.log("accelerometerData", this._accelerometerData);
+            }
+        }, 500);
     }
 }
