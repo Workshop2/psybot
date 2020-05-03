@@ -22,7 +22,6 @@ export class MovementSensors {
                 orientation: this._accelerometer.orientation,
                 acceleration: this._accelerometer.acceleration,
                 inclination: this._accelerometer.inclination,
-                zeroV: this._accelerometer.zeroV,
             };
         });
 
@@ -35,7 +34,7 @@ export class MovementSensors {
                 console.log(this._accelerometerData);
             }
 
-            if (this._accelerometerData.acceleration >= 1.99) {
+            if (this._accelerometerData.acceleration < 2) {
                 //console.log("accelerometerData", this._accelerometerData);
                 this._isStoppedCount++;
                 //console.log("maybe stopped...");
