@@ -34,7 +34,7 @@ export class PsybotActor {
         });
 
         this._psybot.movementSensors.setStoppedCallback(() => {
-            if (this._stateMachine.can("stuck")) {
+            if (this._stateMachine.is("movingForward")) {
                 this._stateMachine.stuck();
             }
         });
