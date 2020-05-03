@@ -9,27 +9,31 @@ const run = async () => {
 
   console.log("Stopped")
   await psybot.motors.brakeAsync();
-  await delay(1000);
+  await delay(2000);
 
   console.log("Moving forward")
   await psybot.motors.forwardAsync();
-  await delay(1000);
+  await delay(2000);
 
   console.log("Stopped")
   await psybot.motors.brakeAsync();
-  await delay(1000);
+  await delay(2000);
 
   console.log("Moving forward")
   await psybot.motors.forwardAsync();
-  await delay(1000);
+  await delay(2000);
 
   console.log("Stopped")
   await psybot.motors.brakeAsync();
-  await delay(1000);
+  await delay(2000);
 
   console.log("Moving forward")
   await psybot.motors.forwardAsync();
-  await delay(1000);
+  await delay(2000);
+  
+  console.log("Stopped")
+  await psybot.motors.brakeAsync();
+  process.exit();
 }
 
 run();
