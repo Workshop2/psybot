@@ -43,7 +43,7 @@ export class MovementSensors {
         }, 100);
 
         setInterval(() => {
-            if (this._isStoppedCount > 7) {
+            if (this._isStoppedCount >= 10) {
                 console.log("I THINK I AM STOPPED?!");
 
                 if (this._onStopped) {
