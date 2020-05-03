@@ -42,6 +42,10 @@ export class MovementSensors {
         }, 100);
 
         setInterval(() => {
+            if(this._isMovingCount + this._isStoppedCount < 5) {
+                return;
+            }
+
             if (this._isStoppedCount > this._isMovingCount) {
                 console.log("I THINK I AM STOPPED?!");
 
