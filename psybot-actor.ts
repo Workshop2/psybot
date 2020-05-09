@@ -52,6 +52,7 @@ export class PsybotActor {
     private async onMovingForwardAsync() {
         console.log("onMovingForward");
         await this._psybot.motors.forwardAsync();
+        this._psybot.movementSensors.resetSensors();
     }
 
     private async onObstacleDetectedAsync() {

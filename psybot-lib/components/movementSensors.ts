@@ -4,6 +4,7 @@ const fs = require('fs');
 export class MovementSensors {
     private _accelerometer: Accelerometer;
     private _accelerometerData: any;
+    private _previousAccelerometerData: any;
     private _isStoppedCount: number = 0;
     private _isMovingCount: number = 0;
     private _onStopped?: () => void;
@@ -17,6 +18,7 @@ export class MovementSensors {
         this._log = [];
 
         this._accelerometer.on("change", () => {
+            this._previousAccelerometerData = this._accelerometerData;
             this._accelerometerData = {
                 timestamp: new Date(),
                 x: this._accelerometer.x,
@@ -41,7 +43,8 @@ export class MovementSensors {
                 console.log(this._accelerometerData);
             }
 
-            if (this._accelerometerData.y <= -0.55 && this._accelerometerData.y >= 0.59) {
+            const difference = this._previousAccelerometerData.y - this._accelerometerData.y;
+            if (difference <= 0.009 && difference >= -0.009) {
                 this._isStoppedCount++;
             }
             else {
@@ -75,5 +78,10 @@ export class MovementSensors {
 
     public setStoppedCallback(onStopped: () => void): void {
         this._onStopped = onStopped;
+    }
+
+    public resetSensors() {
+        this._isMovingCount = 0;
+        this._isStoppedCount = 0;
     }
 }
