@@ -41,8 +41,7 @@ export class MovementSensors {
                 console.log(this._accelerometerData);
             }
 
-            if (this._accelerometerData.x <= -0.33984375 &&
-                this._accelerometerData.y >= -0.34375) {
+            if (this._accelerometerData.y <= -0.9) {
                 this._isStoppedCount++;
             }
             else {
