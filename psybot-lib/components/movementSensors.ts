@@ -29,7 +29,7 @@ export class MovementSensors {
                 inclination: this._accelerometer.inclination,
             };
 
-            this._log.push(this._accelerometerData);
+            //this._log.push(this._accelerometerData);
         });
 
         setInterval(() => {
@@ -41,7 +41,8 @@ export class MovementSensors {
                 console.log(this._accelerometerData);
             }
 
-            if (this._accelerometerData.acceleration < 2) {
+            if (this._accelerometerData.x <= -0.33984375 &&
+                this._accelerometerData.y >= -0.34375) {
                 this._isStoppedCount++;
             }
             else {
