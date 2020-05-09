@@ -34,8 +34,6 @@ const run = async () => {
   console.log("Stopped")
   await psybot.motors.brakeAsync();
 
-  await psybot.movementSensors.writeLogsToDisk();
-
   process.exit();
 }
 

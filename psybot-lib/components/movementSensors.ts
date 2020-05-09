@@ -1,5 +1,5 @@
 import { Accelerometer } from "johnny-five";
-const fs = require('fs');
+import { WriteStream, createWriteStream } from "fs";
 
 export class MovementSensors {
     private _accelerometer: Accelerometer;
@@ -9,6 +9,7 @@ export class MovementSensors {
     private _isMovingCount: number = 0;
     private _onStopped?: () => void;
     private _log: Array<any> = null;
+    private _logStream: WriteStream = null;
 
     constructor(accelerometerController: string) {
         this._accelerometer = new Accelerometer({
@@ -46,6 +47,8 @@ export class MovementSensors {
             else {
                 this._isMovingCount++;
             }
+
+            console.log("logCount", this._log.length)
         }, 100);
 
         setInterval(() => {
@@ -63,20 +66,23 @@ export class MovementSensors {
             this._isStoppedCount = 0;
             this._isMovingCount = 0;
         }, 1000);
+
+        setInterval(() => {
+            if(!this._log) {
+                return;
+            }
+
+            this._log.forEach(element => {
+                this._logStream.write(JSON.stringify(element) + ", ");
+            });
+
+            this._log = [];
+        }, 500);
     }
 
     public collectLogs() {
+        this._logStream = createWriteStream("movementData.json");
         this._log = [];
-    }
-
-    public writeLogsToDisk() {
-        if (!this._log) {
-            console.log("Logging wasn't turn on, nothing to persist");
-            return;
-        }
-
-        const data = JSON.stringify(this._log);
-        fs.writeFileSync("movementData.json", data);
     }
 
     public setStoppedCallback(onStopped: () => void): void {
