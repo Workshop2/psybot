@@ -1,4 +1,5 @@
 import { Accelerometer } from "johnny-five";
+const fs = require('fs');
 
 export class MovementSensors {
     private _accelerometer: Accelerometer;
@@ -6,14 +7,18 @@ export class MovementSensors {
     private _isStoppedCount: number = 0;
     private _isMovingCount: number = 0;
     private _onStopped?: () => void;
+    private _log: Array<any>;
 
     constructor(accelerometerController: string) {
         this._accelerometer = new Accelerometer({
             controller: accelerometerController
         });
 
+        this._log = [];
+
         this._accelerometer.on("change", () => {
             this._accelerometerData = {
+                timestamp: new Date(),
                 x: this._accelerometer.x,
                 y: this._accelerometer.y,
                 z: this._accelerometer.z,
@@ -23,6 +28,8 @@ export class MovementSensors {
                 acceleration: this._accelerometer.acceleration,
                 inclination: this._accelerometer.inclination,
             };
+
+            this._log.push(this._accelerometerData);
         });
 
         setInterval(() => {
@@ -61,11 +68,12 @@ export class MovementSensors {
         }, 1000);
     }
 
-    public setStoppedCallback(onStopped: () => void): void {
-        this._onStopped = onStopped;
+    public writeLogsToDisk() {
+        const data = JSON.stringify(this._log);
+        fs.writeFileSync("movementData.json", data);
     }
 
-    private isDefined(val: number): boolean {
-        return !Number.isNaN(val) && val !== null && val !== undefined;
+    public setStoppedCallback(onStopped: () => void): void {
+        this._onStopped = onStopped;
     }
 }
