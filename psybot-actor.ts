@@ -10,6 +10,7 @@ export class PsybotActor {
     constructor(psybot: Psybot) {
         this._psybot = psybot;
         this._psybot.frontArm.centerAsync();
+        this._psybot.movementSensors.collectLogs();
 
         this._stateMachine = PsybotStateMachine.create(new StateEvents({
             onMoveForward: async () => await this.onMovingForwardAsync(),
@@ -115,7 +116,7 @@ export class PsybotActor {
         console.log("Turning around...");
         await this._psybot.motors.rightAsync();
         await delay(1000);
-        
+
         if (await this._psybot.sonar.waitForSensorData() == SensorState.NothingDetected) {
             return this._stateMachine.routeFound();
         }

@@ -8,14 +8,12 @@ export class MovementSensors {
     private _isStoppedCount: number = 0;
     private _isMovingCount: number = 0;
     private _onStopped?: () => void;
-    private _log: Array<any>;
+    private _log: Array<any> = null;
 
     constructor(accelerometerController: string) {
         this._accelerometer = new Accelerometer({
             controller: accelerometerController
         });
-
-        this._log = [];
 
         this._accelerometer.on("change", () => {
             this._previousAccelerometerData = this._accelerometerData;
@@ -31,16 +29,14 @@ export class MovementSensors {
                 inclination: this._accelerometer.inclination,
             };
 
-            this._log.push(this._accelerometerData);
+            if (this._log) {
+                this._log.push(this._accelerometerData);
+            }
         });
 
         setInterval(() => {
             if (!this._accelerometerData?.acceleration) {
                 return;
-            }
-
-            if (!this._onStopped) {
-                console.log(this._accelerometerData);
             }
 
             const difference = this._previousAccelerometerData.y - this._accelerometerData.y;
@@ -54,8 +50,6 @@ export class MovementSensors {
 
         setInterval(() => {
             if (this._isStoppedCount >= 9) {
-                console.log("I THINK I AM STOPPED?!");
-
                 if (this._onStopped) {
                     this._onStopped();
                 }
@@ -71,7 +65,16 @@ export class MovementSensors {
         }, 1000);
     }
 
+    public collectLogs() {
+        this._log = [];
+    }
+
     public writeLogsToDisk() {
+        if (!this._log) {
+            console.log("Logging wasn't turn on, nothing to persist");
+            return;
+        }
+
         const data = JSON.stringify(this._log);
         fs.writeFileSync("movementData.json", data);
     }
