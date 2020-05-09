@@ -3,57 +3,31 @@ import delay from "../delay"
 
 export class FrontArm {
   private bottomServo: Servo;
-  //private topServo: Servo;
-  private operationTimeout: number = 400;
+  private operationTimeout: number = 600;
 
-  constructor(bottomServoPin: number, topServoPin: number) {
+  constructor(bottomServoPin: number) {
     this.bottomServo = new Servo({
       pin: bottomServoPin,
       range: [40, 180],
       center: true
     });
 
-    // this.topServo = new Servo({
-    //   pin: topServoPin,
-    //   range: [40, 140],
-    //   center: true
-    // });
-
     this.centerAsync();
   }
 
   public async stopAsync(): Promise<void> {
-    //this.topServo.stop();
     this.bottomServo.stop();
 
     await delay(this.operationTimeout);
   }
 
-  public async stopBottomAsync(): Promise<void> {
+  private async stopBottomAsync(): Promise<void> {
     this.bottomServo.stop();
-    await delay(this.operationTimeout);
-  }
-
-  public async stopTopAsync(): Promise<void> {
-    //this.topServo.stop();
     await delay(this.operationTimeout);
   }
 
   public async centerAsync(): Promise<void> {
     this.bottomServo.center();
-    //this.topServo.center();
-
-    await delay(this.operationTimeout);
-  }
-
-  public async faceUpAsync(): Promise<void> {
-    //this.topServo.min();
-
-    await delay(this.operationTimeout);
-  }
-
-  public async faceDownAsync(): Promise<void> {
-    //this.topServo.max();
 
     await delay(this.operationTimeout);
   }
@@ -66,11 +40,6 @@ export class FrontArm {
   public async faceLeftAsync(): Promise<void> {
     this.bottomServo.min();
     await delay(this.operationTimeout);
-  }
-
-  public async sweepUpDownAsync(sweepOptions?: ServoSweepOpts): Promise<void> {
-    await this.stopTopAsync();
-    //this.topServo.sweep(sweepOptions);
   }
 
   public async sweepLeftAsync(sweepOptions?: ServoSweepOpts): Promise<void> {

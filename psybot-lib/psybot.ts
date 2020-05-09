@@ -61,8 +61,7 @@ export class Psybot {
   get frontArm(): FrontArm {
     if (!this._frontArm) {
       this._frontArm = new FrontArm(
-        this.armPins.bottomServoPin,
-        this.armPins.topServoPin);
+        this.armPins.bottomServoPin);
     }
 
     return this._frontArm;
