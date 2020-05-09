@@ -81,3 +81,4 @@ $RECYCLE.BIN/
 config/config.js
 *.js.map
 build
+movementData.json

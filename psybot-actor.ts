@@ -24,9 +24,11 @@ export class PsybotActor {
     }
 
     private wireUpExternalEvents() {
-        // setInterval(() =>
-        //     console.log("Current state: " + this._stateMachine.state
-        // ), 1000);
+        setInterval(() => {
+            console.log("Saving sensor data...");
+            this._psybot.movementSensors.writeLogsToDisk();
+            console.log("Saved");
+        }, 5000);
 
         this._psybot.sonar.setObstacleDetectedCallback(() => {
             if (this._stateMachine.can("obstacleDetected")) {

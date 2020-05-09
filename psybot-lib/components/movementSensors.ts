@@ -29,7 +29,7 @@ export class MovementSensors {
                 inclination: this._accelerometer.inclination,
             };
 
-            //this._log.push(this._accelerometerData);
+            this._log.push(this._accelerometerData);
         });
 
         setInterval(() => {
