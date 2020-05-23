@@ -42,7 +42,7 @@ export class PsybotActor {
 
     public start() {
         if (this._stateMachine.is("stopped")) {
-            this._stateMachine.goForward();
+            this._stateMachine.moveForward();
         }
     }
 

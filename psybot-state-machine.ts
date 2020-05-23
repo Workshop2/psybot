@@ -6,14 +6,13 @@ export class PsybotStateMachine {
         return new StateMachine({
             init: "stopped",
             transitions: [
-                { name: "goForward", from: "stopped", to: "movingForward" },
+                { name: "moveForward", from: "stopped", to: "movingForward" },
                 { name: "obstacleDetected", from: "movingForward", to: "searching" },
-                { name: "searchForRoute", from: ["stopped"], to: "searching" },
                 { name: "routeFound", from: ["searching", "turningAround"], to: "movingForward" },
                 { name: "stuck", from: ["searching", "turningAround"], to: "stopped" },
                 { name: "crashed", from: ["movingForward", "reversing"], to: "stopped" },
                 { name: "reverse", from: "searching", to: "reversing" },
-                { name: "stop", from: ["reversing", "movingForward"], to: "stopped" },
+                { name: "stop", from: ["movingForward"], to: "stopped" },
                 { name: "turnAround", from: ["reversing"], to: "turningAround" },
             ],
             methods: {
