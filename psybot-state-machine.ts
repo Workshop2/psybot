@@ -8,9 +8,13 @@ export class PsybotStateMachine {
             transitions: [
                 { name: "goForward", from: "stopped", to: "movingForward" },
                 { name: "obstacleDetected", from: "movingForward", to: "searching" },
-                { name: "routeFound", from: "searching", to: "movingForward" },
-                { name: "stuck", from: "searching", to: "stopped" },
-                { name: "crashed", from: "movingForward", to: "stopped" }
+                { name: "searchForRoute", from: ["stopped"], to: "searching" },
+                { name: "routeFound", from: ["searching", "turningAround"], to: "movingForward" },
+                { name: "stuck", from: ["searching", "turningAround"], to: "stopped" },
+                { name: "crashed", from: ["movingForward", "reversing"], to: "stopped" },
+                { name: "reverse", from: "searching", to: "reversing" },
+                { name: "stop", from: ["reversing", "movingForward"], to: "stopped" },
+                { name: "turnAround", from: ["reversing"], to: "turningAround" },
             ],
             methods: {
                 onMovingForward: stateEvents.onMoveForward,
@@ -84,5 +88,21 @@ export class StateEvents {
     }
     public set onCrashed(v: Function) {
         this._onCrashed = v;
+    }
+
+    private _onStop: Function;
+    public get onStop(): Function {
+        return this._onStop;
+    }
+    public set onStop(v: Function) {
+        this._onStop = v;
+    }
+
+    private _onReverse: Function;
+    public get onReverse(): Function {
+        return this._onReverse;
+    }
+    public set onReverse(v: Function) {
+        this._onReverse = v;
     }
 }

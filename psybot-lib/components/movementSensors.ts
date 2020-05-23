@@ -48,7 +48,7 @@ export class MovementSensors {
                 this._isMovingCount++;
             }
 
-            console.log("logCount", this._log.length)
+            //console.log("logCount", this._log.length)
         }, 100);
 
         setInterval(() => {

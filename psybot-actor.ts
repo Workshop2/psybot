@@ -19,6 +19,8 @@ export class PsybotActor {
             onStuck: async () => await this.onStuckAsync(),
             onRouteFound: () => this.onRouteFound(),
             onCrashed: async () => await this.onCrashedAsync(),
+            onStop: async () => await this.onStop(),
+            onReverse: async () => await this.onReverse(),
         }));
 
         this.wireUpExternalEvents();
@@ -42,6 +44,12 @@ export class PsybotActor {
         if (this._stateMachine.is("stopped")) {
             this._stateMachine.goForward();
         }
+    }
+
+    private async onStop() {
+        console.log("onStop");
+        await this._psybot.frontArm.centerAsync();
+        await this._psybot.motors.brakeAsync();
     }
 
     private async onMovingForwardAsync() {
@@ -77,6 +85,10 @@ export class PsybotActor {
         console.log("onRouteFound");
     }
 
+    private async onReverse() {
+        console.log("onReverse");
+    }
+
     private async searchForRoute() {
         await this._psybot.frontArm.faceLeftAsync();
         if (await this._psybot.sonar.waitForSensorData() == SensorState.NothingDetected) {
@@ -102,14 +114,28 @@ export class PsybotActor {
 
         this._psybot.frontArm.centerAsync();
 
+        if(!this._stateMachine.can("reverse")) {
+            console.log("Unable to reverse");
+            return this._stateMachine.stuck();
+        }
+        
         console.log("Reversing...");
+        await this._stateMachine.reverse();
+        this._psybot.movementSensors.resetSensors();
         await this._psybot.motors.reverseAsync();
         await delay(1500);
         await this._psybot.motors.brakeAsync();
 
+        if(!this._stateMachine.can("turnAround")) {
+            console.log("Unable to turnAround");
+            return this._stateMachine.stuck();
+        }
+
         console.log("Turning around...");
+        this._stateMachine.turnAround();
         await this._psybot.motors.rightAsync();
         await delay(1000);
+        await this._psybot.motors.brakeAsync();
 
         if (await this._psybot.sonar.waitForSensorData() == SensorState.NothingDetected) {
             return this._stateMachine.routeFound();
