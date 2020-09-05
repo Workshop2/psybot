@@ -12,72 +12,72 @@ export class MovementSensors {
     private _logStream: WriteStream = null;
 
     constructor(accelerometerController: string) {
-        this._accelerometer = new Accelerometer({
-            controller: accelerometerController
-        });
+        // this._accelerometer = new Accelerometer({
+        //     controller: accelerometerController
+        // });
 
-        this._accelerometer.on("change", () => {
-            this._previousAccelerometerData = this._accelerometerData;
-            this._accelerometerData = {
-                timestamp: new Date(),
-                x: this._accelerometer.x,
-                y: this._accelerometer.y,
-                z: this._accelerometer.z,
-                pitch: this._accelerometer.pitch,
-                roll: this._accelerometer.roll,
-                orientation: this._accelerometer.orientation,
-                acceleration: this._accelerometer.acceleration,
-                inclination: this._accelerometer.inclination,
-            };
+        // this._accelerometer.on("change", () => {
+        //     this._previousAccelerometerData = this._accelerometerData;
+        //     this._accelerometerData = {
+        //         timestamp: new Date(),
+        //         x: this._accelerometer.x,
+        //         y: this._accelerometer.y,
+        //         z: this._accelerometer.z,
+        //         pitch: this._accelerometer.pitch,
+        //         roll: this._accelerometer.roll,
+        //         orientation: this._accelerometer.orientation,
+        //         acceleration: this._accelerometer.acceleration,
+        //         inclination: this._accelerometer.inclination,
+        //     };
 
-            if (this._log) {
-                this._log.push(this._accelerometerData);
-            }
-        });
+        //     if (this._log) {
+        //         this._log.push(this._accelerometerData);
+        //     }
+        // });
 
-        setInterval(() => {
-            if (!this._accelerometerData?.acceleration) {
-                return;
-            }
+        // setInterval(() => {
+        //     if (!this._accelerometerData?.acceleration) {
+        //         return;
+        //     }
 
-            const difference = this._previousAccelerometerData.y - this._accelerometerData.y;
-            if (difference <= 0.009 && difference >= -0.009) {
-                this._isStoppedCount++;
-            }
-            else {
-                this._isMovingCount++;
-            }
+        //     const difference = this._previousAccelerometerData.y - this._accelerometerData.y;
+        //     if (difference <= 0.009 && difference >= -0.009) {
+        //         this._isStoppedCount++;
+        //     }
+        //     else {
+        //         this._isMovingCount++;
+        //     }
 
-            //console.log("logCount", this._log.length)
-        }, 100);
+        //     //console.log("logCount", this._log.length)
+        // }, 100);
 
-        setInterval(() => {
-            if (this._isStoppedCount >= 9) {
-                if (this._onStopped) {
-                    this._onStopped();
-                }
-            }
+        // setInterval(() => {
+        //     if (this._isStoppedCount >= 9) {
+        //         if (this._onStopped) {
+        //             this._onStopped();
+        //         }
+        //     }
 
-            console.log("accelData", {
-                isStoppedCount: this._isStoppedCount,
-                isMovingCount: this._isMovingCount
-            });
+        //     console.log("accelData", {
+        //         isStoppedCount: this._isStoppedCount,
+        //         isMovingCount: this._isMovingCount
+        //     });
 
-            this._isStoppedCount = 0;
-            this._isMovingCount = 0;
-        }, 1000);
+        //     this._isStoppedCount = 0;
+        //     this._isMovingCount = 0;
+        // }, 1000);
 
-        setInterval(() => {
-            if(!this._log) {
-                return;
-            }
+        // setInterval(() => {
+        //     if(!this._log) {
+        //         return;
+        //     }
 
-            this._log.forEach(element => {
-                this._logStream.write(JSON.stringify(element) + ", ");
-            });
+        //     this._log.forEach(element => {
+        //         this._logStream.write(JSON.stringify(element) + ", ");
+        //     });
 
-            this._log = [];
-        }, 500);
+        //     this._log = [];
+        // }, 500);
     }
 
     public collectLogs() {
