@@ -17,7 +17,7 @@
     "console-stamp": "^0.2.9",
     "fsm-as-promised": "^0.16.0",
     "javascript-state-machine": "^3.1.0",
-    "johnny-five": "^1.4.0",
+    "johnny-five": "^2.0.0",
     "serialport": "^8.0.7"
   },
   "devDependencies": {
