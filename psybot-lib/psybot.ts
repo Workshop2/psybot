@@ -46,6 +46,11 @@ export class Psybot {
     this._movementSensors = new MovementSensors(
       "ADXL345"
     );
+    
+    this.board.on("exit", async () => {
+      await this.motors.brakeAsync();
+      await this.frontArm.centerAsync();
+    });
   }
 
   private _motors: Motors;
