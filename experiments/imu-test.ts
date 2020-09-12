@@ -4,7 +4,9 @@ const { Board, IMU } = require("johnny-five");
 
 
 const run = async () => {
-  var board = new Board();
+  const board = config.settings.usbConnection
+    ? new Board()
+    : new Board({ port: "/dev/serial0" });
 
   board.on("ready", () => {
     console.log("creating imu...")
