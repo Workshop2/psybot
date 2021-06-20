@@ -7,6 +7,7 @@ sudo raspi-config
 # expand SD card (under advance)
 # disable serial console
 # enable serial port (under interfaces, https://serialport.io/docs/guide-installation#raspberry-pi-linux)
+# disable i2c (under interfaces, https://gps-pie.com/pi_i2c_config.htm)
 # increase resolution (under advance)
 # reboot
 
