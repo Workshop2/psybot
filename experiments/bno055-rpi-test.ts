@@ -9,52 +9,41 @@ import {
   
   // All BNO055 instance methods are async and return a promise
   (async () => {
-    // Start the sensor
-    // The begin method performs basic connection verification and resets the device
-    const imu = await BNO055.begin(
-      DeviceAddress.A,    // Address enum: A = 0x28, B = 0x29
-      OpMode.FullFusion,   // Operation mode enum
-      3 // /dev/i2c-3
-    );
-  
-    // Verify that the device is connected (will throw an error if not)
-    await imu.verifyConnection();
+    try {
+        // Start the sensor
+        // The begin method performs basic connection verification and resets the device
+        const imu = await BNO055.begin(
+            DeviceAddress.A,    // Address enum: A = 0x28, B = 0x29
+            OpMode.FullFusion,   // Operation mode enum
+            3 // Use this seral device: /dev/i2c-3
+        );
 
-    // // Get the sensors' calibration status
-    // const calibration = await imu.getCalibrationStatuses();
-    for(let i = 0; i < 10; i++) {
-        const calibration = await imu.getCalibrationStatuses();
-        console.log(calibration)
-        await delay(1000);
+        await imu.resetSystem();
+
+        const printEverything = async () => {
+
+            console.log('current mode: ', await imu.getMode());
+            console.log('current page: ', await imu.getPage());
+            console.log('system status: ', await imu.getSystemStatus());
+            console.log('system error: ', await imu.getSystemError());
+            console.log('temp: ', await imu.getTemperature());
+            console.log('self-test results: ', await imu.getSelfTestResults());
+
+            console.log('axis mapping: ', await imu.getAxisMapping());
+            console.log('versions: ', await imu.getVersions());
+            console.log('units: ', await imu.getUnits());
+            console.log('euler: ', await imu.getEuler());
+            console.log('quat: ', await imu.getQuat());
+            console.log('calibration: ', await imu.getCalibrationStatuses());
+            console.log('is calibrated: ', await imu.isFullyCalibrated());
+            console.log('offsets: ', await imu.getSensorOffsets());
+            
+            setTimeout(printEverything, 3333);
+        };
+
+        await printEverything();
     }
-
-    // // Check to see if the device is fully calibrated
-    const isCalibrated = await imu.isFullyCalibrated();
-    console.log(isCalibrated)
-  
-    // // Get information about the device's operational systems
-    const systemStatus = await imu.getSystemStatus();
-    const systemError = await imu.getSystemError();
-    const selfTestResults = await imu.getSelfTestResults();
-    const versions = await imu.getVersions();
-    
-    console.log({
-        systemStatus,
-        systemError,
-        selfTestResults,
-        versions
-    })
-  
-    // // Get the device's orientation as a quaternion object { x, y, z, w }
-    // const quat = await imu.getQuat();
-  
-    // // Force the device to reset
-    // await imu.resetSystem();
-  
-    // // Set the device power level (Normal, Low, or Suspend)
-    // await imu.setPowerLevel(PowerLevel.Normal);
-  
-    // // Force the device to use an external clock source
-    // await imu.useExternalClock();
-  
+    catch (error) {
+        console.error('error: ', error);
+    }
   })();
