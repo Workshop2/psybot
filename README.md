@@ -57,3 +57,10 @@ code --install-extension thankcreate.power-fsm-viewer
 ```
 
 Then when open, press `CTRL` + `SHIFT` + `P` and search for `FSM View: Open` and it will visualise the state machine file you have open :smile:
+
+# Compass sensor
+This is connected to the RPI via a bit banged I2C connection. To confirm it is detected you can run the following in bash/shell
+`sudo i2cdetect -y -r 3`
+
+You should see it detect as 28
+https://gps-pie.com/pi_i2c_config.htm
