@@ -12,12 +12,13 @@ import {
     // The begin method performs basic connection verification and resets the device
     const imu = await BNO055.begin(
       DeviceAddress.A,    // Address enum: A = 0x28, B = 0x29
-      OpMode.FullFusion   // Operation mode enum
+      OpMode.FullFusion,   // Operation mode enum
+      3 // /dev/i2c-3
     );
   
     // Verify that the device is connected (will throw an error if not)
     await imu.verifyConnection();
-    
+
     // // Get the sensors' calibration status
     // const calibration = await imu.getCalibrationStatuses();
   
