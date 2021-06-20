@@ -5,6 +5,7 @@ import {
     DeviceAddress,
     PowerLevel,
   } from 'bno055-imu-node';
+  import delay from "../psybot-lib/delay";
   
   // All BNO055 instance methods are async and return a promise
   (async () => {
@@ -21,15 +22,28 @@ import {
 
     // // Get the sensors' calibration status
     // const calibration = await imu.getCalibrationStatuses();
-  
+    for(let i = 0; i < 10; i++) {
+        const calibration = await imu.getCalibrationStatuses();
+        console.log(calibration)
+        await delay(1000);
+    }
+
     // // Check to see if the device is fully calibrated
-    // const isCalibrated = await imu.isFullyCalibrated();
+    const isCalibrated = await imu.isFullyCalibrated();
+    console.log(isCalibrated)
   
     // // Get information about the device's operational systems
-    // const systemStatus = await imu.getSystemStatus();
-    // const systemError = await imu.getSystemError();
-    // const selfTestResults = await imu.getSelfTestResults();
-    // const versions = await imu.getVersions();
+    const systemStatus = await imu.getSystemStatus();
+    const systemError = await imu.getSystemError();
+    const selfTestResults = await imu.getSelfTestResults();
+    const versions = await imu.getVersions();
+    
+    console.log({
+        systemStatus,
+        systemError,
+        selfTestResults,
+        versions
+    })
   
     // // Get the device's orientation as a quaternion object { x, y, z, w }
     // const quat = await imu.getQuat();
