@@ -64,3 +64,7 @@ This is connected to the RPI via a bit banged I2C connection. To confirm it is d
 
 You should see it detect as 28
 https://gps-pie.com/pi_i2c_config.htm
+
+## Remote development (Windows -> Raspberry Pi)
+1. https://electrobotify.wordpress.com/2019/08/14/passwordless-ssh-into-raspberry-pi-with-openssh/
+1. `ssh pi@192.168.3.13`
