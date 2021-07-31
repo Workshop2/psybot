@@ -1,49 +1,54 @@
-import {
-    BNO055,
-    // Enums:
-    OpMode,
-    DeviceAddress,
-    PowerLevel,
-  } from 'bno055-imu-node';
-  import delay from "../psybot-lib/delay";
-  
-  // All BNO055 instance methods are async and return a promise
-  (async () => {
-    try {
-        // Start the sensor
-        // The begin method performs basic connection verification and resets the device
-        const imu = await BNO055.begin(
-            DeviceAddress.A,    // Address enum: A = 0x28, B = 0x29
-            OpMode.FullFusion,   // Operation mode enum
-            3 // Use this seral device: /dev/i2c-3
-        );
+const { BNO055, OpMode, DeviceAddress } = require('@workshop2/bno055-imu-node');
+const fs = require('fs');
+import delay from "../psybot-lib/delay";
+const offsetsPath = "./offsets.json";
 
+(async () => {
+    try {
+        const imu = await BNO055.begin(DeviceAddress.A, OpMode.FullFusion, 3);
         await imu.resetSystem();
 
-        const printEverything = async () => {
+        if(fs.existsSync(offsetsPath)) {
+            console.log("Reading offsets from disk,", offsetsPath);
+            const data = fs.readFileSync(offsetsPath, {encoding: 'utf8', flag: 'r'});
 
-            console.log('current mode: ', await imu.getMode());
-            console.log('current page: ', await imu.getPage());
-            console.log('system status: ', await imu.getSystemStatus());
-            console.log('system error: ', await imu.getSystemError());
-            console.log('temp: ', await imu.getTemperature());
-            console.log('self-test results: ', await imu.getSelfTestResults());
+            const data2 = JSON.parse(data.toString());
+            console.log(data2);
+            
+            console.log("Running setSensorOffsets....");
+            await imu.setSensorOffsets(data2);
+            console.log("Done?!");
+        }
 
-            console.log('axis mapping: ', await imu.getAxisMapping());
-            console.log('versions: ', await imu.getVersions());
-            console.log('units: ', await imu.getUnits());
+        let calibrated = false;
+        while(!calibrated) {
+            await delay(3333);
+            console.log('calibration: ', await imu.getCalibrationStatuses());
+
+            calibrated = await imu.isFullyCalibrated();
+            console.log('is calibrated: ', calibrated);
+
+            const offsets = await imu.getSensorOffsets();
+            console.log('offsets: ', offsets);
+
+            if(calibrated) {
+            console.log("Storing offsets to disk", offsetsPath, offsets);
+            const data = JSON.stringify(offsets);
+            fs.writeFileSync(offsetsPath, data);
+            }
+        }
+
+        while(true) {
             console.log('euler: ', await imu.getEuler());
             console.log('quat: ', await imu.getQuat());
-            console.log('calibration: ', await imu.getCalibrationStatuses());
-            console.log('is calibrated: ', await imu.isFullyCalibrated());
-            console.log('offsets: ', await imu.getSensorOffsets());
-            
-            setTimeout(printEverything, 3333);
-        };
+            console.log('temp', await imu.getTemperature());
+            console.log('units', await imu.getUnits());
+            console.log('--------------------------------');
 
-        await printEverything();
+            await delay(3333);
+        }
     }
     catch (error) {
         console.error('error: ', error);
     }
-  })();
+})();
