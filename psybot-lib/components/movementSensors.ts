@@ -1,5 +1,6 @@
 import { Accelerometer } from "johnny-five";
 import { WriteStream, createWriteStream } from "fs";
+import { BNO055 } from '@workshop2/bno055-imu-node';
 
 export class MovementSensors {
     private _accelerometer: Accelerometer;
@@ -11,7 +12,7 @@ export class MovementSensors {
     private _log: Array<any> = null;
     private _logStream: WriteStream = null;
 
-    constructor(accelerometerController: string) {
+    constructor(bno055: BNO055) {
         // this._accelerometer = new Accelerometer({
         //     controller: accelerometerController
         // });

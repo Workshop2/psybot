@@ -3,12 +3,17 @@ import { Motors } from "./components/motors";
 import { FrontArm } from "./components/frontarm";
 import { Board } from "johnny-five";
 import { MovementSensors } from "./components/movementSensors";
+import { BNO055, OpMode, DeviceAddress } from '@workshop2/bno055-imu-node';
+import fs from 'fs';
+import delay from "./delay";
 
 export class Psybot {
-  private armPins = {
+  private static armPins = {
     bottomServoPin: 9,
     topServoPin: 10
-  }
+  };
+
+  private static sensorBusNumber: number = 3;
 
   private board: Board;
 
@@ -21,8 +26,9 @@ export class Psybot {
 
       board.on("ready", async () => {
         console.log("Connected :)");
+        const movementSensors = await this.getAndCalibrateSensor(this.sensorBusNumber);
 
-        var psybot = new Psybot(board);
+        var psybot = new Psybot(board, movementSensors);
         psybot.board.repl.inject({ psybot: psybot });
 
         resolve(psybot);
@@ -35,7 +41,47 @@ export class Psybot {
     });
   }
 
-  private constructor(board: boolean | Board) {
+  private static async getAndCalibrateSensor(busNumber: number) : Promise<MovementSensors> {
+    console.log("Getting access to the movement sensor...");
+    const imu = await BNO055.begin(DeviceAddress.A, OpMode.FullFusion, busNumber);
+    await imu.resetSystem();
+    
+    const offsetsPath = "./offsets.json";
+    
+    if(fs.existsSync(offsetsPath)) {
+      console.log("Reading offsets from disk,", offsetsPath);
+      const data = fs.readFileSync(offsetsPath, {encoding: 'utf8', flag: 'r'});
+
+      const data2 = JSON.parse(data.toString());
+      console.log(data2);
+      
+      console.log("Running setSensorOffsets....");
+      await imu.setSensorOffsets(data2);
+      console.log("Done?!");
+    }
+
+    let calibrated = false;
+    while(!calibrated) {
+        await delay(3333);
+        console.log('calibration: ', await imu.getCalibrationStatuses());
+
+        calibrated = await imu.isFullyCalibrated();
+        console.log('is calibrated: ', calibrated);
+
+        const offsets = await imu.getSensorOffsets();
+        console.log('offsets: ', offsets);
+
+        if(calibrated) {
+          console.log("Storing offsets to disk", offsetsPath, offsets);
+          const data = JSON.stringify(offsets);
+          fs.writeFileSync(offsetsPath, data);
+        }
+    }
+
+    return new MovementSensors(imu);
+  }
+
+  private constructor(board: Board, movementSensors: MovementSensors) {
     if (board instanceof Board) {
       this.board = board;
     }
@@ -43,10 +89,8 @@ export class Psybot {
       throw "Expected board to be supplied"
     }
 
-    this._movementSensors = new MovementSensors(
-      "ADXL345"
-    );
-    
+    this._movementSensors = movementSensors;
+
     this.board.on("exit", async () => {
       await this.motors.brakeAsync();
       await this.frontArm.centerAsync();
@@ -66,7 +110,7 @@ export class Psybot {
   get frontArm(): FrontArm {
     if (!this._frontArm) {
       this._frontArm = new FrontArm(
-        this.armPins.bottomServoPin);
+        Psybot.armPins.bottomServoPin);
     }
 
     return this._frontArm;
