@@ -21,7 +21,7 @@ export class PsybotActor {
             onCrashed: async () => await this.onCrashedAsync(),
             onStop: async () => await this.onStop(),
             onReverse: async () => await this.onReverse(),
-            onFindingNorth: async () => await this onFindingNorth()
+            onFindingNorth: async () => await this.onFindingNorth()
         }));
 
         this.wireUpExternalEvents();
