@@ -7,14 +7,14 @@ export interface CompassPoint {
 };
 
 export enum Heading {
-    North,
-    NorthEast,
-    East,
-    SouthEast,
-    South,
-    SouthWest,
-    West,
-    NorthWest
+    North = "North",
+    NorthEast = "NorthEast",
+    East = "East",
+    SouthEast = "SouthEast",
+    South = "South",
+    SouthWest = "SouthWest",
+    West = "West",
+    NorthWest = "NorthWest"
 };
 
 export class Compass {    

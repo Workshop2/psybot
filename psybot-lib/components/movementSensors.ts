@@ -7,15 +7,14 @@ export class MovementSensors {
     constructor(bno055: BNO055) {
         this._bno055 = bno055;
 
-        setTimeout(async () => console.log("Heading", (await this.GetHeading()).Heading), 2000);
+        setInterval(async () => console.log("Heading", (await this.GetHeading()).Heading), 2000);
     }
 
     public async GetHeading() : Promise<CompassPoint> {
         const data = await this._bno055.getEuler();
-        console.log("headingData", data);
-
-        const points = Compass.Points;
-        return points.filter(point => data.h >= point.Low && data.h <= point.High)[0] || null;
+        return Compass
+            .Points
+            .filter(point => data.h >= point.Low && data.h <= point.High)[0] || null;
     }
 
     public collectLogs() {
