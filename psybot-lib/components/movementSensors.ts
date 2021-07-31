@@ -12,6 +12,8 @@ export class MovementSensors {
 
     public async GetHeading() : Promise<CompassPoint> {
         const data = await this._bno055.getEuler();
+        console.log("headingData", data);
+
         const points = Compass.Points;
         return points.filter(point => point.Low >= data.h && point.High <= data.h)[0] || null;
     }
