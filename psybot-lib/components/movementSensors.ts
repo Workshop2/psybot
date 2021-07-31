@@ -15,7 +15,7 @@ export class MovementSensors {
         console.log("headingData", data);
 
         const points = Compass.Points;
-        return points.filter(point => point.Low >= data.h && point.High <= data.h)[0] || null;
+        return points.filter(point => data.h >= point.Low && data.h <= point.High)[0] || null;
     }
 
     public collectLogs() {
