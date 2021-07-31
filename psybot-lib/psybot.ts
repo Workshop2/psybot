@@ -26,9 +26,11 @@ export class Psybot {
           ? new Board()
           : new Board({ port: "/dev/serial0" });
 
+        const movementSensorsTask = this.getAndCalibrateSensor(this.sensorBusNumber);
+
         board.on("ready", async () => {
           console.log("Connected :)");
-          const movementSensors = await this.getAndCalibrateSensor(this.sensorBusNumber);
+          const movementSensors = await movementSensorsTask;
 
           var psybot = new Psybot(board, movementSensors);
           psybot.board.repl.inject({ psybot: psybot });
