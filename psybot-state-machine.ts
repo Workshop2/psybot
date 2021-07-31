@@ -6,7 +6,7 @@ export class PsybotStateMachine {
         return new StateMachine({
             init: "stopped",
             transitions: [
-                { name: "moveForward", from: "stopped", to: "movingForward" },
+                { name: "moveForward", from: ["stopped", "findingNorth"], to: "movingForward" },
                 { name: "obstacleDetected", from: "movingForward", to: "searching" },
                 { name: "routeFound", from: ["searching", "turningAround"], to: "movingForward" },
                 { name: "stuck", from: ["searching", "turningAround"], to: "stopped" },
@@ -14,6 +14,7 @@ export class PsybotStateMachine {
                 { name: "reverse", from: "searching", to: "reversing" },
                 { name: "stop", from: ["movingForward"], to: "stopped" },
                 { name: "turnAround", from: ["reversing"], to: "turningAround" },
+                { name: "lost", from: "movingForward", to: "findingNorth"}
             ],
             methods: {
                 onMovingForward: stateEvents.onMoveForward,
@@ -22,6 +23,7 @@ export class PsybotStateMachine {
                 onSearching: stateEvents.onSearching,
                 onRouteFound: stateEvents.onRouteFound,
                 onCrashed: stateEvents.onCrashed,
+                onFindingNorth: stateEvents.onFindingNorth,
 
                 onTransition: (lifecycle) => {
                     console.log("Transitioning: " + lifecycle.transition + " (from " + lifecycle.from + " to " + lifecycle.to + ")");
@@ -103,5 +105,13 @@ export class StateEvents {
     }
     public set onReverse(v: Function) {
         this._onReverse = v;
+    }
+
+    private _onFindingNorth: Function;
+    public get onFindingNorth(): Function {
+        return this._onFindingNorth;
+    }
+    public set onFindingNorth(v: Function) {
+        this._onFindingNorth = v;
     }
 }

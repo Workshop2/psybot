@@ -1,13 +1,32 @@
 import { BNO055 } from '@workshop2/bno055-imu-node';
-import { Compass, CompassPoint } from './compass';
+import { Compass, CompassPoint, Heading } from './compass';
 
 export class MovementSensors {
     private _bno055: BNO055;
+    private _onLost: Function;
 
     constructor(bno055: BNO055) {
         this._bno055 = bno055;
 
-        setInterval(async () => console.log("Heading", (await this.GetHeading()).Heading), 2000);
+        setInterval(this.checkOrientation, 2000);
+    }
+
+    private async checkOrientation() {
+        const heading = await this.GetHeading();
+        console.log("Heading", heading.Heading);
+
+        if(!this._onLost) {
+            return;
+        }
+
+        switch(heading.Heading) {
+            case Heading.South:
+            case Heading.SouthEast:
+            case Heading.SouthWest:
+                this._onLost();
+            default:
+                return;
+        }
     }
 
     public async GetHeading() : Promise<CompassPoint> {
@@ -18,6 +37,10 @@ export class MovementSensors {
     }
 
     public collectLogs() {
+    }
+
+    public setLostCallback(onLost: Function): void {
+        this._onLost = onLost;
     }
 
     public setStoppedCallback(onStopped: () => void): void {

@@ -21,6 +21,7 @@ export class PsybotActor {
             onCrashed: async () => await this.onCrashedAsync(),
             onStop: async () => await this.onStop(),
             onReverse: async () => await this.onReverse(),
+            onFindingNorth: async () => await this onFindingNorth()
         }));
 
         this.wireUpExternalEvents();
@@ -33,9 +34,9 @@ export class PsybotActor {
             }
         });
 
-        this._psybot.movementSensors.setStoppedCallback(() => {
-            if (this._stateMachine.can("crashed")) {
-                this._stateMachine.crashed();
+        this._psybot.movementSensors.setLostCallback(() => {
+            if (this._stateMachine.can("lost")) {
+                this._stateMachine.lost();
             }
         });
     }
@@ -87,6 +88,10 @@ export class PsybotActor {
 
     private async onReverse() {
         console.log("onReverse");
+    }
+
+    private async onFindingNorth() {
+        console.log("onFindingNorth");
     }
 
     private async searchForRoute() {
