@@ -19,25 +19,32 @@ export class Psybot {
 
   public static Create(usbConnection: boolean): Promise<Psybot> {
     return new Promise<Psybot>((resolve, reject) => {
-      console.log("Connecting to board...");
-      const board = usbConnection
-        ? new Board()
-        : new Board({ port: "/dev/serial0" });
+      try {
+        
+        console.log("Connecting to board...");
+        const board = usbConnection
+          ? new Board()
+          : new Board({ port: "/dev/serial0" });
 
-      board.on("ready", async () => {
-        console.log("Connected :)");
-        const movementSensors = await this.getAndCalibrateSensor(this.sensorBusNumber);
+        board.on("ready", async () => {
+          console.log("Connected :)");
+          const movementSensors = await this.getAndCalibrateSensor(this.sensorBusNumber);
 
-        var psybot = new Psybot(board, movementSensors);
-        psybot.board.repl.inject({ psybot: psybot });
+          var psybot = new Psybot(board, movementSensors);
+          psybot.board.repl.inject({ psybot: psybot });
 
-        resolve(psybot);
-      });
+          resolve(psybot);
+        });
 
-      board.on("fail", () => {
-        console.log("Failed to connect :(");
-        reject();
-      });
+        board.on("fail", () => {
+          console.log("Failed to connect :(");
+          reject();
+        });
+
+      } catch (error) {
+          console.log("Failed to connect :(");
+          reject();
+      }
     });
   }
 
@@ -68,10 +75,10 @@ export class Psybot {
         calibrated = await imu.isFullyCalibrated();
         console.log('is calibrated: ', calibrated);
 
-        const offsets = await imu.getSensorOffsets();
-        console.log('offsets: ', offsets);
-
         if(calibrated) {
+          const offsets = await imu.getSensorOffsets();
+          console.log('offsets: ', offsets);
+
           console.log("Storing offsets to disk", offsetsPath, offsets);
           const data = JSON.stringify(offsets);
           fs.writeFileSync(offsetsPath, data);
