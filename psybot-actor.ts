@@ -2,6 +2,7 @@ import { Psybot } from "./psybot-lib/psybot";
 import { PsybotStateMachine, StateEvents } from "./psybot-state-machine";
 import delay from "./psybot-lib/delay";
 import { SensorState } from "./psybot-lib/components/sonar";
+import { Heading } from "./psybot-lib/components/compass";
 
 export class PsybotActor {
     private _psybot: Psybot;
@@ -90,8 +91,62 @@ export class PsybotActor {
         console.log("onReverse");
     }
 
-    private async onFindingNorth() {
+    private onFindingNorth() {
+        // this needs to be run out of process in order to allow the
+        // state machine to finish the transition
+        this.findingNorth();
+    }
+
+    // Yay, bot will now not go south. How mean.
+    private async findingNorth() {
         console.log("onFindingNorth");
+
+        while(true) {
+            const heading = await this._psybot.movementSensors.getHeading();
+            console.log("heading", heading);
+
+            if(!heading) {
+                continue;
+            }
+
+            if(heading.Heading == Heading.North) {
+                break;
+            }
+
+            if(heading.Heading == Heading.NorthEast) {
+                break;
+            }
+
+            if(heading.Heading == Heading.East) {
+                break;
+            }
+
+            if(heading.Heading == Heading.NorthWest) {
+                break;
+            }
+
+            if(heading.Heading == Heading.West) {
+                break;
+            }
+
+            switch(heading.Heading) {
+                case Heading.SouthEast:
+                case Heading.South:
+                    console.log("Turning left...");
+                    await this._psybot.motors.leftAsync();
+                    await delay(500);
+                    await this._psybot.motors.brakeAsync();
+                    break;
+                case Heading.SouthWest:
+                    console.log("Turning right...");
+                    await this._psybot.motors.rightAsync();
+                    await delay(500);
+                    await this._psybot.motors.brakeAsync();
+                    break;
+            }
+        }
+
+        this._stateMachine.moveForward();
     }
 
     private async searchForRoute() {

@@ -1,4 +1,5 @@
 import { BNO055 } from '@workshop2/bno055-imu-node';
+import delay from '../delay';
 import { Compass, CompassPoint, Heading } from './compass';
 
 export class MovementSensors {
@@ -12,7 +13,7 @@ export class MovementSensors {
     }
 
     private async checkOrientation() {
-        const heading = await this.GetHeading();
+        const heading = await this.getHeading();
         console.log("Heading", heading.Heading);
 
         if(!this._onLost) {
@@ -29,7 +30,20 @@ export class MovementSensors {
         }
     }
 
-    public async GetHeading() : Promise<CompassPoint> {
+    public async waitForData() {
+        console.log("waiting for data from movement sensor...");
+
+        while(true) {
+            const data = await this._bno055.getEuler();
+            if(data) {
+                return;
+            }
+
+            await delay(100);
+        }
+    }
+
+    public async getHeading() : Promise<CompassPoint> {
         const data = await this._bno055.getEuler();
         return Compass
             .Points

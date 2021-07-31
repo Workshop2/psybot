@@ -87,7 +87,9 @@ export class Psybot {
         }
     }
 
-    return new MovementSensors(imu);
+    const sensor = new MovementSensors(imu);
+    await sensor.waitForData();
+    return sensor;
   }
 
   private constructor(board: Board, movementSensors: MovementSensors) {
