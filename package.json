@@ -10,7 +10,8 @@
     "build-watch": "tsc -w",
     "clean": "node ./build-scripts/clean.js",
     "reset": "node ./build/reset-board.js",
-    "launch": "git pull; npm run build; npm start;"
+    "launch": "git pull; npm run build; npm start;",
+    "sync": "npm run build&&scp -rp .\\build pi@192.168.3.13:~\\psybot\\build"
   },
   "author": "S Colmer",
   "license": "ISC",
