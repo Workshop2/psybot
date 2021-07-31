@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./build/index.js",
     "build": "tsc",
+    "build-watch": "tsc -w",
     "clean": "node ./build-scripts/clean.js",
     "reset": "node ./build/reset-board.js",
     "launch": "git pull; npm run build; npm start;"
