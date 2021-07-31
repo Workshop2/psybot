@@ -8,7 +8,7 @@ export class MovementSensors {
     constructor(bno055: BNO055) {
         this._bno055 = bno055;
 
-        setInterval(this.checkOrientation, 2000);
+        setInterval(() => this.checkOrientation(), 2000);
     }
 
     private async checkOrientation() {
