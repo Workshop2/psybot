@@ -4,7 +4,7 @@ import { FrontArm } from "./components/frontarm";
 import { Board } from "johnny-five";
 import { MovementSensors } from "./components/movementSensors";
 import { BNO055, OpMode, DeviceAddress } from '@workshop2/bno055-imu-node';
-import fs from 'fs';
+const fs = require('fs');
 import delay from "./delay";
 
 export class Psybot {
