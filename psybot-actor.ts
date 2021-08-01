@@ -3,6 +3,7 @@ import { PsybotStateMachine, StateEvents } from "./psybot-state-machine";
 import delay from "./psybot-lib/delay";
 import { SensorState } from "./psybot-lib/components/sonar";
 import { Heading } from "./psybot-lib/components/compass";
+import { MovementSensors, CurrentDirection } from "./psybot-lib/components/movementSensors";
 
 export class PsybotActor {
     private _psybot: Psybot;
@@ -95,7 +96,6 @@ export class PsybotActor {
         this.findingNorth();
     }
 
-    // Yay, bot will now not go south. How mean.
     private async findingNorth() {
         const loopDelay = 100;
         console.log("onFindingNorth");
@@ -181,11 +181,7 @@ export class PsybotActor {
             return this._stateMachine.stuck();
         }
 
-        console.log("Turning around...");
-        this._stateMachine.turnAround();
-        await this._psybot.motors.rightAsync();
-        await delay(1000);
-        await this._psybot.motors.brakeAsync();
+        await this.turnAround();
 
         if (await this._psybot.sonar.waitForSensorData() == SensorState.NothingDetected) {
             return this._stateMachine.routeFound();
@@ -193,4 +189,36 @@ export class PsybotActor {
 
         this._stateMachine.stuck();
     }
+
+    private async turnAround() {
+        const heading = await this._psybot.movementSensors.getHeading();
+        const targetDirection = (heading.Bearing + 180) % 360;
+
+        console.log("Turning around...");
+        this._stateMachine.turnAround();
+        await this._psybot.motors.rightAsync();
+        await this.waitUntilFacing(x => {
+            const diff = Math.abs(targetDirection - x.Bearing);
+            return diff < 10;
+        });
+    }
+
+    private async waitUntilFacing(check: checkDirection, loopDelay: number = 100) {
+        while(true) {
+            const heading = await this._psybot.movementSensors.getHeading();
+            if(!heading) {
+                await delay(loopDelay);
+                continue;
+            }
+            console.log("heading", heading);
+
+            if(check(heading)) {
+                break;
+            }
+
+            await delay(loopDelay);
+        }
+    }
 }
+
+interface checkDirection { (heading: CurrentDirection): boolean }
