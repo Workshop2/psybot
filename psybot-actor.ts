@@ -101,7 +101,6 @@ export class PsybotActor {
         console.log("onFindingNorth");
 
         await this._psybot.motors.brakeAsync();
-        await this._psybot.motors.setSpeedAsync(this._psybot.motors.MaxSpeed - 60);
 
         let isRotating = false;
         while(true) {
@@ -136,7 +135,6 @@ export class PsybotActor {
         }
 
         await this._psybot.motors.brakeAsync();
-        await this._psybot.motors.setSpeedAsync(this._psybot.motors.MaxSpeed);
         this._stateMachine.moveForward();
     }
 
@@ -144,22 +142,14 @@ export class PsybotActor {
         await this._psybot.frontArm.faceLeftAsync();
         if (await this._psybot.sonar.waitForSensorData() == SensorState.NothingDetected) {
             this._psybot.frontArm.centerAsync();
-
-            console.log("Turning left...");
-            await this._psybot.motors.leftAsync();
-            await delay(500);
-            await this._psybot.motors.brakeAsync();
+            await this.turnLeft();
             return this._stateMachine.routeFound();
         }
 
         await this._psybot.frontArm.faceRightAsync();
         if (await this._psybot.sonar.waitForSensorData() == SensorState.NothingDetected) {
             this._psybot.frontArm.centerAsync();
-
-            console.log("Turning right...");
-            await this._psybot.motors.rightAsync();
-            await delay(500);
-            await this._psybot.motors.brakeAsync();
+            await this.turnRight();
             return this._stateMachine.routeFound();
         }
 
@@ -190,16 +180,56 @@ export class PsybotActor {
         this._stateMachine.stuck();
     }
 
+    private calculateNewDirection(currentDirection: CurrentDirection, delta: number) : number {
+        const newDirection = currentDirection.Bearing + delta;
+        if(newDirection == 0) {
+            return 0;
+        }
+        
+        if(newDirection > 0) {
+            return newDirection % 360;
+        }
+
+        return 360 + newDirection;
+    }
+
+    private async turnRight() {
+        console.log("Turning right...");
+
+        const heading = await this._psybot.movementSensors.getHeading();
+        const targetDirection = this.calculateNewDirection(heading, 90);
+
+        await this._psybot.motors.rightAsync();
+        await this.waitUntilFacing(x => {
+            const diff = Math.abs(targetDirection - x.Bearing);
+            return diff < 10;
+        });
+
+        await this._psybot.motors.brakeAsync();
+    }
+
+    private async turnLeft() {
+        console.log("Turning left...");
+
+        const heading = await this._psybot.movementSensors.getHeading();
+        const targetDirection = this.calculateNewDirection(heading, -90);
+
+        await this._psybot.motors.leftAsync();
+        await this.waitUntilFacing(x => {
+            const diff = Math.abs(targetDirection - x.Bearing);
+            return diff < 10;
+        });
+
+        await this._psybot.motors.brakeAsync();
+    }
+
     private async turnAround() {
         console.log("Turning around...");
 
         const heading = await this._psybot.movementSensors.getHeading();
-        const targetDirection = (heading.Bearing + 180) % 360;
-        const speed = this._psybot.motors.speed;
+        const targetDirection = this.calculateNewDirection(heading, 180);
 
         this._stateMachine.turnAround();
-
-        await this._psybot.motors.setSpeedAsync(this._psybot.motors.MaxSpeed - 60);
         await this._psybot.motors.rightAsync();
         
         await this.waitUntilFacing(x => {
@@ -208,7 +238,6 @@ export class PsybotActor {
         });
 
         await this._psybot.motors.brakeAsync();
-        await this._psybot.motors.setSpeedAsync(speed);
     }
 
     private async waitUntilFacing(check: checkDirection, loopDelay: number = 100) {
