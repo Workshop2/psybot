@@ -9,9 +9,10 @@ export class MovementSensors {
     private _timer: NodeJS.Timer;
     
     private get targetRange() {
+        const range = 25;
         return {
-            min: 300,
-            max: 60
+            min: 360 - range,
+            max: range
         };
     }
 
@@ -27,7 +28,12 @@ export class MovementSensors {
         }
 
         const heading = await this.getHeading();
-        console.log("Heading", `${heading.Bearing} (${heading.Heading} | min:${range.min} | max:${range.max})`);
+        if(!heading) {
+            console.info("Heading could not be found");
+            return;
+        }
+
+        console.log("Heading", `${heading.Bearing} (${heading.Heading} | min:${this.targetRange.min} | max:${this.targetRange.max})`);
 
         if(!this.facingCorrectDirection(heading)) {
             this._onLost();
@@ -35,6 +41,10 @@ export class MovementSensors {
     }
 
     public facingCorrectDirection(heading: CurrentDirection) : boolean {
+        if(!heading) {
+            return false;
+        }
+
         const range = this.targetRange;
         
         return heading.Bearing <= range.max || heading.Bearing >= range.min;
@@ -56,7 +66,7 @@ export class MovementSensors {
     public async getHeading() : Promise<CurrentDirection> {
         const data = await this._bno055.getEuler();
         if(!data) {
-            console.log("Unable to find current heading")
+            console.error("Unable to find current heading")
             return null;
         }
 
@@ -65,7 +75,7 @@ export class MovementSensors {
             .filter(point => data.h >= point.Low && data.h <= point.High)[0] || null;
 
         if(!compassPoint) {
-            console.log(`Unable to compass point for ${data.h}`)
+            console.error(`Unable to find compass point for ${data.h}`)
             return null;
         }
 

@@ -97,14 +97,19 @@ export class PsybotActor {
 
     // Yay, bot will now not go south. How mean.
     private async findingNorth() {
+        const loopDelay = 100;
         console.log("onFindingNorth");
 
         await this._psybot.motors.brakeAsync();
-        await this._psybot.motors.setSpeedAsync(this._psybot.motors.MinSpeed);
+        await this._psybot.motors.setSpeedAsync(this._psybot.motors.MaxSpeed - 60);
 
         let isRotating = false;
         while(true) {
             const heading = await this._psybot.movementSensors.getHeading();
+            if(!heading) {
+                await delay(loopDelay);
+                continue;
+            }
             console.log("heading", heading);
 
             if(this._psybot.movementSensors.facingCorrectDirection(heading)) {
@@ -112,6 +117,7 @@ export class PsybotActor {
             }
 
             if(isRotating) {
+                await delay(loopDelay);
                 continue;
             }
 
@@ -126,6 +132,7 @@ export class PsybotActor {
             }
             
             isRotating = true;
+            await delay(loopDelay);
         }
 
         await this._psybot.motors.brakeAsync();
