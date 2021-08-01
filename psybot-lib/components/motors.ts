@@ -102,4 +102,8 @@ export class Motors {
   private get rightSpeed(): number {
     return this.speed;
   }
+
+  public async dispose(): Promise<void> {
+      await this.brakeAsync();
+  }
 }

@@ -46,4 +46,8 @@ export class FrontArm {
     await this.stopBottomAsync();
     this.bottomServo.sweep(sweepOptions);
   }
+
+  public async dispose(): Promise<void> {
+      await this.centerAsync();
+  }
 }

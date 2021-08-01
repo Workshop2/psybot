@@ -14,7 +14,7 @@ export class PsybotStateMachine {
                 { name: "reverse", from: "searching", to: "reversing" },
                 { name: "stop", from: ["movingForward"], to: "stopped" },
                 { name: "turnAround", from: ["reversing"], to: "turningAround" },
-                { name: "lost", from: "movingForward", to: "findingNorth"}
+                { name: "lost", from: ["stopped", "movingForward"], to: "findingNorth"}
             ],
             methods: {
                 onMovingForward: stateEvents.onMoveForward,

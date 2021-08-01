@@ -11,7 +11,6 @@ export class PsybotActor {
     constructor(psybot: Psybot) {
         this._psybot = psybot;
         this._psybot.frontArm.centerAsync();
-        this._psybot.movementSensors.collectLogs();
 
         this._stateMachine = PsybotStateMachine.create(new StateEvents({
             onMoveForward: async () => await this.onMovingForwardAsync(),
@@ -44,7 +43,7 @@ export class PsybotActor {
 
     public start() {
         if (this._stateMachine.is("stopped")) {
-            this._stateMachine.moveForward();
+            this._stateMachine.lost();
         }
     }
 
@@ -57,7 +56,6 @@ export class PsybotActor {
     private async onMovingForwardAsync() {
         console.log("onMovingForward");
         await this._psybot.motors.forwardAsync();
-        this._psybot.movementSensors.resetSensors();
     }
 
     private async onObstacleDetectedAsync() {
@@ -101,51 +99,37 @@ export class PsybotActor {
     private async findingNorth() {
         console.log("onFindingNorth");
 
+        await this._psybot.motors.brakeAsync();
+        await this._psybot.motors.setSpeedAsync(this._psybot.motors.MinSpeed);
+
+        let isRotating = false;
         while(true) {
             const heading = await this._psybot.movementSensors.getHeading();
             console.log("heading", heading);
 
-            if(!heading) {
+            if(this._psybot.movementSensors.facingCorrectDirection(heading)) {
+                break;
+            }
+
+            if(isRotating) {
                 continue;
             }
 
-            if(heading.Heading == Heading.North) {
-                break;
-            }
+            const left = Math.abs(0 - heading.Bearing);
+            const right = Math.abs(360 - heading.Bearing);
 
-            if(heading.Heading == Heading.NorthEast) {
-                break;
+            if(left < right) {
+                await this._psybot.motors.leftAsync();
             }
-
-            if(heading.Heading == Heading.East) {
-                break;
+            else {
+                await this._psybot.motors.rightAsync();
             }
-
-            if(heading.Heading == Heading.NorthWest) {
-                break;
-            }
-
-            if(heading.Heading == Heading.West) {
-                break;
-            }
-
-            switch(heading.Heading) {
-                case Heading.SouthEast:
-                case Heading.South:
-                    console.log("Turning left...");
-                    await this._psybot.motors.leftAsync();
-                    await delay(500);
-                    await this._psybot.motors.brakeAsync();
-                    break;
-                case Heading.SouthWest:
-                    console.log("Turning right...");
-                    await this._psybot.motors.rightAsync();
-                    await delay(500);
-                    await this._psybot.motors.brakeAsync();
-                    break;
-            }
+            
+            isRotating = true;
         }
 
+        await this._psybot.motors.brakeAsync();
+        await this._psybot.motors.setSpeedAsync(this._psybot.motors.MaxSpeed);
         this._stateMachine.moveForward();
     }
 
@@ -181,7 +165,6 @@ export class PsybotActor {
         
         console.log("Reversing...");
         await this._stateMachine.reverse();
-        this._psybot.movementSensors.resetSensors();
         await this._psybot.motors.reverseAsync();
         await delay(1500);
         await this._psybot.motors.brakeAsync();
