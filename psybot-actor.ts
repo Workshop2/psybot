@@ -191,16 +191,24 @@ export class PsybotActor {
     }
 
     private async turnAround() {
+        console.log("Turning around...");
+
         const heading = await this._psybot.movementSensors.getHeading();
         const targetDirection = (heading.Bearing + 180) % 360;
+        const speed = this._psybot.motors.speed;
 
-        console.log("Turning around...");
         this._stateMachine.turnAround();
+
+        await this._psybot.motors.setSpeedAsync(this._psybot.motors.MaxSpeed - 60);
         await this._psybot.motors.rightAsync();
+        
         await this.waitUntilFacing(x => {
             const diff = Math.abs(targetDirection - x.Bearing);
             return diff < 10;
         });
+
+        await this._psybot.motors.brakeAsync();
+        await this._psybot.motors.setSpeedAsync(speed);
     }
 
     private async waitUntilFacing(check: checkDirection, loopDelay: number = 100) {
